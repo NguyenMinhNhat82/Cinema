@@ -1,0 +1,83 @@
+﻿
+
+<header id="header" class="header fixed-top d-flex align-items-center">
+    <div class="container d-flex align-items-center justify-content-between">
+
+        <a href="/" class="logo d-flex align-items-center me-auto me-lg-0">
+            <!-- Uncomment the line below if you also wish to use an image logo -->
+            <!-- <img src="assets/img/logo.png" alt=""> -->
+            <h1>LetHimCook<span></span></h1>
+        </a>
+
+        <nav id="navbar" class="navbar">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li class="dropdown">
+                    <a href="#"><span>Rạp</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+                    <ul>
+                        <li><a href="~/App/Now_Showing">Tất cả các rạp</a></li>
+
+                        <li><a href="~/App/Coming_soon">Rạp đặc biệt</a></li>
+
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#"><span>Phim</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+                    <ul>
+                        <li><a href="~/App/Now_Showing">Phim đang chiếu</a></li>
+
+                        <li><a href="~/App/Coming_soon">Coming soon</a></li>
+
+                    </ul>
+                </li>
+
+                <li class="dropdown">
+                    <a href="#"><span>Thành viên</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+                    <ul>
+                        <li><a href="#">Xem ưu đãi của bạn</a></li>
+
+                        <li><a href="#">Ưu đãi thành viên</a></li>
+
+                    </ul>
+                </li>
+
+
+                <li><a href="#contact">Contact</a></li>
+
+                @if (Session["UserID"] == null)
+                {
+
+
+                    <li>
+                        <a class="btn btn-danger" style="padding:10px; color:white" href="/App/Login">Đăng nhập</a>
+                    </li>
+
+
+                    <li>
+                        <a class="btn btn-danger" style="padding:10px; color:white" href="/App/SignUp">Đăng kí</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="dropdown">
+                        <a href="#"><img style="width:25px" src="https://res.cloudinary.com/dexbjwfjg/image/upload/v1678682828/User_tahfkw.jpg" /> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+                        <ul>
+                            <li><a href="#">Tên tài khoản: @Session["UserName"]</a></li>
+                            <li><a href="#">Xem thông tin tài khoản của bạn</a></li>
+                            <li><a href="#">Vé của tôi</a></li>
+                            <li><hr /></li>
+                            <li><a href="~/App/Logout">Đăng xuất</a></li>
+
+                        </ul>
+                    </li>
+
+                }
+                
+
+                
+            </ul>
+        </nav><!-- .navbar -->
+      
+                   
+    </div>
+</header><!-- End Header -->

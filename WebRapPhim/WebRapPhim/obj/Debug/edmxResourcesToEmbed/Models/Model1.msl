@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="AppXemPhimModelStoreContainer" CdmEntityContainer="AppXemPhimEntities">
+    <EntitySetMapping Name="Customer">
+      <EntityTypeMapping TypeName="AppXemPhimModel.Customer">
+        <MappingFragment StoreEntitySet="Customer">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Ho" ColumnName="Ho" />
+          <ScalarProperty Name="Ten" ColumnName="Ten" />
+          <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
+          <ScalarProperty Name="NgayDangKi" ColumnName="NgayDangKi" />
+          <ScalarProperty Name="GioiTinh" ColumnName="GioiTinh" />
+          <ScalarProperty Name="DiemThuong" ColumnName="DiemThuong" />
+          <ScalarProperty Name="LoaiThanhVien" ColumnName="LoaiThanhVien" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Film">
+      <EntityTypeMapping TypeName="AppXemPhimModel.Film">
+        <MappingFragment StoreEntitySet="Film">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="ten" ColumnName="ten" />
+          <ScalarProperty Name="thoi_luong" ColumnName="thoi_luong" />
+          <ScalarProperty Name="gioi_han_tuoi" ColumnName="gioi_han_tuoi" />
+          <ScalarProperty Name="ngay_cong_chieu" ColumnName="ngay_cong_chieu" />
+          <ScalarProperty Name="ngon_ngu" ColumnName="ngon_ngu" />
+          <ScalarProperty Name="dao_dien" ColumnName="dao_dien" />
+          <ScalarProperty Name="dien_vien" ColumnName="dien_vien" />
+          <ScalarProperty Name="quoc_gia" ColumnName="quoc_gia" />
+          <ScalarProperty Name="tom_tat" ColumnName="tom_tat" />
+          <ScalarProperty Name="trang_thai" ColumnName="trang_thai" />
+          <ScalarProperty Name="loai_phim" ColumnName="loai_phim" />
+          <ScalarProperty Name="nha_cung_cap" ColumnName="nha_cung_cap" />
+          <ScalarProperty Name="poster_link" ColumnName="poster_link" />
+          <ScalarProperty Name="trailer" ColumnName="trailer" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Ghe">
+      <EntityTypeMapping TypeName="AppXemPhimModel.Ghe">
+        <MappingFragment StoreEntitySet="Ghe">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+          <ScalarProperty Name="PhongID" ColumnName="PhongID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LoaiThanhVien">
+      <EntityTypeMapping TypeName="AppXemPhimModel.LoaiThanhVien">
+        <MappingFragment StoreEntitySet="LoaiThanhVien">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Ten" ColumnName="Ten" />
+          <ScalarProperty Name="DieuKien" ColumnName="DieuKien" />
+          <ScalarProperty Name="PhanTramDoiDiem" ColumnName="PhanTramDoiDiem" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LoaiVe">
+      <EntityTypeMapping TypeName="AppXemPhimModel.LoaiVe">
+        <MappingFragment StoreEntitySet="LoaiVe">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Ten" ColumnName="Ten" />
+          <ScalarProperty Name="PhanTramCongThem" ColumnName="PhanTramCongThem" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="NhaCungCap">
+      <EntityTypeMapping TypeName="AppXemPhimModel.NhaCungCap">
+        <MappingFragment StoreEntitySet="NhaCungCap">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Ten" ColumnName="Ten" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="NhanVien">
+      <EntityTypeMapping TypeName="AppXemPhimModel.NhanVien">
+        <MappingFragment StoreEntitySet="NhanVien">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="TenTK" ColumnName="TenTK" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="Ho" ColumnName="Ho" />
+          <ScalarProperty Name="Ten" ColumnName="Ten" />
+          <ScalarProperty Name="SDT" ColumnName="SDT" />
+          <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
+          <ScalarProperty Name="NgayVaoLam" ColumnName="NgayVaoLam" />
+          <ScalarProperty Name="GioiTinh" ColumnName="GioiTinh" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Phong">
+      <EntityTypeMapping TypeName="AppXemPhimModel.Phong">
+        <MappingFragment StoreEntitySet="Phong">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="SoLuongGhe" ColumnName="SoLuongGhe" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SuatChieu">
+      <EntityTypeMapping TypeName="AppXemPhimModel.SuatChieu">
+        <MappingFragment StoreEntitySet="SuatChieu">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="GioBatDau" ColumnName="GioBatDau" />
+          <ScalarProperty Name="PhongID" ColumnName="PhongID" />
+          <ScalarProperty Name="PhimID" ColumnName="PhimID" />
+          <ScalarProperty Name="Gia" ColumnName="Gia" />
+          <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SuKien">
+      <EntityTypeMapping TypeName="AppXemPhimModel.SuKien">
+        <MappingFragment StoreEntitySet="SuKien">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Ten" ColumnName="Ten" />
+          <ScalarProperty Name="NgayApDung" ColumnName="NgayApDung" />
+          <ScalarProperty Name="NgayKetThuc" ColumnName="NgayKetThuc" />
+          <ScalarProperty Name="PhanTramGiam" ColumnName="PhanTramGiam" />
+          <ScalarProperty Name="linkposter" ColumnName="linkposter" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TheLoai">
+      <EntityTypeMapping TypeName="AppXemPhimModel.TheLoai">
+        <MappingFragment StoreEntitySet="TheLoai">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="ten_the_loai" ColumnName="ten_the_loai" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Ve">
+      <EntityTypeMapping TypeName="AppXemPhimModel.Ve">
+        <MappingFragment StoreEntitySet="Ve">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="NgayBan" ColumnName="NgayBan" />
+          <ScalarProperty Name="Ghe" ColumnName="Ghe" />
+          <ScalarProperty Name="NVID" ColumnName="NVID" />
+          <ScalarProperty Name="CusId" ColumnName="CusId" />
+          <ScalarProperty Name="Gia" ColumnName="Gia" />
+          <ScalarProperty Name="IDGiamGia" ColumnName="IDGiamGia" />
+          <ScalarProperty Name="SuatChieuID" ColumnName="SuatChieuID" />
+          <ScalarProperty Name="LoaVe" ColumnName="LoaVe" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="TheLoaiPhim_Phim" TypeName="AppXemPhimModel.TheLoaiPhim_Phim" StoreEntitySet="TheLoaiPhim_Phim">
+      <EndProperty Name="Film">
+        <ScalarProperty Name="ID" ColumnName="PhimID" />
+      </EndProperty>
+      <EndProperty Name="TheLoai">
+        <ScalarProperty Name="id" ColumnName="LoaiPhimID" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,359 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AppXemPhimModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Customer">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Phone" Type="String" MaxLength="13" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Ho" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Ten" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="NgaySinh" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="NgayDangKi" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="GioiTinh" Type="Boolean" Nullable="false" />
+    <Property Name="DiemThuong" Type="Int32" />
+    <Property Name="LoaiThanhVien" Type="Int32" />
+    <NavigationProperty Name="LoaiThanhVien1" Relationship="Self.FK_Customer_LoaiThanhVien" FromRole="Customer" ToRole="LoaiThanhVien" />
+    <NavigationProperty Name="Ve" Relationship="Self.FK_Ve_Customer" FromRole="Customer" ToRole="Ve" />
+  </EntityType>
+  <EntityType Name="Film">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="ten" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
+    <Property Name="thoi_luong" Type="Int32" />
+    <Property Name="gioi_han_tuoi" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="ngay_cong_chieu" Type="DateTime" Precision="0" />
+    <Property Name="ngon_ngu" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
+    <Property Name="dao_dien" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+    <Property Name="dien_vien" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+    <Property Name="quoc_gia" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+    <Property Name="tom_tat" Type="String" MaxLength="300" FixedLength="true" Unicode="true" />
+    <Property Name="trang_thai" Type="Boolean" />
+    <Property Name="loai_phim" Type="Int32" />
+    <Property Name="nha_cung_cap" Type="Int32" />
+    <Property Name="poster_link" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+    <Property Name="trailer" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="NhaCungCap" Relationship="Self.FK_Film_NhaCungCap" FromRole="Film" ToRole="NhaCungCap" />
+    <NavigationProperty Name="SuatChieu" Relationship="Self.FK_SuatChieu_Film" FromRole="Film" ToRole="SuatChieu" />
+    <NavigationProperty Name="TheLoai" Relationship="Self.TheLoaiPhim_Phim" FromRole="Film" ToRole="TheLoai" />
+  </EntityType>
+  <EntityType Name="Ghe">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="TrangThai" Type="Boolean" />
+    <Property Name="PhongID" Type="Int32" />
+    <NavigationProperty Name="Phong" Relationship="Self.FK_Ghe_Phong" FromRole="Ghe" ToRole="Phong" />
+    <NavigationProperty Name="Ve" Relationship="Self.FK_Ve_Ghe" FromRole="Ghe" ToRole="Ve" />
+  </EntityType>
+  <EntityType Name="LoaiThanhVien">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Ten" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+    <Property Name="DieuKien" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+    <Property Name="PhanTramDoiDiem" Type="Double" />
+    <NavigationProperty Name="Customer" Relationship="Self.FK_Customer_LoaiThanhVien" FromRole="LoaiThanhVien" ToRole="Customer" />
+  </EntityType>
+  <EntityType Name="LoaiVe">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Ten" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+    <Property Name="PhanTramCongThem" Type="Double" />
+    <NavigationProperty Name="Ve" Relationship="Self.FK_Ve_LoaiVe" FromRole="LoaiVe" ToRole="Ve" />
+  </EntityType>
+  <EntityType Name="NhaCungCap">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Ten" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
+    <Property Name="Phone" Type="String" MaxLength="13" FixedLength="true" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="40" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="Film" Relationship="Self.FK_Film_NhaCungCap" FromRole="NhaCungCap" ToRole="Film" />
+  </EntityType>
+  <EntityType Name="NhanVien">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="TenTK" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+    <Property Name="Ho" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
+    <Property Name="Ten" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+    <Property Name="SDT" Type="String" MaxLength="13" FixedLength="true" Unicode="true" />
+    <Property Name="NgaySinh" Type="DateTime" Precision="0" />
+    <Property Name="NgayVaoLam" Type="DateTime" Precision="0" />
+    <Property Name="GioiTinh" Type="Boolean" />
+    <NavigationProperty Name="Ve" Relationship="Self.FK_Ve_NhanVien" FromRole="NhanVien" ToRole="Ve" />
+  </EntityType>
+  <EntityType Name="Phong">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="SoLuongGhe" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="Ghe" Relationship="Self.FK_Ghe_Phong" FromRole="Phong" ToRole="Ghe" />
+    <NavigationProperty Name="SuatChieu" Relationship="Self.FK_SuatChieu_Phong" FromRole="Phong" ToRole="SuatChieu" />
+  </EntityType>
+  <EntityType Name="SuatChieu">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="GioBatDau" Type="DateTime" Precision="7" />
+    <Property Name="PhongID" Type="Int32" />
+    <Property Name="PhimID" Type="Int32" />
+    <Property Name="Gia" Type="Double" />
+    <Property Name="TrangThai" Type="Boolean" />
+    <NavigationProperty Name="Film" Relationship="Self.FK_SuatChieu_Film" FromRole="SuatChieu" ToRole="Film" />
+    <NavigationProperty Name="Phong" Relationship="Self.FK_SuatChieu_Phong" FromRole="SuatChieu" ToRole="Phong" />
+    <NavigationProperty Name="Ve" Relationship="Self.FK_Ve_SuatChieu" FromRole="SuatChieu" ToRole="Ve" />
+  </EntityType>
+  <EntityType Name="SuKien">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Ten" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+    <Property Name="NgayApDung" Type="DateTime" Precision="0" />
+    <Property Name="NgayKetThuc" Type="DateTime" Precision="0" />
+    <Property Name="PhanTramGiam" Type="Double" />
+    <Property Name="linkposter" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="Ve" Relationship="Self.FK_Ve_SuKien" FromRole="SuKien" ToRole="Ve" />
+  </EntityType>
+  <EntityType Name="TheLoai">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="ten_the_loai" Type="String" MaxLength="40" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="Film" Relationship="Self.TheLoaiPhim_Phim" FromRole="TheLoai" ToRole="Film" />
+  </EntityType>
+  <EntityType Name="Ve">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="NgayBan" Type="DateTime" Precision="7" />
+    <Property Name="Ghe" Type="Int32" />
+    <Property Name="NVID" Type="Int32" />
+    <Property Name="CusId" Type="Int32" />
+    <Property Name="Gia" Type="Double" />
+    <Property Name="IDGiamGia" Type="Int32" />
+    <Property Name="SuatChieuID" Type="Int32" />
+    <Property Name="LoaVe" Type="Int32" />
+    <NavigationProperty Name="Customer" Relationship="Self.FK_Ve_Customer" FromRole="Ve" ToRole="Customer" />
+    <NavigationProperty Name="Ghe1" Relationship="Self.FK_Ve_Ghe" FromRole="Ve" ToRole="Ghe" />
+    <NavigationProperty Name="LoaiVe" Relationship="Self.FK_Ve_LoaiVe" FromRole="Ve" ToRole="LoaiVe" />
+    <NavigationProperty Name="NhanVien" Relationship="Self.FK_Ve_NhanVien" FromRole="Ve" ToRole="NhanVien" />
+    <NavigationProperty Name="SuatChieu" Relationship="Self.FK_Ve_SuatChieu" FromRole="Ve" ToRole="SuatChieu" />
+    <NavigationProperty Name="SuKien" Relationship="Self.FK_Ve_SuKien" FromRole="Ve" ToRole="SuKien" />
+  </EntityType>
+  <Association Name="FK_Customer_LoaiThanhVien">
+    <End Role="LoaiThanhVien" Type="Self.LoaiThanhVien" Multiplicity="0..1" />
+    <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LoaiThanhVien">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Customer">
+        <PropertyRef Name="LoaiThanhVien" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Ve_Customer">
+    <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+    <End Role="Ve" Type="Self.Ve" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Ve">
+        <PropertyRef Name="CusId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Film_NhaCungCap">
+    <End Role="NhaCungCap" Type="Self.NhaCungCap" Multiplicity="0..1" />
+    <End Role="Film" Type="Self.Film" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NhaCungCap">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Film">
+        <PropertyRef Name="nha_cung_cap" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SuatChieu_Film">
+    <End Role="Film" Type="Self.Film" Multiplicity="0..1" />
+    <End Role="SuatChieu" Type="Self.SuatChieu" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Film">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="SuatChieu">
+        <PropertyRef Name="PhimID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Ghe_Phong">
+    <End Role="Phong" Type="Self.Phong" Multiplicity="0..1" />
+    <End Role="Ghe" Type="Self.Ghe" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Phong">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Ghe">
+        <PropertyRef Name="PhongID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Ve_Ghe">
+    <End Role="Ghe" Type="Self.Ghe" Multiplicity="0..1" />
+    <End Role="Ve" Type="Self.Ve" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ghe">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Ve">
+        <PropertyRef Name="Ghe" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Ve_LoaiVe">
+    <End Role="LoaiVe" Type="Self.LoaiVe" Multiplicity="0..1" />
+    <End Role="Ve" Type="Self.Ve" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LoaiVe">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Ve">
+        <PropertyRef Name="LoaVe" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Ve_NhanVien">
+    <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="0..1" />
+    <End Role="Ve" Type="Self.Ve" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NhanVien">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Ve">
+        <PropertyRef Name="NVID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SuatChieu_Phong">
+    <End Role="Phong" Type="Self.Phong" Multiplicity="0..1" />
+    <End Role="SuatChieu" Type="Self.SuatChieu" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Phong">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="SuatChieu">
+        <PropertyRef Name="PhongID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Ve_SuatChieu">
+    <End Role="SuatChieu" Type="Self.SuatChieu" Multiplicity="0..1" />
+    <End Role="Ve" Type="Self.Ve" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SuatChieu">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Ve">
+        <PropertyRef Name="SuatChieuID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Ve_SuKien">
+    <End Role="SuKien" Type="Self.SuKien" Multiplicity="0..1" />
+    <End Role="Ve" Type="Self.Ve" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SuKien">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Ve">
+        <PropertyRef Name="SuatChieuID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="TheLoaiPhim_Phim">
+    <End Role="Film" Type="Self.Film" Multiplicity="*" />
+    <End Role="TheLoai" Type="Self.TheLoai" Multiplicity="*" />
+  </Association>
+  <EntityContainer Name="AppXemPhimEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Customer" EntityType="Self.Customer" />
+    <EntitySet Name="Film" EntityType="Self.Film" />
+    <EntitySet Name="Ghe" EntityType="Self.Ghe" />
+    <EntitySet Name="LoaiThanhVien" EntityType="Self.LoaiThanhVien" />
+    <EntitySet Name="LoaiVe" EntityType="Self.LoaiVe" />
+    <EntitySet Name="NhaCungCap" EntityType="Self.NhaCungCap" />
+    <EntitySet Name="NhanVien" EntityType="Self.NhanVien" />
+    <EntitySet Name="Phong" EntityType="Self.Phong" />
+    <EntitySet Name="SuatChieu" EntityType="Self.SuatChieu" />
+    <EntitySet Name="SuKien" EntityType="Self.SuKien" />
+    <EntitySet Name="TheLoai" EntityType="Self.TheLoai" />
+    <EntitySet Name="Ve" EntityType="Self.Ve" />
+    <AssociationSet Name="FK_Customer_LoaiThanhVien" Association="Self.FK_Customer_LoaiThanhVien">
+      <End Role="LoaiThanhVien" EntitySet="LoaiThanhVien" />
+      <End Role="Customer" EntitySet="Customer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Ve_Customer" Association="Self.FK_Ve_Customer">
+      <End Role="Customer" EntitySet="Customer" />
+      <End Role="Ve" EntitySet="Ve" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Film_NhaCungCap" Association="Self.FK_Film_NhaCungCap">
+      <End Role="NhaCungCap" EntitySet="NhaCungCap" />
+      <End Role="Film" EntitySet="Film" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SuatChieu_Film" Association="Self.FK_SuatChieu_Film">
+      <End Role="Film" EntitySet="Film" />
+      <End Role="SuatChieu" EntitySet="SuatChieu" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Ghe_Phong" Association="Self.FK_Ghe_Phong">
+      <End Role="Phong" EntitySet="Phong" />
+      <End Role="Ghe" EntitySet="Ghe" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Ve_Ghe" Association="Self.FK_Ve_Ghe">
+      <End Role="Ghe" EntitySet="Ghe" />
+      <End Role="Ve" EntitySet="Ve" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Ve_LoaiVe" Association="Self.FK_Ve_LoaiVe">
+      <End Role="LoaiVe" EntitySet="LoaiVe" />
+      <End Role="Ve" EntitySet="Ve" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Ve_NhanVien" Association="Self.FK_Ve_NhanVien">
+      <End Role="NhanVien" EntitySet="NhanVien" />
+      <End Role="Ve" EntitySet="Ve" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SuatChieu_Phong" Association="Self.FK_SuatChieu_Phong">
+      <End Role="Phong" EntitySet="Phong" />
+      <End Role="SuatChieu" EntitySet="SuatChieu" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Ve_SuatChieu" Association="Self.FK_Ve_SuatChieu">
+      <End Role="SuatChieu" EntitySet="SuatChieu" />
+      <End Role="Ve" EntitySet="Ve" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Ve_SuKien" Association="Self.FK_Ve_SuKien">
+      <End Role="SuKien" EntitySet="SuKien" />
+      <End Role="Ve" EntitySet="Ve" />
+    </AssociationSet>
+    <AssociationSet Name="TheLoaiPhim_Phim" Association="Self.TheLoaiPhim_Phim">
+      <End Role="Film" EntitySet="Film" />
+      <End Role="TheLoai" EntitySet="TheLoai" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

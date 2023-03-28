@@ -1,0 +1,65 @@
+﻿
+@using WebRapPhim.Models;
+@using WebRapPhim.Service;
+
+@{
+    ViewBag.Title = "Now_Showing";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    AppXemPhimEntities db = new AppXemPhimEntities();
+    var ListSuatChieu = db.Film.ToList();
+    List<Film> nowShowing = new List<Film>();
+    foreach (Film i in ListSuatChieu)
+    {
+        if (Service.getDateSubtract(System.DateTime.Parse(i.ngay_cong_chieu.ToString()), DateTime.Now) < 10 && Service.getDateSubtract(DateTime.Now, System.DateTime.Parse(i.ngay_cong_chieu.ToString())) < 10)
+        {
+            nowShowing.Add(i);
+        }
+
+    }
+}
+
+<main id="main">
+    <section id="menu" class="menu">
+        <div class="container" data-aos="fade-up">
+
+            <div class="section-header">
+
+                <p>Phim <span>đang chiếu</span></p>
+            </div>
+            <div class="tab-content" data-aos="fade-up" data-aos-delay="300">
+
+                <div class="tab-pane fade active show" id="menu-starters">
+
+
+                    <div class="row gy-5">
+                        @foreach (Film i in nowShowing)
+                        {
+                        <div class="col-lg-4 menu-item">
+                            <a href="@i.poster_link" class="glightbox"><img src="@i.poster_link" class="menu-img img-fluid" alt=""></a>
+                            <h4>@i.ten</h4>
+                            <p class="ingredients">
+                                @i.dao_dien
+                            </p>
+                            <p>Ngày công chiếu</p>
+                            <p class="price">
+                                @String.Format("{0:dd/MM/yyyy}", i.ngay_cong_chieu)
+                            </p>
+                            
+                                <a class="btn btn-danger" style="padding:10px; color:white" href="/App/Login">Đặt vé</a>
+                            
+                        </div>
+                        }
+                    </div>
+                </div><!-- End Starter Menu Content -->
+
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+</main>
+
