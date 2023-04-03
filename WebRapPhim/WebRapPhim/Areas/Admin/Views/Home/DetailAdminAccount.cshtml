@@ -1,0 +1,87 @@
+﻿@model WebRapPhim.Models.NhanVien
+
+@{
+    ViewBag.Title = "DetailAdminAccount";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .btl-left {
+        font-size: 18px;
+        margin-bottom: 20px;
+        margin-left: 2%;
+    }
+
+        .btl-left a {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .btl-left > a:hover {
+            color: black;
+            background-color: white;
+        }
+</style>
+<h2 style="text-align:center; margin-top:2%">Detail Admint Account</h2>
+<div class="btl-left">
+    @Html.ActionLink("Edit", "EditAdminAccount", new { id = Model.ID })
+    @Html.ActionLink("Back to List", "AdminAccount")
+</div>
+<div>
+    <hr />
+    <table class="table">
+        <tr>
+            <th>
+                <p>Tên tài khoản</p>
+            </th>
+            <th>
+                <p>Họ</p>
+            </th>
+            <th>
+                <p>Tên</p>
+            </th>
+            <th>
+                <p>Số điện thoại</p>
+            </th>
+            <th>
+                <p>Ngày sinh</p>
+            </th>
+            <th>
+                <p>Ngày vào làm</p>
+            </th>
+            <th>
+                <p>Giới tính</p>
+            </th>
+            <th></th>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(model => model.TenTK)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Ho)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Ten)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.SDT)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.NgaySinh)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.NgayVaoLam)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.GioiTinh)
+            </td>
+        </tr>
+    </table>
+</div>

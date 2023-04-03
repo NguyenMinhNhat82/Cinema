@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\WebRapPhim",
+    "\\WebRapPhim\\Areas",
+    "\\WebRapPhim\\Areas\\Admin",
+    "\\WebRapPhim\\Areas\\Admin\\Controllers",
+    "\\WebRapPhim\\Areas\\Admin\\Views",
+    "\\WebRapPhim\\Areas\\Admin\\Views\\Home",
+    "\\WebRapPhim\\Controllers"
+  ],
+  "SelectedNode": "\\WebRapPhim\\Areas\\Admin\\Controllers\\HomeController.cs",
+  "PreviewInSolutionExplorer": false
+}

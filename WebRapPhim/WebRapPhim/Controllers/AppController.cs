@@ -9,7 +9,7 @@ namespace WebRapPhim.Controllers
 {
     public class AppController : Controller
     {
-        AppXemPhimEntities db = new AppXemPhimEntities();
+        AppXemPhimEntities1 db = new AppXemPhimEntities1();
         // GET: App
         public ActionResult Home()
         {

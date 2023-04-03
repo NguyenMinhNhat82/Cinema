@@ -130,6 +130,16 @@
     <Property Name="linkposter" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
     <NavigationProperty Name="Ve" Relationship="Self.FK_Ve_SuKien" FromRole="SuKien" ToRole="Ve" />
   </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
   <EntityType Name="TheLoai">
     <Key>
       <PropertyRef Name="id" />
@@ -294,66 +304,67 @@
     <End Role="Film" Type="Self.Film" Multiplicity="*" />
     <End Role="TheLoai" Type="Self.TheLoai" Multiplicity="*" />
   </Association>
-  <EntityContainer Name="AppXemPhimEntities" annotation:LazyLoadingEnabled="true">
-    <EntitySet Name="Customer" EntityType="Self.Customer" />
-    <EntitySet Name="Film" EntityType="Self.Film" />
-    <EntitySet Name="Ghe" EntityType="Self.Ghe" />
-    <EntitySet Name="LoaiThanhVien" EntityType="Self.LoaiThanhVien" />
-    <EntitySet Name="LoaiVe" EntityType="Self.LoaiVe" />
-    <EntitySet Name="NhaCungCap" EntityType="Self.NhaCungCap" />
-    <EntitySet Name="NhanVien" EntityType="Self.NhanVien" />
-    <EntitySet Name="Phong" EntityType="Self.Phong" />
-    <EntitySet Name="SuatChieu" EntityType="Self.SuatChieu" />
-    <EntitySet Name="SuKien" EntityType="Self.SuKien" />
-    <EntitySet Name="TheLoai" EntityType="Self.TheLoai" />
-    <EntitySet Name="Ve" EntityType="Self.Ve" />
+  <EntityContainer Name="AppXemPhimEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Customers" EntityType="Self.Customer" />
+    <EntitySet Name="Films" EntityType="Self.Film" />
+    <EntitySet Name="Ghes" EntityType="Self.Ghe" />
+    <EntitySet Name="LoaiThanhViens" EntityType="Self.LoaiThanhVien" />
+    <EntitySet Name="LoaiVes" EntityType="Self.LoaiVe" />
+    <EntitySet Name="NhaCungCaps" EntityType="Self.NhaCungCap" />
+    <EntitySet Name="NhanViens" EntityType="Self.NhanVien" />
+    <EntitySet Name="Phongs" EntityType="Self.Phong" />
+    <EntitySet Name="SuatChieux" EntityType="Self.SuatChieu" />
+    <EntitySet Name="SuKiens" EntityType="Self.SuKien" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="TheLoais" EntityType="Self.TheLoai" />
+    <EntitySet Name="Ves" EntityType="Self.Ve" />
     <AssociationSet Name="FK_Customer_LoaiThanhVien" Association="Self.FK_Customer_LoaiThanhVien">
-      <End Role="LoaiThanhVien" EntitySet="LoaiThanhVien" />
-      <End Role="Customer" EntitySet="Customer" />
+      <End Role="LoaiThanhVien" EntitySet="LoaiThanhViens" />
+      <End Role="Customer" EntitySet="Customers" />
     </AssociationSet>
     <AssociationSet Name="FK_Ve_Customer" Association="Self.FK_Ve_Customer">
-      <End Role="Customer" EntitySet="Customer" />
-      <End Role="Ve" EntitySet="Ve" />
+      <End Role="Customer" EntitySet="Customers" />
+      <End Role="Ve" EntitySet="Ves" />
     </AssociationSet>
     <AssociationSet Name="FK_Film_NhaCungCap" Association="Self.FK_Film_NhaCungCap">
-      <End Role="NhaCungCap" EntitySet="NhaCungCap" />
-      <End Role="Film" EntitySet="Film" />
+      <End Role="NhaCungCap" EntitySet="NhaCungCaps" />
+      <End Role="Film" EntitySet="Films" />
     </AssociationSet>
     <AssociationSet Name="FK_SuatChieu_Film" Association="Self.FK_SuatChieu_Film">
-      <End Role="Film" EntitySet="Film" />
-      <End Role="SuatChieu" EntitySet="SuatChieu" />
+      <End Role="Film" EntitySet="Films" />
+      <End Role="SuatChieu" EntitySet="SuatChieux" />
     </AssociationSet>
     <AssociationSet Name="FK_Ghe_Phong" Association="Self.FK_Ghe_Phong">
-      <End Role="Phong" EntitySet="Phong" />
-      <End Role="Ghe" EntitySet="Ghe" />
+      <End Role="Phong" EntitySet="Phongs" />
+      <End Role="Ghe" EntitySet="Ghes" />
     </AssociationSet>
     <AssociationSet Name="FK_Ve_Ghe" Association="Self.FK_Ve_Ghe">
-      <End Role="Ghe" EntitySet="Ghe" />
-      <End Role="Ve" EntitySet="Ve" />
+      <End Role="Ghe" EntitySet="Ghes" />
+      <End Role="Ve" EntitySet="Ves" />
     </AssociationSet>
     <AssociationSet Name="FK_Ve_LoaiVe" Association="Self.FK_Ve_LoaiVe">
-      <End Role="LoaiVe" EntitySet="LoaiVe" />
-      <End Role="Ve" EntitySet="Ve" />
+      <End Role="LoaiVe" EntitySet="LoaiVes" />
+      <End Role="Ve" EntitySet="Ves" />
     </AssociationSet>
     <AssociationSet Name="FK_Ve_NhanVien" Association="Self.FK_Ve_NhanVien">
-      <End Role="NhanVien" EntitySet="NhanVien" />
-      <End Role="Ve" EntitySet="Ve" />
+      <End Role="NhanVien" EntitySet="NhanViens" />
+      <End Role="Ve" EntitySet="Ves" />
     </AssociationSet>
     <AssociationSet Name="FK_SuatChieu_Phong" Association="Self.FK_SuatChieu_Phong">
-      <End Role="Phong" EntitySet="Phong" />
-      <End Role="SuatChieu" EntitySet="SuatChieu" />
+      <End Role="Phong" EntitySet="Phongs" />
+      <End Role="SuatChieu" EntitySet="SuatChieux" />
     </AssociationSet>
     <AssociationSet Name="FK_Ve_SuatChieu" Association="Self.FK_Ve_SuatChieu">
-      <End Role="SuatChieu" EntitySet="SuatChieu" />
-      <End Role="Ve" EntitySet="Ve" />
+      <End Role="SuatChieu" EntitySet="SuatChieux" />
+      <End Role="Ve" EntitySet="Ves" />
     </AssociationSet>
     <AssociationSet Name="FK_Ve_SuKien" Association="Self.FK_Ve_SuKien">
-      <End Role="SuKien" EntitySet="SuKien" />
-      <End Role="Ve" EntitySet="Ve" />
+      <End Role="SuKien" EntitySet="SuKiens" />
+      <End Role="Ve" EntitySet="Ves" />
     </AssociationSet>
     <AssociationSet Name="TheLoaiPhim_Phim" Association="Self.TheLoaiPhim_Phim">
-      <End Role="Film" EntitySet="Film" />
-      <End Role="TheLoai" EntitySet="TheLoai" />
+      <End Role="Film" EntitySet="Films" />
+      <End Role="TheLoai" EntitySet="TheLoais" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

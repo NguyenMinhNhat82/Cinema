@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="AppXemPhimModelStoreContainer" CdmEntityContainer="AppXemPhimEntities">
-    <EntitySetMapping Name="Customer">
+  <EntityContainerMapping StorageEntityContainer="AppXemPhimModelStoreContainer" CdmEntityContainer="AppXemPhimEntities1">
+    <EntitySetMapping Name="Customers">
       <EntityTypeMapping TypeName="AppXemPhimModel.Customer">
         <MappingFragment StoreEntitySet="Customer">
           <ScalarProperty Name="ID" ColumnName="ID" />
@@ -18,7 +18,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Film">
+    <EntitySetMapping Name="Films">
       <EntityTypeMapping TypeName="AppXemPhimModel.Film">
         <MappingFragment StoreEntitySet="Film">
           <ScalarProperty Name="ID" ColumnName="ID" />
@@ -39,7 +39,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Ghe">
+    <EntitySetMapping Name="Ghes">
       <EntityTypeMapping TypeName="AppXemPhimModel.Ghe">
         <MappingFragment StoreEntitySet="Ghe">
           <ScalarProperty Name="ID" ColumnName="ID" />
@@ -48,7 +48,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="LoaiThanhVien">
+    <EntitySetMapping Name="LoaiThanhViens">
       <EntityTypeMapping TypeName="AppXemPhimModel.LoaiThanhVien">
         <MappingFragment StoreEntitySet="LoaiThanhVien">
           <ScalarProperty Name="ID" ColumnName="ID" />
@@ -58,7 +58,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="LoaiVe">
+    <EntitySetMapping Name="LoaiVes">
       <EntityTypeMapping TypeName="AppXemPhimModel.LoaiVe">
         <MappingFragment StoreEntitySet="LoaiVe">
           <ScalarProperty Name="ID" ColumnName="ID" />
@@ -67,7 +67,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="NhaCungCap">
+    <EntitySetMapping Name="NhaCungCaps">
       <EntityTypeMapping TypeName="AppXemPhimModel.NhaCungCap">
         <MappingFragment StoreEntitySet="NhaCungCap">
           <ScalarProperty Name="ID" ColumnName="ID" />
@@ -77,7 +77,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="NhanVien">
+    <EntitySetMapping Name="NhanViens">
       <EntityTypeMapping TypeName="AppXemPhimModel.NhanVien">
         <MappingFragment StoreEntitySet="NhanVien">
           <ScalarProperty Name="ID" ColumnName="ID" />
@@ -92,7 +92,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Phong">
+    <EntitySetMapping Name="Phongs">
       <EntityTypeMapping TypeName="AppXemPhimModel.Phong">
         <MappingFragment StoreEntitySet="Phong">
           <ScalarProperty Name="ID" ColumnName="ID" />
@@ -100,7 +100,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="SuatChieu">
+    <EntitySetMapping Name="SuatChieux">
       <EntityTypeMapping TypeName="AppXemPhimModel.SuatChieu">
         <MappingFragment StoreEntitySet="SuatChieu">
           <ScalarProperty Name="ID" ColumnName="ID" />
@@ -112,7 +112,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="SuKien">
+    <EntitySetMapping Name="SuKiens">
       <EntityTypeMapping TypeName="AppXemPhimModel.SuKien">
         <MappingFragment StoreEntitySet="SuKien">
           <ScalarProperty Name="ID" ColumnName="ID" />
@@ -124,7 +124,18 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="TheLoai">
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="AppXemPhimModel.sysdiagram">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="definition" ColumnName="definition" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TheLoais">
       <EntityTypeMapping TypeName="AppXemPhimModel.TheLoai">
         <MappingFragment StoreEntitySet="TheLoai">
           <ScalarProperty Name="id" ColumnName="id" />
@@ -132,7 +143,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Ve">
+    <EntitySetMapping Name="Ves">
       <EntityTypeMapping TypeName="AppXemPhimModel.Ve">
         <MappingFragment StoreEntitySet="Ve">
           <ScalarProperty Name="ID" ColumnName="ID" />

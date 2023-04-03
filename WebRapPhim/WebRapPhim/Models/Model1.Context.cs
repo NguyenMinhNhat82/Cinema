@@ -13,10 +13,10 @@ namespace WebRapPhim.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class AppXemPhimEntities : DbContext
+    public partial class AppXemPhimEntities1 : DbContext
     {
-        public AppXemPhimEntities()
-            : base("name=AppXemPhimEntities")
+        public AppXemPhimEntities1()
+            : base("name=AppXemPhimEntities1")
         {
         }
     
@@ -34,7 +34,8 @@ namespace WebRapPhim.Models
         public virtual DbSet<NhanVien> NhanVien { get; set; }
         public virtual DbSet<Phong> Phong { get; set; }
         public virtual DbSet<SuatChieu> SuatChieu { get; set; }
-        public virtual DbSet<SuKien> SuKien { get; set; }
+        public virtual DbSet<SuKien> SuKien{ get; set; }
+        public virtual DbSet<sysdiagram> sysdiagram { get; set; }
         public virtual DbSet<TheLoai> TheLoai { get; set; }
         public virtual DbSet<Ve> Ve { get; set; }
     }

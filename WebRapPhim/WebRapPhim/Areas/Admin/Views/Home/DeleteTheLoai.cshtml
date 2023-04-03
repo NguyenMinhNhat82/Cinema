@@ -1,0 +1,60 @@
+﻿@model WebRapPhim.Models.TheLoai
+
+@{
+    ViewBag.Title = "DeleteTheLoai";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .btl-left {
+        font-size: 18px;
+        margin-bottom: 20px;
+        margin-left: 2%;
+    }
+
+        .btl-left a {
+            display: inline-block;
+            padding: 7px 10px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight:;
+            transition: background-color 0.3s ease;
+        }
+
+        .btl-left > a:hover {
+            color: black;
+            background-color: white;
+        }
+</style>
+<h2 style="text-align: center; margin-top: 2%;">Xoá Thể Loại</h2>
+
+<h3 class="text-danger" style="margin-left:2%">Bạn có chắc chắn muốn xoá tài khoản này?</h3>
+<div>
+    <hr />
+    <table class="table">
+        <tr>
+            <th>
+                <p>Tên Thể Loại</p>
+            </th>
+
+            <th></th>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(model => model.ten_the_loai)
+            </td>
+        </tr>
+    </table>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-danger" /> 
+            @Html.ActionLink("Back to List", "TheLoai")
+        </div>
+    }
+</div>

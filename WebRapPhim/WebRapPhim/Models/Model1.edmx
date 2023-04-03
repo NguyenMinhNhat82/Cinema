@@ -118,6 +118,16 @@
           <Property Name="PhanTramGiam" Type="float" />
           <Property Name="linkposter" Type="nchar" MaxLength="100" />
         </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
         <EntityType Name="TheLoai">
           <Key>
             <PropertyRef Name="id" />
@@ -314,6 +324,7 @@
           <EntitySet Name="Phong" EntityType="Self.Phong" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SuatChieu" EntityType="Self.SuatChieu" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SuKien" EntityType="Self.SuKien" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TheLoai" EntityType="Self.TheLoai" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TheLoaiPhim_Phim" EntityType="Self.TheLoaiPhim_Phim" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ve" EntityType="Self.Ve" Schema="dbo" store:Type="Tables" />
@@ -505,6 +516,16 @@
           <Property Name="linkposter" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
           <NavigationProperty Name="Ve" Relationship="Self.FK_Ve_SuKien" FromRole="SuKien" ToRole="Ve" />
         </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
         <EntityType Name="TheLoai">
           <Key>
             <PropertyRef Name="id" />
@@ -669,66 +690,67 @@
           <End Role="Film" Type="Self.Film" Multiplicity="*" />
           <End Role="TheLoai" Type="Self.TheLoai" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="AppXemPhimEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Customer" EntityType="Self.Customer" />
-          <EntitySet Name="Film" EntityType="Self.Film" />
-          <EntitySet Name="Ghe" EntityType="Self.Ghe" />
-          <EntitySet Name="LoaiThanhVien" EntityType="Self.LoaiThanhVien" />
-          <EntitySet Name="LoaiVe" EntityType="Self.LoaiVe" />
-          <EntitySet Name="NhaCungCap" EntityType="Self.NhaCungCap" />
-          <EntitySet Name="NhanVien" EntityType="Self.NhanVien" />
-          <EntitySet Name="Phong" EntityType="Self.Phong" />
-          <EntitySet Name="SuatChieu" EntityType="Self.SuatChieu" />
-          <EntitySet Name="SuKien" EntityType="Self.SuKien" />
-          <EntitySet Name="TheLoai" EntityType="Self.TheLoai" />
-          <EntitySet Name="Ve" EntityType="Self.Ve" />
+        <EntityContainer Name="AppXemPhimEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Customers" EntityType="Self.Customer" />
+          <EntitySet Name="Films" EntityType="Self.Film" />
+          <EntitySet Name="Ghes" EntityType="Self.Ghe" />
+          <EntitySet Name="LoaiThanhViens" EntityType="Self.LoaiThanhVien" />
+          <EntitySet Name="LoaiVes" EntityType="Self.LoaiVe" />
+          <EntitySet Name="NhaCungCaps" EntityType="Self.NhaCungCap" />
+          <EntitySet Name="NhanViens" EntityType="Self.NhanVien" />
+          <EntitySet Name="Phongs" EntityType="Self.Phong" />
+          <EntitySet Name="SuatChieux" EntityType="Self.SuatChieu" />
+          <EntitySet Name="SuKiens" EntityType="Self.SuKien" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="TheLoais" EntityType="Self.TheLoai" />
+          <EntitySet Name="Ves" EntityType="Self.Ve" />
           <AssociationSet Name="FK_Customer_LoaiThanhVien" Association="Self.FK_Customer_LoaiThanhVien">
-            <End Role="LoaiThanhVien" EntitySet="LoaiThanhVien" />
-            <End Role="Customer" EntitySet="Customer" />
+            <End Role="LoaiThanhVien" EntitySet="LoaiThanhViens" />
+            <End Role="Customer" EntitySet="Customers" />
           </AssociationSet>
           <AssociationSet Name="FK_Ve_Customer" Association="Self.FK_Ve_Customer">
-            <End Role="Customer" EntitySet="Customer" />
-            <End Role="Ve" EntitySet="Ve" />
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Ve" EntitySet="Ves" />
           </AssociationSet>
           <AssociationSet Name="FK_Film_NhaCungCap" Association="Self.FK_Film_NhaCungCap">
-            <End Role="NhaCungCap" EntitySet="NhaCungCap" />
-            <End Role="Film" EntitySet="Film" />
+            <End Role="NhaCungCap" EntitySet="NhaCungCaps" />
+            <End Role="Film" EntitySet="Films" />
           </AssociationSet>
           <AssociationSet Name="FK_SuatChieu_Film" Association="Self.FK_SuatChieu_Film">
-            <End Role="Film" EntitySet="Film" />
-            <End Role="SuatChieu" EntitySet="SuatChieu" />
+            <End Role="Film" EntitySet="Films" />
+            <End Role="SuatChieu" EntitySet="SuatChieux" />
           </AssociationSet>
           <AssociationSet Name="FK_Ghe_Phong" Association="Self.FK_Ghe_Phong">
-            <End Role="Phong" EntitySet="Phong" />
-            <End Role="Ghe" EntitySet="Ghe" />
+            <End Role="Phong" EntitySet="Phongs" />
+            <End Role="Ghe" EntitySet="Ghes" />
           </AssociationSet>
           <AssociationSet Name="FK_Ve_Ghe" Association="Self.FK_Ve_Ghe">
-            <End Role="Ghe" EntitySet="Ghe" />
-            <End Role="Ve" EntitySet="Ve" />
+            <End Role="Ghe" EntitySet="Ghes" />
+            <End Role="Ve" EntitySet="Ves" />
           </AssociationSet>
           <AssociationSet Name="FK_Ve_LoaiVe" Association="Self.FK_Ve_LoaiVe">
-            <End Role="LoaiVe" EntitySet="LoaiVe" />
-            <End Role="Ve" EntitySet="Ve" />
+            <End Role="LoaiVe" EntitySet="LoaiVes" />
+            <End Role="Ve" EntitySet="Ves" />
           </AssociationSet>
           <AssociationSet Name="FK_Ve_NhanVien" Association="Self.FK_Ve_NhanVien">
-            <End Role="NhanVien" EntitySet="NhanVien" />
-            <End Role="Ve" EntitySet="Ve" />
+            <End Role="NhanVien" EntitySet="NhanViens" />
+            <End Role="Ve" EntitySet="Ves" />
           </AssociationSet>
           <AssociationSet Name="FK_SuatChieu_Phong" Association="Self.FK_SuatChieu_Phong">
-            <End Role="Phong" EntitySet="Phong" />
-            <End Role="SuatChieu" EntitySet="SuatChieu" />
+            <End Role="Phong" EntitySet="Phongs" />
+            <End Role="SuatChieu" EntitySet="SuatChieux" />
           </AssociationSet>
           <AssociationSet Name="FK_Ve_SuatChieu" Association="Self.FK_Ve_SuatChieu">
-            <End Role="SuatChieu" EntitySet="SuatChieu" />
-            <End Role="Ve" EntitySet="Ve" />
+            <End Role="SuatChieu" EntitySet="SuatChieux" />
+            <End Role="Ve" EntitySet="Ves" />
           </AssociationSet>
           <AssociationSet Name="FK_Ve_SuKien" Association="Self.FK_Ve_SuKien">
-            <End Role="SuKien" EntitySet="SuKien" />
-            <End Role="Ve" EntitySet="Ve" />
+            <End Role="SuKien" EntitySet="SuKiens" />
+            <End Role="Ve" EntitySet="Ves" />
           </AssociationSet>
           <AssociationSet Name="TheLoaiPhim_Phim" Association="Self.TheLoaiPhim_Phim">
-            <End Role="Film" EntitySet="Film" />
-            <End Role="TheLoai" EntitySet="TheLoai" />
+            <End Role="Film" EntitySet="Films" />
+            <End Role="TheLoai" EntitySet="TheLoais" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -736,8 +758,8 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="AppXemPhimModelStoreContainer" CdmEntityContainer="AppXemPhimEntities">
-          <EntitySetMapping Name="Customer">
+        <EntityContainerMapping StorageEntityContainer="AppXemPhimModelStoreContainer" CdmEntityContainer="AppXemPhimEntities1">
+          <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="AppXemPhimModel.Customer">
               <MappingFragment StoreEntitySet="Customer">
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -754,7 +776,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Film">
+          <EntitySetMapping Name="Films">
             <EntityTypeMapping TypeName="AppXemPhimModel.Film">
               <MappingFragment StoreEntitySet="Film">
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -775,7 +797,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Ghe">
+          <EntitySetMapping Name="Ghes">
             <EntityTypeMapping TypeName="AppXemPhimModel.Ghe">
               <MappingFragment StoreEntitySet="Ghe">
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -784,7 +806,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="LoaiThanhVien">
+          <EntitySetMapping Name="LoaiThanhViens">
             <EntityTypeMapping TypeName="AppXemPhimModel.LoaiThanhVien">
               <MappingFragment StoreEntitySet="LoaiThanhVien">
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -794,7 +816,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="LoaiVe">
+          <EntitySetMapping Name="LoaiVes">
             <EntityTypeMapping TypeName="AppXemPhimModel.LoaiVe">
               <MappingFragment StoreEntitySet="LoaiVe">
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -803,7 +825,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="NhaCungCap">
+          <EntitySetMapping Name="NhaCungCaps">
             <EntityTypeMapping TypeName="AppXemPhimModel.NhaCungCap">
               <MappingFragment StoreEntitySet="NhaCungCap">
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -813,7 +835,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="NhanVien">
+          <EntitySetMapping Name="NhanViens">
             <EntityTypeMapping TypeName="AppXemPhimModel.NhanVien">
               <MappingFragment StoreEntitySet="NhanVien">
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -828,7 +850,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Phong">
+          <EntitySetMapping Name="Phongs">
             <EntityTypeMapping TypeName="AppXemPhimModel.Phong">
               <MappingFragment StoreEntitySet="Phong">
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -836,7 +858,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="SuatChieu">
+          <EntitySetMapping Name="SuatChieux">
             <EntityTypeMapping TypeName="AppXemPhimModel.SuatChieu">
               <MappingFragment StoreEntitySet="SuatChieu">
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -848,7 +870,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="SuKien">
+          <EntitySetMapping Name="SuKiens">
             <EntityTypeMapping TypeName="AppXemPhimModel.SuKien">
               <MappingFragment StoreEntitySet="SuKien">
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -860,7 +882,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TheLoai">
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="AppXemPhimModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TheLoais">
             <EntityTypeMapping TypeName="AppXemPhimModel.TheLoai">
               <MappingFragment StoreEntitySet="TheLoai">
                 <ScalarProperty Name="id" ColumnName="id" />
@@ -868,7 +901,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Ve">
+          <EntitySetMapping Name="Ves">
             <EntityTypeMapping TypeName="AppXemPhimModel.Ve">
               <MappingFragment StoreEntitySet="Ve">
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -905,7 +938,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />

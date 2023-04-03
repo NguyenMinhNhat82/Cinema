@@ -1,0 +1,114 @@
+﻿@model WebRapPhim.Models.Customer
+
+@{
+    ViewBag.Title = "DeleteClientAccount";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .btl-left {
+        font-size: 18px;
+        margin-bottom: 20px;
+        margin-left: 2%;
+    }
+
+        .btl-left a {
+            display: inline-block;
+            padding: 7px 10px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: ;
+            transition: background-color 0.3s ease;
+        }
+
+        .btl-left > a:hover {
+            color: black;
+            background-color: white;
+        }
+ 
+</style>
+<h2 style="text-align: center; margin-top: 2%;">Delete Client Account</h2>
+
+<h3 class="text-danger"   style="margin-left:2%">Bạn có chắc chắn muốn xoá tài khoản này?</h3>
+<div>
+    <hr />
+    <table class="table">
+        <tr>
+            <th>
+                <p>Số điện thoại</p>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                <p>Họ</p>
+            </th>
+            <th>
+                <p>Tên</p>
+            </th>
+            <th>
+                <p>Ngày sinh</p>
+            </th>
+            <th>
+                <p>Ngày đăng ký</p>
+            </th>
+            <th>
+                <p>Giới tính</p>
+            </th>
+            <th>
+                <p>Điểm thưởng</p>
+            </th>
+            <th>
+                <p>Loại thành viên</p>
+            </th>
+            <th>
+                <p>Xác nhận</p>
+            </th>
+            <th></th>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(model => model.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Ho)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Ten)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.NgaySinh)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.NgayDangKi)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.GioiTinh)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.DiemThuong)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.LoaiThanhVien)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Confirm)
+            </td>
+        </tr>
+    </table>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color btl-left">
+            <input type="submit" value="Delete" class="btn btn-danger " />
+            @Html.ActionLink("Back to List", "ClientAccount")
+        </div>
+    }
+</div>

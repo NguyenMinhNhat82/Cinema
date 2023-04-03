@@ -1,0 +1,223 @@
+﻿@model WebRapPhim.Models.Film
+@using WebRapPhim.Models;
+@using System.Data.SqlClient;
+@{
+    ViewBag.Title = "DetailPhim";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    int dem = 0;
+    SqlDataReader reader;
+    SqlDataReader reader1;
+    SqlDataReader reader2;
+    string strConnect = "Data Source=VANGNGUYEN;Initial Catalog=AppXemPhim;Integrated Security=True;MultipleActiveResultSets=True;Application Name=EntityFramework";
+    SqlConnection cnn = new SqlConnection(strConnect);
+    SqlCommand cmd = new SqlCommand();
+    cmd.CommandType = System.Data.CommandType.Text;
+    cmd.Connection = cnn;
+    if (cnn.State == System.Data.ConnectionState.Closed)
+    {
+        cnn.Open();
+    }
+    // Truy vấn Tên NHACUNGCAP
+    cmd.CommandText = "SELECT NhaCungCap.Ten AS NhaCungCapTen, Film.Ten AS FilmTen, NhaCungCap.ID AS NhaCungCapID, Film.ID AS FilmID " +
+                "FROM AppXemPhim.dbo.NhaCungCap " +
+                "JOIN AppXemPhim.dbo.Film ON AppXemPhim.dbo.NhaCungCap.ID = AppXemPhim.dbo.Film.nha_cung_cap";
+    cmd.Connection = cnn;
+    reader = cmd.ExecuteReader();
+    var table = new System.Data.DataTable();
+    table.Columns.Add("NhaCungCapTen");
+    table.Columns.Add("NhaCungCapID");
+    while (reader.Read())
+    {
+        table.Rows.Add(reader["NhaCungCapTen"], reader["NhaCungCapID"]);
+    }
+    reader.Close();
+    cnn.Close();
+    // Truy vấn TheLoai
+    cmd.CommandType = System.Data.CommandType.Text;
+    cmd.CommandText = "SELECT TheLoai.ten_the_loai AS TheLoaiTen " +
+                      "FROM AppXemPhim.dbo.TheLoai " +
+                      "INNER JOIN AppXemPhim.dbo.TheLoaiPhim_Phim " +
+                      "ON AppXemPhim.dbo.TheLoai.id = AppXemPhim.dbo.TheLoaiPhim_Phim.LoaiPhimID " +
+                      "WHERE AppXemPhim.dbo.TheLoaiPhim_Phim.PhimID = @PhimID";
+    cmd.Parameters.AddWithValue("@PhimID", Model.ID);
+    cmd.Connection = cnn;
+
+    if (cnn.State == System.Data.ConnectionState.Closed)
+    {
+        cnn.Open();
+    }
+
+    reader1 = cmd.ExecuteReader();
+    var table1 = new System.Data.DataTable();
+    table1.Columns.Add("TheLoaiTen");
+
+    while (reader1.Read())
+    {
+        table1.Rows.Add(reader1["TheLoaiTen"]);
+    }
+
+    reader1.Close();
+    cnn.Close();
+}
+<style>
+    .btl-left {
+        font-size: 18px;
+        margin-bottom: 20px;
+        margin-left: 2%;
+    }
+
+        .btl-left a {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .btl-left > a:hover {
+            color: black;
+            background-color: white;
+        }
+</style>
+<h2 style="text-align:center; margin-top:2%">Chi Tiết Phim</h2>
+<div class="btl-left">
+    @Html.ActionLink("Edit", "EditPhim", new { id = Model.ID })
+    @Html.ActionLink("Back to List", "Phim")
+</div>
+<div class="container">
+    <div class="row d-flex justify-content-center align-items-center">
+        <div class="col-lg-12 col-xl-11">
+            <div class="card text-black" style="border-radius: 25px;">
+                <div class="card-body p-md-5">
+                    <div class="row justify-content-center">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                <p>Tên phim</p>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.ten)
+                            </dd>
+
+                            <dt>
+                                <p>Thời lượng</p>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.thoi_luong)
+                            </dd>
+
+                            <dt>
+                                <p>Giới hạn tuổi</p>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.gioi_han_tuoi)
+                            </dd>
+
+                            <dt>
+                                <p>Ngày công chiếu</p>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.ngay_cong_chieu)
+                            </dd>
+
+                            <dt>
+                                <p>Ngôn ngữ</p>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.ngon_ngu)
+                            </dd>
+
+                            <dt>
+                                <p>Đạo diễn</p>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.dao_dien)
+                            </dd>
+
+                            <dt>
+                                <p>Diễn viên</p>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.dien_vien)
+                            </dd>
+
+                            <dt>
+                                <p>Quốc gia</p>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.quoc_gia)
+                            </dd>
+
+                            <dt>
+                                <p>Tóm tắt</p>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.tom_tat)
+                            </dd>
+
+                            <dt>
+                                <p>Trạng thái</p>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.trang_thai)
+                            </dd>
+
+                            <dt>
+                                <p>Loại phim</p>
+                            </dt>
+
+                            @foreach (System.Data.DataRow row in table1.Rows)
+                            {
+                                <dd>
+                                    <span>@row["TheLoaiTen"] </span>
+                                </dd>
+                            }
+
+                            <dt>
+                                <p>Nhà cung cấp</p>
+                            </dt>
+                            @foreach (System.Data.DataRow row in table.Rows)
+                            {
+                                if (Convert.ToInt32(row["NhaCungCapID"]) == Model.nha_cung_cap)
+                                {
+                                    <dd>
+                                        <p>@row["NhaCungCapTen"]</p>
+                                    </dd>
+                                }
+                            }
+                            <dt>
+                                <p>Link poster</p>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.poster_link)
+                            </dd>
+
+                            <dt>
+                                <p>Trailer</p>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.trailer)
+                            </dd>
+
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

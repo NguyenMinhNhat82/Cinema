@@ -4,7 +4,7 @@
 
 @{
     ViewBag.Title = "Home";
-    AppXemPhimEntities db = new AppXemPhimEntities();
+    AppXemPhimEntities1 db = new AppXemPhimEntities1();
     var ListSuatChieu = db.Film.ToList();
     List<Film> nowShowing = new List<Film>();
     foreach (Film i in ListSuatChieu) {

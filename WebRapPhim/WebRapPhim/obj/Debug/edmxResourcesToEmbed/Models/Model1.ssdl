@@ -113,6 +113,16 @@
     <Property Name="PhanTramGiam" Type="float" />
     <Property Name="linkposter" Type="nchar" MaxLength="100" />
   </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
   <EntityType Name="TheLoai">
     <Key>
       <PropertyRef Name="id" />
@@ -309,6 +319,7 @@
     <EntitySet Name="Phong" EntityType="Self.Phong" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SuatChieu" EntityType="Self.SuatChieu" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SuKien" EntityType="Self.SuKien" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TheLoai" EntityType="Self.TheLoai" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TheLoaiPhim_Phim" EntityType="Self.TheLoaiPhim_Phim" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Ve" EntityType="Self.Ve" Schema="dbo" store:Type="Tables" />

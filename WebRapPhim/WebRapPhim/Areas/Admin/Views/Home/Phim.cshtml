@@ -1,0 +1,97 @@
+﻿@model IEnumerable<WebRapPhim.Models.Film>
+
+@{
+    ViewBag.Title = "Phim";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .btl-left {
+        font-size: 18px;
+        margin-top: 20px;
+        margin-left: 85%;
+    }
+
+        .btl-left a {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #292424;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .btl-left > a:hover {
+            color: black;
+            background-color: white;
+        }
+</style>
+<div class="btl-left">
+    <a href="/Admin/Home/CreatePhim">
+        + Create New
+    </a>
+</div>
+<h2 style="text-align:center;">Phim</h2>
+<table class="table">
+    <tr>
+        <th>
+            <p>Tên</p>
+        </th>
+        <th>
+            <p>Thời lượng</p>
+        </th>
+        <th>
+            <p>Giới hạn tuổi</p>
+        </th>
+        <th>
+            <p>Ngôn ngữ</p>
+        </th>
+        <th>
+            <p>Đạo diễn</p>
+        </th>
+        <th>
+            <p>Quốc gia</p>
+        </th>
+        <th>
+            <p>Trạng thái</p>
+        </th>
+        <th></th>
+    </tr>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ten)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.thoi_luong)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.gioi_han_tuoi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ngon_ngu)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.dao_dien)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.quoc_gia)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.trang_thai)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "EditPhim", new { id = item.ID }, new { @class = "btn btn-primary", style = "font-size: 15px; font-weight: bold; padding: 5px 7px; border-radius: 5px; color: #fff; background-color: #007bff; border: none;" })
+                @Html.ActionLink("Details", "DetailPhim", new { id = item.ID }, new { @class = "btn btn-warning", style = "font-size: 15px; font-weight: bold; padding: 5px 7px; border-radius: 5px; color: #fff;  border: none;" })
+                @Html.ActionLink("Delete", "DeletePhim", new { id = item.ID }, new { @class = "btn btn-danger", style = "font-size: 15px; font-weight: bold; padding: 5px 7px; border-radius: 5px; color: #fff; border: none;" })
+            </td>
+        </tr>
+    }
+
+</table>

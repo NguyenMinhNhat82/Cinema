@@ -1,0 +1,59 @@
+﻿@model IEnumerable<WebRapPhim.Models.TheLoai>
+
+@{
+    ViewBag.Title = "TheLoai";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .btl-left {
+        font-size: 18px;
+        margin-top: 20px;
+        margin-left: 85%;
+    }
+
+        .btl-left a {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #292424;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .btl-left > a:hover {
+            color: black;
+            background-color: white;
+        }
+</style>
+<div class="btl-left">
+    <a href="/Admin/Home/CreateTheLoai">
+        + Create New
+    </a>
+</div>
+<h2 style="text-align:center;">Thể Loại</h2>
+<table class="table">
+    <tr>
+        <th>
+            <p>Tên Thể Loại </p>
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ten_the_loai)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "EditTheLoai", new { id = item.id }, new { @class = "btn btn-primary", style = "font-size: 15px; font-weight: bold; padding: 5px 7px; border-radius: 5px; color: #fff; background-color: #007bff; border: none;" })
+                @Html.ActionLink("Delete", "DeleteTheLoai", new { id = item.id }, new { @class = "btn btn-danger", style = "font-size: 15px; font-weight: bold; padding: 5px 7px; border-radius: 5px; color: #fff; border: none;" })
+            </td>
+        </tr>
+    }
+
+</table>
