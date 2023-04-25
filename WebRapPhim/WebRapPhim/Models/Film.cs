@@ -17,8 +17,8 @@ namespace WebRapPhim.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Film()
         {
-            this.SuatChieu = new HashSet<SuatChieu>();
-            this.TheLoai = new HashSet<TheLoai>();
+            this.SuatChieux = new HashSet<SuatChieu>();
+            this.TheLoai_Phim = new HashSet<TheLoai_Phim>();
         }
     
         public int ID { get; set; }
@@ -39,8 +39,8 @@ namespace WebRapPhim.Models
     
         public virtual NhaCungCap NhaCungCap { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SuatChieu> SuatChieu { get; set; }
+        public virtual ICollection<SuatChieu> SuatChieux { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TheLoai> TheLoai { get; set; }
+        public virtual ICollection<TheLoai_Phim> TheLoai_Phim { get; set; }
     }
 }

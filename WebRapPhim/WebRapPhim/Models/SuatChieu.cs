@@ -17,7 +17,7 @@ namespace WebRapPhim.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public SuatChieu()
         {
-            this.Ve = new HashSet<Ve>();
+            this.Ves = new HashSet<Ve>();
         }
     
         public int ID { get; set; }
@@ -30,6 +30,6 @@ namespace WebRapPhim.Models
         public virtual Film Film { get; set; }
         public virtual Phong Phong { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Ve> Ve { get; set; }
+        public virtual ICollection<Ve> Ves { get; set; }
     }
 }

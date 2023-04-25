@@ -124,22 +124,20 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="sysdiagrams">
-      <EntityTypeMapping TypeName="AppXemPhimModel.sysdiagram">
-        <MappingFragment StoreEntitySet="sysdiagrams">
-          <ScalarProperty Name="name" ColumnName="name" />
-          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-          <ScalarProperty Name="version" ColumnName="version" />
-          <ScalarProperty Name="definition" ColumnName="definition" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="TheLoais">
       <EntityTypeMapping TypeName="AppXemPhimModel.TheLoai">
         <MappingFragment StoreEntitySet="TheLoai">
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="ten_the_loai" ColumnName="ten_the_loai" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TheLoai_Phim">
+      <EntityTypeMapping TypeName="AppXemPhimModel.TheLoai_Phim">
+        <MappingFragment StoreEntitySet="TheLoai_Phim">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="PhimID" ColumnName="PhimID" />
+          <ScalarProperty Name="LoaiPhimID" ColumnName="LoaiPhimID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -151,6 +149,9 @@
           <ScalarProperty Name="Ghe" ColumnName="Ghe" />
           <ScalarProperty Name="NVID" ColumnName="NVID" />
           <ScalarProperty Name="CusId" ColumnName="CusId" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="sdt" ColumnName="sdt" />
+          <ScalarProperty Name="email" ColumnName="email" />
           <ScalarProperty Name="Gia" ColumnName="Gia" />
           <ScalarProperty Name="IDGiamGia" ColumnName="IDGiamGia" />
           <ScalarProperty Name="SuatChieuID" ColumnName="SuatChieuID" />
@@ -158,13 +159,5 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <AssociationSetMapping Name="TheLoaiPhim_Phim" TypeName="AppXemPhimModel.TheLoaiPhim_Phim" StoreEntitySet="TheLoaiPhim_Phim">
-      <EndProperty Name="Film">
-        <ScalarProperty Name="ID" ColumnName="PhimID" />
-      </EndProperty>
-      <EndProperty Name="TheLoai">
-        <ScalarProperty Name="id" ColumnName="LoaiPhimID" />
-      </EndProperty>
-    </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping>

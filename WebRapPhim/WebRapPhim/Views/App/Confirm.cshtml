@@ -1,0 +1,196 @@
+﻿@model WebRapPhim.Models.Cart
+@using WebRapPhim.Models;
+@using WebRapPhim.Service
+@{
+    AppXemPhimEntities1 db = new AppXemPhimEntities1();
+    ViewBag.Title = "Confirm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Cart cart = Session["Cart"] as Cart;
+
+    int iDPhim = Model.Items.ToList()[0].Phim.ID;
+    int iDSuatChieu = Model.Items.ToList()[0].SuatChieu.ID;
+    Film f = db.Film.First(x => x.ID == iDPhim);
+    SuatChieu suatChieu = db.SuatChieu.First(x => x.ID == iDSuatChieu);
+    int iduser, day, month;
+    bool isbirthday = false;
+    Customer customer;
+    if (Session["UserID"] != null)
+    {
+        iduser = int.Parse(Session["UserID"].ToString());
+        customer = db.Customer.First(x => x.ID == iduser);
+        day = customer.NgaySinh.Day;
+        month = customer.NgaySinh.Month;
+        if (DateTime.Now.Day == day && DateTime.Now.Month == month)
+        {
+            isbirthday = true;
+        }
+    }
+    bool isSk = false;
+    List<SuKien> sk = db.SuKien.Where(x => x.NgayKetThuc >= DateTime.Now && x.NgayApDung <= DateTime.Now).ToList();
+    if (sk.Count != 0)
+    {
+        isSk = true;
+    }
+    double percentDiscount = 0;
+    if (isbirthday)
+    {
+        percentDiscount += 10;
+
+    }
+    if (isSk)
+    {
+        percentDiscount += double.Parse(sk.First().PhanTramGiam.ToString());
+    }
+
+}
+
+<style>
+    .title {
+        width: 120px;
+    }
+</style>
+<script>
+   
+    var tienDiemthuong = 0;
+    var percentDiscount = 0;
+     @if (isbirthday)
+        {
+            @:percentDiscount += 10
+
+            }
+        @if (isSk) {
+            @:percentDiscount += @sk.First().PhanTramGiam
+
+        }
+    function point() {
+        var point = document.getElementById("diemthuong").value;
+        tienDiemthuong = point * 1000;
+        document.getElementById("diemthuongsudung").value = point;
+        document.getElementById("price").value = @cart.discount(percentDiscount) - parseFloat(point) * 1000;
+        document.getElementById("showprice").innerText = @cart.discount(percentDiscount) - parseFloat(point) * 1000;
+        document.getElementById("discount").innerText = point*1000 +@(cart.getTongGia()- cart.discount(percentDiscount))
+
+    }
+
+
+
+
+    function showpan() {
+        var newLine = "\r"
+        var msg = ""
+        @if (isbirthday)
+        {
+            @:msg += "-Sinh nhật: 10%"
+            @:msg += newLine;
+            }
+        @if (isSk) {
+            @:msg += "-Sự kiện: "+ @sk.First().PhanTramGiam +"%";
+            @:msg += newLine;
+        }
+
+        msg += "-Điểm thưởng: "+tienDiemthuong +"VNĐ";
+        msg += newLine;
+        alert(msg);
+    }
+
+
+
+</script>
+
+<section id="menu" class="menu" style="margin:100px; background-color:darkgrey">
+    <div style="padding-left:60px">
+        <h1>GIỎ HÀNG CỦA BẠN</h1>
+        <hr />
+        <div class="d-flex gap-5">
+            <h5 class="title text-success">Phim</h5>
+            <h5>@f.ten</h5>
+        </div>
+
+        <div class="d-flex gap-5">
+            <h5 class="title text-success">Ngày</h5>
+            <h5>@suatChieu.GioBatDau.Value.Day/@suatChieu.GioBatDau.Value.Month/@suatChieu.GioBatDau.Value.Year </h5>
+        </div>
+        <div class="d-flex gap-5">
+            <h5 class="title text-success">Suất</h5>
+            <h5>@suatChieu.GioBatDau.Value.TimeOfDay - Sceen @suatChieu.PhongID</h5>
+        </div>
+
+        <div class="d-flex gap-5">
+            <h5 class="title text-success">Ghế</h5>
+            <h5>@cart.getListStringCartOfGhe()</h5>
+        </div>
+
+        <div class="d-flex gap-5">
+            <h5 class="title text-success">Thành tiền</h5>
+            <h5 id="showprice">@cart.discount(percentDiscount) </h5>VNĐ (Đã bao gồm giảm giá)
+        </div>
+        <div class="d-flex gap-5">
+
+            <h5 class="text-danger">Quý khách vui lòng kiểm tra kỹ thông tin trước khi thanh toán</h5>
+        </div>
+
+        <div class="d-flex gap-5">
+            <h5 class="text-success" style="width:100px">Mục</h5>
+            <h5 class="text-success" style="width:100px">Giá</h5>
+            <h5 class="text-success" style="width:100px">Số lượng</h5>
+            <h5 class="text-success" style="width:120px">Tổng cộng</h5>
+
+        </div>
+        @for (int i = 0; i < cart.getListLoaiVe().Count(); i++)
+        {
+            <div class="d-flex gap-5">
+                <h5 style="width:100px">@cart.getListLoaiVe()[i].Ten</h5>
+                <h5 style="width:100px">@double.Parse((suatChieu.Gia + suatChieu.Gia * cart.getListLoaiVe()[i].PhanTramCongThem / 100).ToString())</h5>
+                <h5 style="width:100px">@cart.getSoLuongOfLoaiVe(cart.getListLoaiVe()[i])</h5>
+                <h5 style="width:120px">@cart.getGiaOfLoaiVe(cart.getListLoaiVe()[i])</h5>
+
+            </div>
+        }
+        <br /><br /><br />
+        <div class="d-flex gapạ">
+            <h5 class="text-success" style="width:120px">Giảm giá</h5>
+            <div class="d-flex gap-5">
+                <div>
+                    <h5 class="text-success" id="discount" style="width:120px">@(cart.getTongGia()- cart.discount(percentDiscount))</h5>
+                </div>
+                <div>VNĐ</div>
+                <button onclick="showpan()" type="button" id="myBtn" class="btn btn-warning">?</button>
+            </div>
+        </div>
+
+        @{ if (Session["UserID"] == null)
+            {
+                <span>Đăng nhập để nhận thêm ưu đãi từ LetHimCook</span><a href="~/App/Login">Đăng nhập</a>
+            }
+            else
+            {
+                int id = int.Parse(Session["UserID"].ToString());
+                int diemthuong = int.Parse(Service.GetCurrentCus(id).DiemThuong.ToString());
+                <label style="width:350px" for="diemthuong">Hãy chọn số điểm thưởng để giám giá:</label>
+                <input type="number" id="diemthuong" name="diemthuong" max="@diemthuong" min="0" onchange="point()">
+                <h5>Bạn hiện có @diemthuong điểm thưởng</h5>
+            }
+        }
+
+
+    </div>
+</section>
+<section style="margin-left:100px;">
+    <h2>Điền thông tin chi tiết</h2>
+    <br /><br />
+          <form action="~/App/Pay" method="post">
+              <label style="width:150px" for="name">Tên khách hàng:</label>
+              <input type="text" id="name" name="name" required><br><br>
+              <label style="width:150px" for="email">Email:</label>
+              <input type="email" id="email" name="email" required><br><br>
+              <label style="width:150px" for="sdt">Số điện thoại:</label>
+              <input type="text" id="sdt" name="sdt" required><br><br>
+              <input type="text" id="price" name="tongtien" value="@cart.getTongGia()" hidden><br><br>
+              <input type="text" id="diemthuongsudung" name="diemthuongsudung" value="0" hidden><br><br>
+              <div class="d-flex gap-5">
+                  <button type="submit" class="btn btn-success">Thanh toán</button>
+                  <a href="~/App/Home"><button type="button" class="btn btn-danger">Hủy vé</button></a>
+              </div>
+          </form>
+
+</section>

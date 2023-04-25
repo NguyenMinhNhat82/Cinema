@@ -40,7 +40,7 @@
     <Key>
       <PropertyRef Name="ID" />
     </Key>
-    <Property Name="ID" Type="int" Nullable="false" />
+    <Property Name="ID" Type="nchar" MaxLength="50" Nullable="false" />
     <Property Name="TrangThai" Type="bit" />
     <Property Name="PhongID" Type="int" />
   </EntityType>
@@ -113,16 +113,6 @@
     <Property Name="PhanTramGiam" Type="float" />
     <Property Name="linkposter" Type="nchar" MaxLength="100" />
   </EntityType>
-  <EntityType Name="sysdiagrams">
-    <Key>
-      <PropertyRef Name="diagram_id" />
-    </Key>
-    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-    <Property Name="principal_id" Type="int" Nullable="false" />
-    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="version" Type="int" />
-    <Property Name="definition" Type="varbinary(max)" />
-  </EntityType>
   <EntityType Name="TheLoai">
     <Key>
       <PropertyRef Name="id" />
@@ -130,11 +120,11 @@
     <Property Name="id" Type="int" Nullable="false" />
     <Property Name="ten_the_loai" Type="nchar" MaxLength="40" />
   </EntityType>
-  <EntityType Name="TheLoaiPhim_Phim">
+  <EntityType Name="TheLoai_Phim">
     <Key>
-      <PropertyRef Name="PhimID" />
-      <PropertyRef Name="LoaiPhimID" />
+      <PropertyRef Name="ID" />
     </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="PhimID" Type="int" Nullable="false" />
     <Property Name="LoaiPhimID" Type="int" Nullable="false" />
   </EntityType>
@@ -144,9 +134,12 @@
     </Key>
     <Property Name="ID" Type="int" Nullable="false" />
     <Property Name="NgayBan" Type="datetime2" Precision="7" />
-    <Property Name="Ghe" Type="int" />
+    <Property Name="Ghe" Type="nchar" MaxLength="50" />
     <Property Name="NVID" Type="int" />
     <Property Name="CusId" Type="int" />
+    <Property Name="name" Type="nchar" MaxLength="60" />
+    <Property Name="sdt" Type="nchar" MaxLength="20" />
+    <Property Name="email" Type="nchar" MaxLength="50" />
     <Property Name="Gia" Type="float" />
     <Property Name="IDGiamGia" Type="int" />
     <Property Name="SuatChieuID" Type="int" />
@@ -212,26 +205,26 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_TheLoaiPhim_Phim_Film">
+  <Association Name="FK_TheLoai_Phim_Film">
     <End Role="Film" Type="Self.Film" Multiplicity="1" />
-    <End Role="TheLoaiPhim_Phim" Type="Self.TheLoaiPhim_Phim" Multiplicity="*" />
+    <End Role="TheLoai_Phim" Type="Self.TheLoai_Phim" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Film">
         <PropertyRef Name="ID" />
       </Principal>
-      <Dependent Role="TheLoaiPhim_Phim">
+      <Dependent Role="TheLoai_Phim">
         <PropertyRef Name="PhimID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_TheLoaiPhim_Phim_TheLoai">
+  <Association Name="FK_TheLoai_Phim_TheLoai">
     <End Role="TheLoai" Type="Self.TheLoai" Multiplicity="1" />
-    <End Role="TheLoaiPhim_Phim" Type="Self.TheLoaiPhim_Phim" Multiplicity="*" />
+    <End Role="TheLoai_Phim" Type="Self.TheLoai_Phim" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="TheLoai">
         <PropertyRef Name="id" />
       </Principal>
-      <Dependent Role="TheLoaiPhim_Phim">
+      <Dependent Role="TheLoai_Phim">
         <PropertyRef Name="LoaiPhimID" />
       </Dependent>
     </ReferentialConstraint>
@@ -304,7 +297,7 @@
         <PropertyRef Name="ID" />
       </Principal>
       <Dependent Role="Ve">
-        <PropertyRef Name="SuatChieuID" />
+        <PropertyRef Name="IDGiamGia" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -319,9 +312,8 @@
     <EntitySet Name="Phong" EntityType="Self.Phong" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SuatChieu" EntityType="Self.SuatChieu" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SuKien" EntityType="Self.SuKien" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TheLoai" EntityType="Self.TheLoai" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="TheLoaiPhim_Phim" EntityType="Self.TheLoaiPhim_Phim" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TheLoai_Phim" EntityType="Self.TheLoai_Phim" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Ve" EntityType="Self.Ve" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_Customer_LoaiThanhVien" Association="Self.FK_Customer_LoaiThanhVien">
       <End Role="LoaiThanhVien" EntitySet="LoaiThanhVien" />
@@ -343,13 +335,13 @@
       <End Role="Phong" EntitySet="Phong" />
       <End Role="SuatChieu" EntitySet="SuatChieu" />
     </AssociationSet>
-    <AssociationSet Name="FK_TheLoaiPhim_Phim_Film" Association="Self.FK_TheLoaiPhim_Phim_Film">
+    <AssociationSet Name="FK_TheLoai_Phim_Film" Association="Self.FK_TheLoai_Phim_Film">
       <End Role="Film" EntitySet="Film" />
-      <End Role="TheLoaiPhim_Phim" EntitySet="TheLoaiPhim_Phim" />
+      <End Role="TheLoai_Phim" EntitySet="TheLoai_Phim" />
     </AssociationSet>
-    <AssociationSet Name="FK_TheLoaiPhim_Phim_TheLoai" Association="Self.FK_TheLoaiPhim_Phim_TheLoai">
+    <AssociationSet Name="FK_TheLoai_Phim_TheLoai" Association="Self.FK_TheLoai_Phim_TheLoai">
       <End Role="TheLoai" EntitySet="TheLoai" />
-      <End Role="TheLoaiPhim_Phim" EntitySet="TheLoaiPhim_Phim" />
+      <End Role="TheLoai_Phim" EntitySet="TheLoai_Phim" />
     </AssociationSet>
     <AssociationSet Name="FK_Ve_Customer" Association="Self.FK_Ve_Customer">
       <End Role="Customer" EntitySet="Customer" />

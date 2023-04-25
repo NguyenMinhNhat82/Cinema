@@ -1,0 +1,85 @@
+﻿@using WebRapPhim.Service
+@using WebRapPhim.Models
+
+@{
+    AppXemPhimEntities1 db = new AppXemPhimEntities1();
+    ViewBag.Title = "CustomerDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int id = int.Parse(Session["UserId"].ToString());
+    Customer cus = db.Customer.First(x=>x.ID == id);
+    List<String> rank = new List<string> { "https://res.cloudinary.com/dexbjwfjg/image/upload/v1682316097/12_yenssn.png",
+        "https://res.cloudinary.com/dexbjwfjg/image/upload/v1682315952/silver_rank_icon_f3b0ar.png",
+        "https://res.cloudinary.com/dexbjwfjg/image/upload/v1682316026/Bronze-3-Valorant-Rank_ooy9mf.png" };
+}
+
+
+
+<section style="margin-top:70px">
+    <h2 class="text-center text-danger">Thành viên LetHimCook</h2>
+    <div class="container">
+        <div class="border p-3 main-section bg-white">
+            <div class="row m-0">
+                @{int idrank = int.Parse((cus.LoaiThanhVien - 1).ToString());
+                   string stringrank = db.LoaiThanhVien.Find(cus.LoaiThanhVien).Ten; }  
+                <div class="col-lg-4 left-side-product-box pb-3">
+                    <img src="@rank[idrank]" style="width:430px" class="border p-3">
+                    <br />
+                    <h3 class="text-center">Thành viên @stringrank</h3>
+                </div>
+                <div class="col-lg-8">
+                    <div class="right-side-pro-detail border p-3 m-0">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <h2>@cus.Ho @cus.Ten</h2>
+
+                            </div>
+                            <div class="col-lg-12 pt-2">
+                                <h5>Ngày Sinh</h5>
+                                <span>
+                                    @cus.NgaySinh.ToString("dd-MM-yyyy")
+                                </span>
+                                <hr class="m-0 pt-2 mt-2">
+                            </div>
+                            <div class="col-lg-12 pt-2">
+                                <h5>Số điện thoại</h5>
+                                <span>
+                                    @cus.Phone
+                                </span>
+                                <hr class="m-0 pt-2 mt-2">
+                            </div>
+                            <div class="col-lg-12 pt-2">
+                                <h5>Email</h5>
+                                <span>
+                                    @cus.Email
+                                </span>
+                                <hr class="m-0 pt-2 mt-2">
+                            </div>
+                            <div class="col-lg-12 pt-2">
+                                <h5>Ngày đăng kí</h5>
+                                <span>
+                                    @cus.NgayDangKi.ToString("dd-MM-yyyy")
+                                </span>
+                                <hr class="m-0 pt-2 mt-2">
+                            </div>
+                            <div class="col-lg-12 pt-2">
+                                <h5>Giới Tính</h5>
+                                <span>
+                                    @cus.getGioiTinh()
+                                </span>
+                                <hr class="m-0 pt-2 mt-2">
+                            </div>
+                            <div class="col-lg-12 pt-2">
+                                <h5>Số điểm thưởng</h5>
+                                <span>
+                                    @cus.DiemThuong
+                                </span>
+                                <hr class="m-0 pt-2 mt-2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

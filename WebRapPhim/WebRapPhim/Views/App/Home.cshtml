@@ -7,9 +7,27 @@
     AppXemPhimEntities1 db = new AppXemPhimEntities1();
     var ListSuatChieu = db.Film.ToList();
     List<Film> nowShowing = new List<Film>();
-    foreach (Film i in ListSuatChieu) {
-        if (Service.getDateSubtract(System.DateTime.Parse(i.ngay_cong_chieu.ToString()), DateTime.Now) < 10 && Service.getDateSubtract(DateTime.Now, System.DateTime.Parse(i.ngay_cong_chieu.ToString()))< 10) {
+    foreach (Film i in ListSuatChieu)
+    {
+
+        if (Service.getDateSubtract(System.DateTime.Parse(i.ngay_cong_chieu.ToString()), DateTime.Now) >= 0 && Service.getDateSubtract(System.DateTime.Parse(i.ngay_cong_chieu.ToString()), DateTime.Now) <= 10)
+        {
             nowShowing.Add(i);
+        }
+
+    }
+    List<Phong> phong = db.Phong.ToList();
+    List<NhanVien> nv = db.NhanVien.ToList();
+    List<Ve> ve = db.Ve.ToList();
+    List<Film> Upcoming = new List<Film>();
+    foreach (Film i in ListSuatChieu)
+    {
+        int a = Service.getDateSubtract(System.DateTime.Parse(i.ngay_cong_chieu.ToString()), DateTime.Now);
+
+
+        if (Service.getDateSubtract(DateTime.Now, System.DateTime.Parse(i.ngay_cong_chieu.ToString())) > 10 && Service.getDateSubtract(DateTime.Now, System.DateTime.Parse(i.ngay_cong_chieu.ToString())) <= 20)
+        {
+            Upcoming.Add(i);
         }
 
     }
@@ -18,20 +36,24 @@
 
 <section id="hero" class="hero d-flex align-items-center section-bg">
     <h2 style="margin-left:70px" data-aos="fade-up">PHIM ĐANG CHIẾU</h2>
-    
+
     <div class="container">
         <div class="slider-frame">
             <div class="slide-images">
+
                 @foreach (Film i in nowShowing)
                 {
-                <div class="img-container d-flex" style="gap:20px;">
-                    <img style="width:500px" src="@i.poster_link">
-                </div>
+                    <div class="img-container d-flex" style="gap:20px;">
+                        <img style="width:500px" src="@i.poster_link">
+                    </div>
                 }
             </div>
         </div>
     </div>
-</section><!-- End Hero Section -->
+</section>
+
+
+@*phim dang chieu*@
 
 <main id="main">
     <section id="menu" class="menu">
@@ -55,11 +77,7 @@
                         <h4>Phim sắp chiếu</h4>
                     </a><!-- End tab nav item -->
 
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#menu-lunch">
-                        <h4>Vé bán trước</h4>
-                    </a>
-                </li><!-- End tab nav item -->
+                </li>
 
 
             </ul>
@@ -72,187 +90,77 @@
 
                         <h3>Phim đang chiếu</h3>
                     </div>
-                    
+
                     <div class="row gy-5">
-                        @foreach (Film i in nowShowing)
-                        {
-                            <div class="col-lg-4 menu-item">
-                                <a href="@i.poster_link" class="glightbox"><img src="@i.poster_link" class="menu-img img-fluid" alt=""></a>
-                                <h4>@i.ten</h4>
-                                <p class="ingredients">
-                                    @i.dao_dien
-                                </p>
-                        <p>Ngày công chiếu</p>
-                                <p class="price">
-                                    @String.Format("{0:dd/MM/yyyy}", i.ngay_cong_chieu)
-                                </p>
-                            </div><!-- Menu Item -->
+                        @{ if (nowShowing.Count != 0)
+                            {
+                                foreach (Film i in nowShowing)
+                                {
+                                    <div class="col-lg-4 menu-item">
+                                        <a href="@i.poster_link" class="glightbox"><img src="@i.poster_link" class="menu-img img-fluid" alt=""></a>
+                                        <h4>@i.ten</h4>
+                                        <p class="ingredients">
+                                            @i.dao_dien
+                                        </p>
+                                        <p>Ngày công chiếu</p>
+                                        <p class="price">
+                                            @String.Format("{0:dd/MM/yyyy}", i.ngay_cong_chieu)
+                                        </p>
+                                        <a href="~/App/MovieDetail/@i.ID"><button type="button" class="btn btn-danger">Đặt vé ngay</button></a>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <h3 class="text-center">Rất tiếc! Không có phim nào</h3>
+                            }
+
+
                         }
-                        
 
                     </div>
-                </div><!-- End Starter Menu Content -->
+                </div>
 
                 <div class="tab-pane fade" id="menu-breakfast">
 
                     <div class="tab-header text-center">
-                        <p>Menu</p>
+
                         <h3>Phim sắp chiếu</h3>
                     </div>
 
                     <div class="row gy-5">
 
-                        <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-1.png" class="glightbox"><img src="assets/img/menu/menu-item-1.png" class="menu-img img-fluid" alt=""></a>
-                            <h4>Magnam Tiste</h4>
-                            <p class="ingredients">
-                                Lorem, deren, trataro, filede, nerada
-                            </p>
-                            <p class="price">
-                                $5.95
-                            </p>
-                        </div><!-- Menu Item -->
+                        @{
+                            if (Upcoming.Count != 0)
+                            {
+                                foreach (Film i in Upcoming)
+                                {
+                                    <div class="col-lg-4 menu-item">
+                                        <a href="@i.poster_link" class="glightbox"><img src="@i.poster_link" class="menu-img img-fluid" alt=""></a>
+                                        <h4>@i.ten</h4>
+                                        <p class="ingredients">
+                                            @i.dao_dien
+                                        </p>
+                                        <p>Ngày công chiếu</p>
+                                        <p class="price">
+                                            @String.Format("{0:dd/MM/yyyy}", i.ngay_cong_chieu)
+                                        </p>
+                                        <a href="~/App/MovieDetail/@i.ID"><button type="button" class="btn btn-danger">Đặt vé ngay</button>
+                                    </div><!-- Menu Item -->
+                                }
+                            }
+                            else
+                            {
+                                <h3 class="text-center">Rất tiếc! Không có phim nào</h3>
+                            }
+                        }
 
-                        <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-2.png" class="glightbox"><img src="assets/img/menu/menu-item-2.png" class="menu-img img-fluid" alt=""></a>
-                            <h4>Aut Luia</h4>
-                            <p class="ingredients">
-                                Lorem, deren, trataro, filede, nerada
-                            </p>
-                            <p class="price">
-                                $14.95
-                            </p>
-                        </div><!-- Menu Item -->
 
-                        <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-3.png" class="glightbox"><img src="assets/img/menu/menu-item-3.png" class="menu-img img-fluid" alt=""></a>
-                            <h4>Est Eligendi</h4>
-                            <p class="ingredients">
-                                Lorem, deren, trataro, filede, nerada
-                            </p>
-                            <p class="price">
-                                $8.95
-                            </p>
-                        </div><!-- Menu Item -->
-
-                        <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-4.png" class="glightbox"><img src="assets/img/menu/menu-item-4.png" class="menu-img img-fluid" alt=""></a>
-                            <h4>Eos Luibusdam</h4>
-                            <p class="ingredients">
-                                Lorem, deren, trataro, filede, nerada
-                            </p>
-                            <p class="price">
-                                $12.95
-                            </p>
-                        </div><!-- Menu Item -->
-
-                        <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-5.png" class="glightbox"><img src="assets/img/menu/menu-item-5.png" class="menu-img img-fluid" alt=""></a>
-                            <h4>Eos Luibusdam</h4>
-                            <p class="ingredients">
-                                Lorem, deren, trataro, filede, nerada
-                            </p>
-                            <p class="price">
-                                $12.95
-                            </p>
-                        </div><!-- Menu Item -->
-
-                        <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-6.png" class="glightbox"><img src="assets/img/menu/menu-item-6.png" class="menu-img img-fluid" alt=""></a>
-                            <h4>Laboriosam Direva</h4>
-                            <p class="ingredients">
-                                Lorem, deren, trataro, filede, nerada
-                            </p>
-                            <p class="price">
-                                $9.95
-                            </p>
-                        </div><!-- Menu Item -->
 
                     </div>
-                </div><!-- End Breakfast Menu Content -->
-
-                <div class="tab-pane fade" id="menu-lunch">
-
-                    <div class="tab-header text-center">
-                        <p>Menu</p>
-                        <h3>Vé bán trước</h3>
-                    </div>
-
-                    <div class="row gy-5">
-
-                        <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-1.png" class="glightbox"><img src="assets/img/menu/menu-item-1.png" class="menu-img img-fluid" alt=""></a>
-                            <h4>Magnam Tiste</h4>
-                            <p class="ingredients">
-                                Lorem, deren, trataro, filede, nerada
-                            </p>
-                            <p class="price">
-                                $5.95
-                            </p>
-                        </div><!-- Menu Item -->
-
-                        <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-2.png" class="glightbox"><img src="assets/img/menu/menu-item-2.png" class="menu-img img-fluid" alt=""></a>
-                            <h4>Aut Luia</h4>
-                            <p class="ingredients">
-                                Lorem, deren, trataro, filede, nerada
-                            </p>
-                            <p class="price">
-                                $14.95
-                            </p>
-                        </div><!-- Menu Item -->
-
-                        <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-3.png" class="glightbox"><img src="assets/img/menu/menu-item-3.png" class="menu-img img-fluid" alt=""></a>
-                            <h4>Est Eligendi</h4>
-                            <p class="ingredients">
-                                Lorem, deren, trataro, filede, nerada
-                            </p>
-                            <p class="price">
-                                $8.95
-                            </p>
-                        </div><!-- Menu Item -->
-
-                        <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-4.png" class="glightbox"><img src="assets/img/menu/menu-item-4.png" class="menu-img img-fluid" alt=""></a>
-                            <h4>Eos Luibusdam</h4>
-                            <p class="ingredients">
-                                Lorem, deren, trataro, filede, nerada
-                            </p>
-                            <p class="price">
-                                $12.95
-                            </p>
-                        </div><!-- Menu Item -->
-
-                        <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-5.png" class="glightbox"><img src="assets/img/menu/menu-item-5.png" class="menu-img img-fluid" alt=""></a>
-                            <h4>Eos Luibusdam</h4>
-                            <p class="ingredients">
-                                Lorem, deren, trataro, filede, nerada
-                            </p>
-                            <p class="price">
-                                $12.95
-                            </p>
-                        </div><!-- Menu Item -->
-
-                        <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-6.png" class="glightbox"><img src="assets/img/menu/menu-item-6.png" class="menu-img img-fluid" alt=""></a>
-                            <h4>Laboriosam Direva</h4>
-                            <p class="ingredients">
-                                Lorem, deren, trataro, filede, nerada
-                            </p>
-                            <p class="price">
-                                $9.95
-                            </p>
-                        </div><!-- Menu Item -->
-
-                    </div>
-                </div><!-- End Lunch Menu Content -->
-
-
+                </div>
 
             </div>
-
         </div>
     </section><!-- End Menu Section -->
     <section id="events" class="events">
@@ -267,11 +175,11 @@
                 <div class="swiper-wrapper">
                     @foreach (SuKien i in eventlist)
                     {
-                    <div class="swiper-slide event-item d-flex flex-column justify-content-end" style="background-image: url(@i.linkposter)">
-                        <h3>@i.Ten</h3>
-                        <div class="price align-self-start">Giảm @i.PhanTramGiam %</div> 
-                        
-                    </div><!-- End Event item -->
+                        <div class="swiper-slide event-item d-flex flex-column justify-content-end" style="background-image: url(@i.linkposter)">
+                            <h3>@i.Ten</h3>
+                            <div class="price align-self-start">Giảm @i.PhanTramGiam %</div>
+
+                        </div><!-- End Event item -->
                     }
                 </div>
                 <div class="swiper-pagination"></div>
@@ -293,18 +201,17 @@
                 <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
                     <div class="chef-member">
                         <div class="member-img">
-                            <img src="assets/img/chefs/chefs-1.jpg" class="img-fluid" alt="">
+                            <img src="https://res.cloudinary.com/dexbjwfjg/image/upload/v1682305327/R.e7d69c33d5bf76bfd8f919aab5653e74_y1w3aj.jpg" class="img-fluid" alt="">
                             <div class="social">
-                                <a href=""><i class="bi bi-twitter"></i></a>
-                                <a href=""><i class="bi bi-facebook"></i></a>
-                                <a href=""><i class="bi bi-instagram"></i></a>
-                                <a href=""><i class="bi bi-linkedin"></i></a>
+
+                                <a href="https://www.facebook.com/profile.php?id=100010880564719"><i class="bi bi-facebook"></i></a>
+
                             </div>
                         </div>
                         <div class="member-info">
-                            <h4>Walter White</h4>
-                            <span>Master Chef</span>
-                            <p>Velit aut quia fugit et et. Dolorum ea voluptate vel tempore tenetur ipsa quae aut. Ipsum exercitationem iure minima enim corporis et voluptate.</p>
+                            <h4>Bao rạp</h4>
+
+                            <p>Tận hưởng sự riêng tư của bạn</p>
                         </div>
                     </div>
                 </div><!-- End Chefs Member -->
@@ -312,40 +219,19 @@
                 <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
                     <div class="chef-member">
                         <div class="member-img">
-                            <img src="assets/img/chefs/chefs-2.jpg" class="img-fluid" alt="">
+                            <img src="https://res.cloudinary.com/dexbjwfjg/image/upload/v1682305402/R_ewftwe.png" class="img-fluid" alt="">
                             <div class="social">
-                                <a href=""><i class="bi bi-twitter"></i></a>
-                                <a href=""><i class="bi bi-facebook"></i></a>
-                                <a href=""><i class="bi bi-instagram"></i></a>
-                                <a href=""><i class="bi bi-linkedin"></i></a>
+                                <a href="https://www.facebook.com/profile.php?id=100010880564719"><i class="bi bi-facebook"></i></a>
                             </div>
                         </div>
                         <div class="member-info">
-                            <h4>Sarah Jhonson</h4>
-                            <span>Patissier</span>
-                            <p>Quo esse repellendus quia id. Est eum et accusantium pariatur fugit nihil minima suscipit corporis. Voluptate sed quas reiciendis animi neque sapiente.</p>
+                            <h4>Tổ chức sự kiện</h4>
+                            <p>Chúng tôi cung cấp dịch vụ tổ chức sự kiện cho riêng bạn</p>
                         </div>
                     </div>
                 </div><!-- End Chefs Member -->
 
-                <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="300">
-                    <div class="chef-member">
-                        <div class="member-img">
-                            <img src="assets/img/chefs/chefs-3.jpg" class="img-fluid" alt="">
-                            <div class="social">
-                                <a href=""><i class="bi bi-twitter"></i></a>
-                                <a href=""><i class="bi bi-facebook"></i></a>
-                                <a href=""><i class="bi bi-instagram"></i></a>
-                                <a href=""><i class="bi bi-linkedin"></i></a>
-                            </div>
-                        </div>
-                        <div class="member-info">
-                            <h4>William Anderson</h4>
-                            <span>Cook</span>
-                            <p>Vero omnis enim consequatur. Voluptas consectetur unde qui molestiae deserunt. Voluptates enim aut architecto porro aspernatur molestiae modi.</p>
-                        </div>
-                    </div>
-                </div><!-- End Chefs Member -->
+
 
             </div>
 
@@ -361,92 +247,40 @@
             </div>
 
             <div class="row gy-4">
-                <div class="col-lg-7 position-relative about-img" style="background-image: url(assets/img/about.jpg) ;" data-aos="fade-up" data-aos-delay="150">
+                <div class="col-lg-7 position-relative about-img" style="background-image: url(https://www.cgv.vn/media/wysiwyg/jobs/cgv-2.png) ; height:280px" data-aos="fade-up" data-aos-delay="150">
                     <div class="call-us position-absolute">
-                        <h4>Book a Table</h4>
-                        <p>+1 5589 55488 55</p>
+                        <a href="#"><h4>Book a Ticket</h4></a>
+
                     </div>
                 </div>
                 <div class="col-lg-5 d-flex align-items-end" data-aos="fade-up" data-aos-delay="300">
                     <div class="content ps-0 ps-lg-5">
                         <p class="fst-italic">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                            magna aliqua.
+                            LetHimCook is a unit within Group 12, one of VietNamese’s largest conglomerates, doing business in 21 countries around the world. LetHimCook is one of top 5 cinema system and film distributor in the world, leading film distributor and cinema system in Vietnam.
+                        </p>
+                        <p class="fst-normal">
+                            If you wish to join our LetHimCook family and become one of our LetHimCookians, please refer some following ways:
                         </p>
                         <ul>
-                            <li><i class="bi bi-check2-all"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
-                            <li><i class="bi bi-check2-all"></i> Duis aute irure dolor in reprehenderit in voluptate velit.</li>
-                            <li><i class="bi bi-check2-all"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate trideta storacalaperda mastiro dolore eu fugiat nulla pariatur.</li>
+                            <li><i class="bi bi-check2-all"></i> Hanoi and Northern Area.</li>
+                            <li><i class="bi bi-check2-all"></i> Central Area.</li>
+                            <li><i class="bi bi-check2-all"></i> Ho Chi Minh City and Eastern Area.</li>
+                            <li><i class="bi bi-check2-all"></i> Mekong Area.</li>
                         </ul>
                         <p>
-                            Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-                            velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident
+                            LetHimCook always offers employment opportunities for young, dynamic talents, who’s in love with film industry.
                         </p>
 
-                        <div class="position-relative mt-4">
-                            <img src="assets/img/about-2.jpg" class="img-fluid" alt="">
-                            <a href="https://www.youtube.com/watch?v=LXb3EKWsInQ" class="glightbox play-btn"></a>
-                        </div>
+                        @*<div class="position-relative mt-4">
+                                <img src="assets/img/about-2.jpg" class="img-fluid" alt="">
+                                <a href="https://www.youtube.com/watch?v=LXb3EKWsInQ" class="glightbox play-btn"></a>
+                            </div>*@
                     </div>
                 </div>
             </div>
 
         </div>
     </section><!-- End About Section -->
-    <!-- ======= Why Us Section ======= -->
-    <section id="why-us" class="why-us section-bg">
-        <div class="container" data-aos="fade-up">
-
-            <div class="row gy-4">
-
-                <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="why-box">
-                        <h3>Why Choose Yummy?</h3>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit
-                            Asperiores dolores sed et. Tenetur quia eos. Autem tempore quibusdam vel necessitatibus optio ad corporis.
-                        </p>
-                        <div class="text-center">
-                            <a href="#" class="more-btn">Learn More <i class="bx bx-chevron-right"></i></a>
-                        </div>
-                    </div>
-                </div><!-- End Why Box -->
-
-                <div class="col-lg-8 d-flex align-items-center">
-                    <div class="row gy-4">
-
-                        <div class="col-xl-4" data-aos="fade-up" data-aos-delay="200">
-                            <div class="icon-box d-flex flex-column justify-content-center align-items-center">
-                                <i class="bi bi-clipboard-data"></i>
-                                <h4>Corporis voluptates officia eiusmod</h4>
-                                <p>Consequuntur sunt aut quasi enim aliquam quae harum pariatur laboris nisi ut aliquip</p>
-                            </div>
-                        </div><!-- End Icon Box -->
-
-                        <div class="col-xl-4" data-aos="fade-up" data-aos-delay="300">
-                            <div class="icon-box d-flex flex-column justify-content-center align-items-center">
-                                <i class="bi bi-gem"></i>
-                                <h4>Ullamco laboris ladore pan</h4>
-                                <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt</p>
-                            </div>
-                        </div><!-- End Icon Box -->
-
-                        <div class="col-xl-4" data-aos="fade-up" data-aos-delay="400">
-                            <div class="icon-box d-flex flex-column justify-content-center align-items-center">
-                                <i class="bi bi-inboxes"></i>
-                                <h4>Labore consequatur incidid dolore</h4>
-                                <p>Aut suscipit aut cum nemo deleniti aut omnis. Doloribus ut maiores omnis facere</p>
-                            </div>
-                        </div><!-- End Icon Box -->
-
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-    </section><!-- End Why Us Section -->
-    <!-- ======= Stats Counter Section ======= -->
     <section id="stats-counter" class="stats-counter">
         <div class="container" data-aos="zoom-out">
 
@@ -454,29 +288,24 @@
 
                 <div class="col-lg-3 col-md-6">
                     <div class="stats-item text-center w-100 h-100">
-                        <span data-purecounter-start="0" data-purecounter-end="232" data-purecounter-duration="1" class="purecounter"></span>
-                        <p>Clients</p>
+                        <span data-purecounter-start="0" data-purecounter-end="@phong.Count()" data-purecounter-duration="1" class="purecounter"></span>
+                        <p>Phòng</p>
                     </div>
                 </div><!-- End Stats Item -->
 
                 <div class="col-lg-3 col-md-6">
                     <div class="stats-item text-center w-100 h-100">
-                        <span data-purecounter-start="0" data-purecounter-end="521" data-purecounter-duration="1" class="purecounter"></span>
-                        <p>Projects</p>
+                        <span data-purecounter-start="0" data-purecounter-end="@ve.Count()" data-purecounter-duration="1" class="purecounter"></span>
+                        <p>Vé đã bán</p>
                     </div>
                 </div><!-- End Stats Item -->
 
-                <div class="col-lg-3 col-md-6">
-                    <div class="stats-item text-center w-100 h-100">
-                        <span data-purecounter-start="0" data-purecounter-end="1453" data-purecounter-duration="1" class="purecounter"></span>
-                        <p>Hours Of Support</p>
-                    </div>
-                </div><!-- End Stats Item -->
+
 
                 <div class="col-lg-3 col-md-6">
                     <div class="stats-item text-center w-100 h-100">
-                        <span data-purecounter-start="0" data-purecounter-end="32" data-purecounter-duration="1" class="purecounter"></span>
-                        <p>Workers</p>
+                        <span data-purecounter-start="0" data-purecounter-end="@nv.Count()" data-purecounter-duration="1" class="purecounter"></span>
+                        <p>Nhân viên</p>
                     </div>
                 </div><!-- End Stats Item -->
 

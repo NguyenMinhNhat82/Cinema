@@ -45,7 +45,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="nchar" MaxLength="50" Nullable="false" />
           <Property Name="TrangThai" Type="bit" />
           <Property Name="PhongID" Type="int" />
         </EntityType>
@@ -118,16 +118,6 @@
           <Property Name="PhanTramGiam" Type="float" />
           <Property Name="linkposter" Type="nchar" MaxLength="100" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
-        </EntityType>
         <EntityType Name="TheLoai">
           <Key>
             <PropertyRef Name="id" />
@@ -135,11 +125,11 @@
           <Property Name="id" Type="int" Nullable="false" />
           <Property Name="ten_the_loai" Type="nchar" MaxLength="40" />
         </EntityType>
-        <EntityType Name="TheLoaiPhim_Phim">
+        <EntityType Name="TheLoai_Phim">
           <Key>
-            <PropertyRef Name="PhimID" />
-            <PropertyRef Name="LoaiPhimID" />
+            <PropertyRef Name="ID" />
           </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PhimID" Type="int" Nullable="false" />
           <Property Name="LoaiPhimID" Type="int" Nullable="false" />
         </EntityType>
@@ -149,9 +139,12 @@
           </Key>
           <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="NgayBan" Type="datetime2" Precision="7" />
-          <Property Name="Ghe" Type="int" />
+          <Property Name="Ghe" Type="nchar" MaxLength="50" />
           <Property Name="NVID" Type="int" />
           <Property Name="CusId" Type="int" />
+          <Property Name="name" Type="nchar" MaxLength="60" />
+          <Property Name="sdt" Type="nchar" MaxLength="20" />
+          <Property Name="email" Type="nchar" MaxLength="50" />
           <Property Name="Gia" Type="float" />
           <Property Name="IDGiamGia" Type="int" />
           <Property Name="SuatChieuID" Type="int" />
@@ -217,26 +210,26 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_TheLoaiPhim_Phim_Film">
+        <Association Name="FK_TheLoai_Phim_Film">
           <End Role="Film" Type="Self.Film" Multiplicity="1" />
-          <End Role="TheLoaiPhim_Phim" Type="Self.TheLoaiPhim_Phim" Multiplicity="*" />
+          <End Role="TheLoai_Phim" Type="Self.TheLoai_Phim" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Film">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="TheLoaiPhim_Phim">
+            <Dependent Role="TheLoai_Phim">
               <PropertyRef Name="PhimID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_TheLoaiPhim_Phim_TheLoai">
+        <Association Name="FK_TheLoai_Phim_TheLoai">
           <End Role="TheLoai" Type="Self.TheLoai" Multiplicity="1" />
-          <End Role="TheLoaiPhim_Phim" Type="Self.TheLoaiPhim_Phim" Multiplicity="*" />
+          <End Role="TheLoai_Phim" Type="Self.TheLoai_Phim" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TheLoai">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="TheLoaiPhim_Phim">
+            <Dependent Role="TheLoai_Phim">
               <PropertyRef Name="LoaiPhimID" />
             </Dependent>
           </ReferentialConstraint>
@@ -309,7 +302,7 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Ve">
-              <PropertyRef Name="SuatChieuID" />
+              <PropertyRef Name="IDGiamGia" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -324,9 +317,8 @@
           <EntitySet Name="Phong" EntityType="Self.Phong" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SuatChieu" EntityType="Self.SuatChieu" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SuKien" EntityType="Self.SuKien" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TheLoai" EntityType="Self.TheLoai" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="TheLoaiPhim_Phim" EntityType="Self.TheLoaiPhim_Phim" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TheLoai_Phim" EntityType="Self.TheLoai_Phim" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ve" EntityType="Self.Ve" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Customer_LoaiThanhVien" Association="Self.FK_Customer_LoaiThanhVien">
             <End Role="LoaiThanhVien" EntitySet="LoaiThanhVien" />
@@ -348,13 +340,13 @@
             <End Role="Phong" EntitySet="Phong" />
             <End Role="SuatChieu" EntitySet="SuatChieu" />
           </AssociationSet>
-          <AssociationSet Name="FK_TheLoaiPhim_Phim_Film" Association="Self.FK_TheLoaiPhim_Phim_Film">
+          <AssociationSet Name="FK_TheLoai_Phim_Film" Association="Self.FK_TheLoai_Phim_Film">
             <End Role="Film" EntitySet="Film" />
-            <End Role="TheLoaiPhim_Phim" EntitySet="TheLoaiPhim_Phim" />
+            <End Role="TheLoai_Phim" EntitySet="TheLoai_Phim" />
           </AssociationSet>
-          <AssociationSet Name="FK_TheLoaiPhim_Phim_TheLoai" Association="Self.FK_TheLoaiPhim_Phim_TheLoai">
+          <AssociationSet Name="FK_TheLoai_Phim_TheLoai" Association="Self.FK_TheLoai_Phim_TheLoai">
             <End Role="TheLoai" EntitySet="TheLoai" />
-            <End Role="TheLoaiPhim_Phim" EntitySet="TheLoaiPhim_Phim" />
+            <End Role="TheLoai_Phim" EntitySet="TheLoai_Phim" />
           </AssociationSet>
           <AssociationSet Name="FK_Ve_Customer" Association="Self.FK_Ve_Customer">
             <End Role="Customer" EntitySet="Customer" />
@@ -402,7 +394,7 @@
           <Property Name="DiemThuong" Type="Int32" />
           <Property Name="LoaiThanhVien" Type="Int32" />
           <NavigationProperty Name="LoaiThanhVien1" Relationship="Self.FK_Customer_LoaiThanhVien" FromRole="Customer" ToRole="LoaiThanhVien" />
-          <NavigationProperty Name="Ve" Relationship="Self.FK_Ve_Customer" FromRole="Customer" ToRole="Ve" />
+          <NavigationProperty Name="Ves" Relationship="Self.FK_Ve_Customer" FromRole="Customer" ToRole="Ve" />
         </EntityType>
         <EntityType Name="Film">
           <Key>
@@ -424,18 +416,18 @@
           <Property Name="poster_link" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
           <Property Name="trailer" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="NhaCungCap" Relationship="Self.FK_Film_NhaCungCap" FromRole="Film" ToRole="NhaCungCap" />
-          <NavigationProperty Name="SuatChieu" Relationship="Self.FK_SuatChieu_Film" FromRole="Film" ToRole="SuatChieu" />
-          <NavigationProperty Name="TheLoai" Relationship="Self.TheLoaiPhim_Phim" FromRole="Film" ToRole="TheLoai" />
+          <NavigationProperty Name="SuatChieux" Relationship="Self.FK_SuatChieu_Film" FromRole="Film" ToRole="SuatChieu" />
+          <NavigationProperty Name="TheLoai_Phim" Relationship="Self.FK_TheLoai_Phim_Film" FromRole="Film" ToRole="TheLoai_Phim" />
         </EntityType>
         <EntityType Name="Ghe">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="TrangThai" Type="Boolean" />
           <Property Name="PhongID" Type="Int32" />
           <NavigationProperty Name="Phong" Relationship="Self.FK_Ghe_Phong" FromRole="Ghe" ToRole="Phong" />
-          <NavigationProperty Name="Ve" Relationship="Self.FK_Ve_Ghe" FromRole="Ghe" ToRole="Ve" />
+          <NavigationProperty Name="Ves" Relationship="Self.FK_Ve_Ghe" FromRole="Ghe" ToRole="Ve" />
         </EntityType>
         <EntityType Name="LoaiThanhVien">
           <Key>
@@ -445,7 +437,7 @@
           <Property Name="Ten" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
           <Property Name="DieuKien" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
           <Property Name="PhanTramDoiDiem" Type="Double" />
-          <NavigationProperty Name="Customer" Relationship="Self.FK_Customer_LoaiThanhVien" FromRole="LoaiThanhVien" ToRole="Customer" />
+          <NavigationProperty Name="Customers" Relationship="Self.FK_Customer_LoaiThanhVien" FromRole="LoaiThanhVien" ToRole="Customer" />
         </EntityType>
         <EntityType Name="LoaiVe">
           <Key>
@@ -454,7 +446,7 @@
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="Ten" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
           <Property Name="PhanTramCongThem" Type="Double" />
-          <NavigationProperty Name="Ve" Relationship="Self.FK_Ve_LoaiVe" FromRole="LoaiVe" ToRole="Ve" />
+          <NavigationProperty Name="Ves" Relationship="Self.FK_Ve_LoaiVe" FromRole="LoaiVe" ToRole="Ve" />
         </EntityType>
         <EntityType Name="NhaCungCap">
           <Key>
@@ -464,7 +456,7 @@
           <Property Name="Ten" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
           <Property Name="Phone" Type="String" MaxLength="13" FixedLength="true" Unicode="true" />
           <Property Name="Email" Type="String" MaxLength="40" FixedLength="true" Unicode="true" />
-          <NavigationProperty Name="Film" Relationship="Self.FK_Film_NhaCungCap" FromRole="NhaCungCap" ToRole="Film" />
+          <NavigationProperty Name="Films" Relationship="Self.FK_Film_NhaCungCap" FromRole="NhaCungCap" ToRole="Film" />
         </EntityType>
         <EntityType Name="NhanVien">
           <Key>
@@ -479,7 +471,7 @@
           <Property Name="NgaySinh" Type="DateTime" Precision="0" />
           <Property Name="NgayVaoLam" Type="DateTime" Precision="0" />
           <Property Name="GioiTinh" Type="Boolean" />
-          <NavigationProperty Name="Ve" Relationship="Self.FK_Ve_NhanVien" FromRole="NhanVien" ToRole="Ve" />
+          <NavigationProperty Name="Ves" Relationship="Self.FK_Ve_NhanVien" FromRole="NhanVien" ToRole="Ve" />
         </EntityType>
         <EntityType Name="Phong">
           <Key>
@@ -487,8 +479,8 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="SoLuongGhe" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <NavigationProperty Name="Ghe" Relationship="Self.FK_Ghe_Phong" FromRole="Phong" ToRole="Ghe" />
-          <NavigationProperty Name="SuatChieu" Relationship="Self.FK_SuatChieu_Phong" FromRole="Phong" ToRole="SuatChieu" />
+          <NavigationProperty Name="Ghes" Relationship="Self.FK_Ghe_Phong" FromRole="Phong" ToRole="Ghe" />
+          <NavigationProperty Name="SuatChieux" Relationship="Self.FK_SuatChieu_Phong" FromRole="Phong" ToRole="SuatChieu" />
         </EntityType>
         <EntityType Name="SuatChieu">
           <Key>
@@ -502,7 +494,7 @@
           <Property Name="TrangThai" Type="Boolean" />
           <NavigationProperty Name="Film" Relationship="Self.FK_SuatChieu_Film" FromRole="SuatChieu" ToRole="Film" />
           <NavigationProperty Name="Phong" Relationship="Self.FK_SuatChieu_Phong" FromRole="SuatChieu" ToRole="Phong" />
-          <NavigationProperty Name="Ve" Relationship="Self.FK_Ve_SuatChieu" FromRole="SuatChieu" ToRole="Ve" />
+          <NavigationProperty Name="Ves" Relationship="Self.FK_Ve_SuatChieu" FromRole="SuatChieu" ToRole="Ve" />
         </EntityType>
         <EntityType Name="SuKien">
           <Key>
@@ -514,17 +506,7 @@
           <Property Name="NgayKetThuc" Type="DateTime" Precision="0" />
           <Property Name="PhanTramGiam" Type="Double" />
           <Property Name="linkposter" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
-          <NavigationProperty Name="Ve" Relationship="Self.FK_Ve_SuKien" FromRole="SuKien" ToRole="Ve" />
-        </EntityType>
-        <EntityType Name="sysdiagram">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Ves" Relationship="Self.FK_Ve_SuKien" FromRole="SuKien" ToRole="Ve" />
         </EntityType>
         <EntityType Name="TheLoai">
           <Key>
@@ -532,7 +514,17 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" />
           <Property Name="ten_the_loai" Type="String" MaxLength="40" FixedLength="true" Unicode="true" />
-          <NavigationProperty Name="Film" Relationship="Self.TheLoaiPhim_Phim" FromRole="TheLoai" ToRole="Film" />
+          <NavigationProperty Name="TheLoai_Phim" Relationship="Self.FK_TheLoai_Phim_TheLoai" FromRole="TheLoai" ToRole="TheLoai_Phim" />
+        </EntityType>
+        <EntityType Name="TheLoai_Phim">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PhimID" Type="Int32" Nullable="false" />
+          <Property Name="LoaiPhimID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Film" Relationship="Self.FK_TheLoai_Phim_Film" FromRole="TheLoai_Phim" ToRole="Film" />
+          <NavigationProperty Name="TheLoai" Relationship="Self.FK_TheLoai_Phim_TheLoai" FromRole="TheLoai_Phim" ToRole="TheLoai" />
         </EntityType>
         <EntityType Name="Ve">
           <Key>
@@ -540,9 +532,12 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="NgayBan" Type="DateTime" Precision="7" />
-          <Property Name="Ghe" Type="Int32" />
+          <Property Name="Ghe" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
           <Property Name="NVID" Type="Int32" />
           <Property Name="CusId" Type="Int32" />
+          <Property Name="name" Type="String" MaxLength="60" FixedLength="true" Unicode="true" />
+          <Property Name="sdt" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
           <Property Name="Gia" Type="Double" />
           <Property Name="IDGiamGia" Type="Int32" />
           <Property Name="SuatChieuID" Type="Int32" />
@@ -598,6 +593,18 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="SuatChieu">
+              <PropertyRef Name="PhimID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TheLoai_Phim_Film">
+          <End Role="Film" Type="Self.Film" Multiplicity="1" />
+          <End Role="TheLoai_Phim" Type="Self.TheLoai_Phim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Film">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TheLoai_Phim">
               <PropertyRef Name="PhimID" />
             </Dependent>
           </ReferentialConstraint>
@@ -682,13 +689,21 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Ve">
-              <PropertyRef Name="SuatChieuID" />
+              <PropertyRef Name="IDGiamGia" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="TheLoaiPhim_Phim">
-          <End Role="Film" Type="Self.Film" Multiplicity="*" />
-          <End Role="TheLoai" Type="Self.TheLoai" Multiplicity="*" />
+        <Association Name="FK_TheLoai_Phim_TheLoai">
+          <End Role="TheLoai" Type="Self.TheLoai" Multiplicity="1" />
+          <End Role="TheLoai_Phim" Type="Self.TheLoai_Phim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TheLoai">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="TheLoai_Phim">
+              <PropertyRef Name="LoaiPhimID" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
         <EntityContainer Name="AppXemPhimEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Customers" EntityType="Self.Customer" />
@@ -701,8 +716,8 @@
           <EntitySet Name="Phongs" EntityType="Self.Phong" />
           <EntitySet Name="SuatChieux" EntityType="Self.SuatChieu" />
           <EntitySet Name="SuKiens" EntityType="Self.SuKien" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
           <EntitySet Name="TheLoais" EntityType="Self.TheLoai" />
+          <EntitySet Name="TheLoai_Phim" EntityType="Self.TheLoai_Phim" />
           <EntitySet Name="Ves" EntityType="Self.Ve" />
           <AssociationSet Name="FK_Customer_LoaiThanhVien" Association="Self.FK_Customer_LoaiThanhVien">
             <End Role="LoaiThanhVien" EntitySet="LoaiThanhViens" />
@@ -719,6 +734,10 @@
           <AssociationSet Name="FK_SuatChieu_Film" Association="Self.FK_SuatChieu_Film">
             <End Role="Film" EntitySet="Films" />
             <End Role="SuatChieu" EntitySet="SuatChieux" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TheLoai_Phim_Film" Association="Self.FK_TheLoai_Phim_Film">
+            <End Role="Film" EntitySet="Films" />
+            <End Role="TheLoai_Phim" EntitySet="TheLoai_Phim" />
           </AssociationSet>
           <AssociationSet Name="FK_Ghe_Phong" Association="Self.FK_Ghe_Phong">
             <End Role="Phong" EntitySet="Phongs" />
@@ -748,9 +767,9 @@
             <End Role="SuKien" EntitySet="SuKiens" />
             <End Role="Ve" EntitySet="Ves" />
           </AssociationSet>
-          <AssociationSet Name="TheLoaiPhim_Phim" Association="Self.TheLoaiPhim_Phim">
-            <End Role="Film" EntitySet="Films" />
+          <AssociationSet Name="FK_TheLoai_Phim_TheLoai" Association="Self.FK_TheLoai_Phim_TheLoai">
             <End Role="TheLoai" EntitySet="TheLoais" />
+            <End Role="TheLoai_Phim" EntitySet="TheLoai_Phim" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -882,22 +901,20 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="AppXemPhimModel.sysdiagram">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TheLoais">
             <EntityTypeMapping TypeName="AppXemPhimModel.TheLoai">
               <MappingFragment StoreEntitySet="TheLoai">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="ten_the_loai" ColumnName="ten_the_loai" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TheLoai_Phim">
+            <EntityTypeMapping TypeName="AppXemPhimModel.TheLoai_Phim">
+              <MappingFragment StoreEntitySet="TheLoai_Phim">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="PhimID" ColumnName="PhimID" />
+                <ScalarProperty Name="LoaiPhimID" ColumnName="LoaiPhimID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -909,6 +926,9 @@
                 <ScalarProperty Name="Ghe" ColumnName="Ghe" />
                 <ScalarProperty Name="NVID" ColumnName="NVID" />
                 <ScalarProperty Name="CusId" ColumnName="CusId" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="sdt" ColumnName="sdt" />
+                <ScalarProperty Name="email" ColumnName="email" />
                 <ScalarProperty Name="Gia" ColumnName="Gia" />
                 <ScalarProperty Name="IDGiamGia" ColumnName="IDGiamGia" />
                 <ScalarProperty Name="SuatChieuID" ColumnName="SuatChieuID" />
@@ -916,14 +936,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="TheLoaiPhim_Phim" TypeName="AppXemPhimModel.TheLoaiPhim_Phim" StoreEntitySet="TheLoaiPhim_Phim">
-            <EndProperty Name="Film">
-              <ScalarProperty Name="ID" ColumnName="PhimID" />
-            </EndProperty>
-            <EndProperty Name="TheLoai">
-              <ScalarProperty Name="id" ColumnName="LoaiPhimID" />
-            </EndProperty>
-          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -1,0 +1,97 @@
+﻿@using WebRapPhim.Models 
+
+@{
+    AppXemPhimEntities1 db = new AppXemPhimEntities1();
+    ViewBag.Title = "BookingHistory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    int id = int.Parse(Session["UserId"].ToString());
+    Customer cus = db.Customer.First(x => x.ID == id);
+
+    List<Ve> VeConHan = new List<Ve>();
+    List<Ve> VeHetHan = new List<Ve>();
+    List<Ve> listve = db.Ve.Where(x => x.CusId == cus.ID).ToList();
+    foreach (Ve i in listve) {
+        SuatChieu suat = db.SuatChieu.First(x => x.ID == i.SuatChieu.ID);
+        if (DateTime.Now < suat.GioBatDau)
+        {
+            VeConHan.Add(i);
+        }
+        else
+        {
+            VeHetHan.Add(i);
+        }
+    }
+}
+
+<section id="menu" class="menu" style="margin:100px;">
+    <h1 class="text-center">VÉ CỦA BẠN</h1>
+    <br /><br />
+    <h2 class="text-success">VÉ CÒN HẠN</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Mã vé</th>
+                <th scope="col">Ghế</th>
+                <th scope="col">Giá</th>
+                <th scope="col">Phim</th>
+                <th scope="col">Ngày giờ chiếu</th>
+                <th scope="col">Loại vé</th>
+                <th scope="col">Trạng thái</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Ve i in VeConHan)
+            {
+                SuatChieu s = db.SuatChieu.First(x => x.ID == i.SuatChieuID);
+                Film f = db.Film.First(x => x.ID == s.PhimID);
+                LoaiVe loai = db.LoaiVe.First(x => x.ID == i.LoaVe);
+                <tr>
+                    <th scope="row">@i.ID</th>
+                    <td>@i.Ghe</td>
+                    <td>@i.Gia</td>
+                    <td>@f.ten</td>
+                    <td>@s.GioBatDau</td>
+                    <td>@loai.Ten</td>
+                    <td class="text-success">Còn hạn</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+    <br /><br />
+    <h2 class="text-danger">VÉ HẾT HẠN</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Mã vé</th>
+                <th scope="col">Ghế</th>
+                <th scope="col">Giá</th>
+                <th scope="col">Phim</th>
+                <th scope="col">Ngày giờ chiếu</th>
+                <th scope="col">Loại vé</th>
+                <th scope="col">Trạng thái</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Ve i in VeHetHan)
+            {
+                SuatChieu s = db.SuatChieu.First(x => x.ID == i.SuatChieuID);
+                Film f = db.Film.First(x => x.ID == s.PhimID);
+                LoaiVe loai = db.LoaiVe.First(x => x.ID == i.LoaVe);
+                <tr>
+                    <th scope="row">@i.ID</th>
+                    <td>@i.Ghe</td>
+                    <td>@i.Gia</td>
+                    <td>@f.ten</td>
+                    <td>@s.GioBatDau</td>
+                    <td>@loai.Ten</td>
+                    <td class="text-success">Còn hạn</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</section>
+

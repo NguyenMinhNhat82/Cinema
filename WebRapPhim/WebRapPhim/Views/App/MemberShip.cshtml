@@ -1,0 +1,123 @@
+﻿@using WebRapPhim.Models
+
+@{
+    AppXemPhimEntities1 db = new AppXemPhimEntities1();
+    List<LoaiThanhVien> l = db.LoaiThanhVien.ToList();
+    ViewBag.Title = "MemberShip";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>MemberShip</h2>
+
+<section id="menu" class="menu">
+    <div class="container" data-aos="fade-up">
+
+        <div class="section-header">
+            <h2>Lethimcook MemberShip</h2>
+            <p>Xem các ưu đãi <span>Thành viên</span> của chúng tôi</p>
+        </div> 
+
+        <ul class="nav nav-tabs d-flex justify-content-center" data-aos="fade-up" data-aos-delay="200">
+
+            <li class="nav-item">
+                <a class="nav-link active show" data-bs-toggle="tab" data-bs-target="#menu-starters">
+                    <h4>Điểm thưởng</h4>
+                </a>
+            </li><!-- End tab nav item -->
+
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" data-bs-target="#menu-birth">
+                    <h4>Quà sinh nhật</h4>
+                </a><!-- End tab nav item -->
+
+            </li>
+            <!--<li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" data-bs-target="#menu-level">
+                    <h4>Phim sắp chiếu</h4>
+                </a>--><!-- End tab nav item -->
+
+            <!--</li>-->
+
+
+        </ul>
+
+        <div class="tab-content" data-aos="fade-up" data-aos-delay="300">
+
+            <div class="tab-pane fade active show" id="menu-starters">
+
+                <div class="tab-header text-center">
+
+                    <h3>Điểm thưởng</h3>
+                </div>
+
+                <div class="row gy-5">
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Điểm</th>
+                                @foreach (LoaiThanhVien i in l)
+                                {
+                                <th scope="col">Thành viên @i.Ten</th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">Phần trăm giảm</th>
+                                @foreach (LoaiThanhVien i in l)
+                                {
+                                    <td>@i.PhanTramDoiDiem %</td>
+                                }
+
+                            </tr>
+                            <tr>
+                                <th scope="row">Ví dụ: 100.000 VNĐ</th>
+                                @foreach (LoaiThanhVien i in l)
+                                {
+                                    <td>@(100000*i.PhanTramDoiDiem/100) VNĐ</td>
+                                }
+                            </tr>
+                           
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+            <div class="tab-pane fade" id="menu-birth">
+
+                <div class="tab-header text-center">
+
+                    <h3>Quà sinh nhật</h3>
+                </div>
+
+                <div class="row gy-5">
+                    <p>
+                        Bạn sẽ được LetHimCook tặng 10% tính trên tổng tiền vé bạn mua trong ngày sinh nhật của bạn.
+                        <br />
+                        Được áp dụng từ 0h đến 24h trong ngày sinh nhật của bạn
+                        <br />
+                        Hãy tận hưởng ngày sinh nhật của bạn!!!
+                    </p>
+                    
+
+
+                </div>
+            </div>
+            @*<div class="tab-pane fade" id="menu-starters">
+
+                <div class="tab-header text-center">
+
+                    <h3>Phim đang chiếu</h3>
+                </div>
+
+                <div class="row gy-5">
+
+
+
+                </div>
+            </div>*@
+        </div>
+        </div>
+    </section>
+

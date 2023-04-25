@@ -17,7 +17,7 @@ namespace WebRapPhim.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public LoaiVe()
         {
-            this.Ve = new HashSet<Ve>();
+            this.Ves = new HashSet<Ve>();
         }
     
         public int ID { get; set; }
@@ -25,6 +25,6 @@ namespace WebRapPhim.Models
         public Nullable<double> PhanTramCongThem { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Ve> Ve { get; set; }
+        public virtual ICollection<Ve> Ves { get; set; }
     }
 }

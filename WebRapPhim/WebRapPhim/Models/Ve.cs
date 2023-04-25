@@ -16,9 +16,12 @@ namespace WebRapPhim.Models
     {
         public int ID { get; set; }
         public Nullable<System.DateTime> NgayBan { get; set; }
-        public Nullable<int> Ghe { get; set; }
+        public string Ghe { get; set; }
         public Nullable<int> NVID { get; set; }
         public Nullable<int> CusId { get; set; }
+        public string name { get; set; }
+        public string sdt { get; set; }
+        public string email { get; set; }
         public Nullable<double> Gia { get; set; }
         public Nullable<int> IDGiamGia { get; set; }
         public Nullable<int> SuatChieuID { get; set; }

@@ -17,16 +17,16 @@ namespace WebRapPhim.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Phong()
         {
-            this.Ghe = new HashSet<Ghe>();
-            this.SuatChieu = new HashSet<SuatChieu>();
+            this.Ghes = new HashSet<Ghe>();
+            this.SuatChieux = new HashSet<SuatChieu>();
         }
     
         public int ID { get; set; }
         public string SoLuongGhe { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Ghe> Ghe { get; set; }
+        public virtual ICollection<Ghe> Ghes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SuatChieu> SuatChieu { get; set; }
+        public virtual ICollection<SuatChieu> SuatChieux { get; set; }
     }
 }

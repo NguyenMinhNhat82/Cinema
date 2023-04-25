@@ -1,9 +1,85 @@
-﻿
+﻿@using WebRapPhim.Models;
+@using WebRapPhim.Service;
+
 @{
     ViewBag.Title = "Coming_soon";
     Layout = "~/Views/Shared/_Layout.cshtml";
-}
 
+    AppXemPhimEntities1 db = new AppXemPhimEntities1();
+    var ListSuatChieu = db.Film.ToList();
+    List<Film> Coming = new List<Film>();
+    foreach (Film i in ListSuatChieu)
+    {
+        if (Service.getDateSubtract(DateTime.Now, System.DateTime.Parse(i.ngay_cong_chieu.ToString())) > 10 && Service.getDateSubtract(DateTime.Now, System.DateTime.Parse(i.ngay_cong_chieu.ToString())) <= 20)
+        {
+            Coming.Add(i);
+        }
+
+    }
+}
+<style>
+    .dropdown-check-list {
+        display: inline-block;
+    }
+
+        .dropdown-check-list .anchor {
+            position: relative;
+            cursor: pointer;
+            display: inline-block;
+            padding: 5px 50px 5px 10px;
+            border: 1px solid #ccc;
+        }
+
+            .dropdown-check-list .anchor:after {
+                position: absolute;
+                content: "";
+                border-left: 2px solid black;
+                border-top: 2px solid black;
+                padding: 5px;
+                right: 10px;
+                top: 20%;
+                -moz-transform: rotate(-135deg);
+                -ms-transform: rotate(-135deg);
+                -o-transform: rotate(-135deg);
+                -webkit-transform: rotate(-135deg);
+                transform: rotate(-135deg);
+            }
+
+            .dropdown-check-list .anchor:active:after {
+                right: 8px;
+                top: 21%;
+            }
+
+        .dropdown-check-list ul.items {
+            padding: 2px;
+            display: none;
+            margin: 0;
+            border: 1px solid #ccc;
+            border-top: none;
+        }
+
+            .dropdown-check-list ul.items li {
+                list-style: none;
+            }
+
+        .dropdown-check-list.visible .anchor {
+            color: #0094ff;
+        }
+
+        .dropdown-check-list.visible .items {
+            display: block;
+        }
+</style>
+<script>
+   
+    function show() {
+        var checkList = document.getElementById('list1');
+        if (checkList.classList.contains('visible'))
+            checkList.classList.remove('visible');
+        else
+            checkList.classList.add('visible');
+    }
+</script>
 <main id="main">
     <section id="menu" class="menu">
         <div class="container" data-aos="fade-up">
@@ -12,6 +88,18 @@
 
                 <p>Phim <span>sắp chiếu</span></p>
             </div>
+            @*<div style="margin-bottom:100px" id="list1" class="dropdown-check-list" tabindex="100">
+                <span onclick="show()" class="anchor">Chọn thể loại phim</span>
+                <ul class="items">
+                    <li><input type="checkbox" />Apple </li>
+                    <li><input type="checkbox" />Orange</li>
+                    <li><input type="checkbox" />Grapes </li>
+                    <li><input type="checkbox" />Berry </li>
+                    <li><input type="checkbox" />Mango </li>
+                    <li><input type="checkbox" />Banana </li>
+                    <li><input type="checkbox" />Tomato</li>
+                </ul>
+            </div>*@
             <div class="tab-content" data-aos="fade-up" data-aos-delay="300">
 
                 <div class="tab-pane fade active show" id="menu-starters">
@@ -19,71 +107,33 @@
 
                     <div class="row gy-5">
 
-                        <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-1.png" class="glightbox"><img src="~/assets/img/menu/menu-item-1.png" class="menu-img img-fluid" alt=""></a>
-                            <h4>Magnam Tiste</h4>
-                            <p class="ingredients">
-                                Lorem, deren, trataro, filede, nerada
-                            </p>
-                            <p class="price">
-                                $5.95
-                            </p>
-                        </div><!-- Menu Item -->
+                        @{ 
+                            if (Coming.Count != 0)
+                            {
+                                foreach (Film i in Coming)
+                                {
+                            <div class="col-lg-4 menu-item">
+                                <a href="@i.poster_link" class="glightbox"><img src="@i.poster_link" class="menu-img img-fluid" alt=""></a>
+                                <h4>@i.ten</h4>
+                                <p class="ingredients">
+                                    @i.dao_dien
+                                </p>
+                                <p>Ngày công chiếu</p>
+                                <p class="price">
+                                    @String.Format("{0:dd/MM/yyyy}", i.ngay_cong_chieu)
+                                </p>
 
-                        <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-2.png" class="glightbox"><img src="~/assets/img/menu/menu-item-2.png" class="menu-img img-fluid" alt=""></a>
-                            <h4>Aut Luia</h4>
-                            <p class="ingredients">
-                                Lorem, deren, trataro, filede, nerada
-                            </p>
-                            <p class="price">
-                                $14.95
-                            </p>
-                        </div><!-- Menu Item -->
+                                <a class="btn btn-danger" style="padding:10px; color:white" href="/App/Login">Đặt vé</a>
 
-                        <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-3.png" class="glightbox"><img src="~/assets/img/menu/menu-item-3.png" class="menu-img img-fluid" alt=""></a>
-                            <h4>Est Eligendi</h4>
-                            <p class="ingredients">
-                                Lorem, deren, trataro, filede, nerada
-                            </p>
-                            <p class="price">
-                                $8.95
-                            </p>
-                        </div><!-- Menu Item -->
+                            </div>
+                                }
+                            }
+                            else { 
+                                <h3 class="text-center">Rất tiếc! Không có phim nào</h3>
+                            }
+                            }
 
-                        <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-4.png" class="glightbox"><img src="~/assets/img/menu/menu-item-4.png" class="menu-img img-fluid" alt=""></a>
-                            <h4>Eos Luibusdam</h4>
-                            <p class="ingredients">
-                                Lorem, deren, trataro, filede, nerada
-                            </p>
-                            <p class="price">
-                                $12.95
-                            </p>
-                        </div><!-- Menu Item -->
 
-                        <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-5.png" class="glightbox"><img src="~/assets/img/menu/menu-item-5.png" class="menu-img img-fluid" alt=""></a>
-                            <h4>Eos Luibusdam</h4>
-                            <p class="ingredients">
-                                Lorem, deren, trataro, filede, nerada
-                            </p>
-                            <p class="price">
-                                $12.95
-                            </p>
-                        </div><!-- Menu Item -->
-
-                        <div class="col-lg-4 menu-item">
-                            <a href="assets/img/menu/menu-item-6.png" class="glightbox"><img src="~/assets/img/menu/menu-item-6.png" class="menu-img img-fluid" alt=""></a>
-                            <h4>Laboriosam Direva</h4>
-                            <p class="ingredients">
-                                Lorem, deren, trataro, filede, nerada
-                            </p>
-                            <p class="price">
-                                $9.95
-                            </p>
-                        </div><!-- Menu Item -->
 
                     </div>
                 </div><!-- End Starter Menu Content -->

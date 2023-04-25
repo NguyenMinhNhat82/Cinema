@@ -1,0 +1,227 @@
+﻿@model IEnumerable<WebRapPhim.Models.Film>
+@using WebRapPhim.Models
+@{
+    ViewBag.Title = "MovieDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    AppXemPhimEntities1 db = new AppXemPhimEntities1();
+    Film a = Model.ToList().First();
+    bool checkYear(int nam)
+    {
+
+        if (nam % 400 == 0)
+            return true;
+
+
+        if (nam % 4 == 0 && nam % 100 != 0)
+            return true;
+
+
+        return false;
+    }
+
+    List<SuatChieu> suatchieu = new List<SuatChieu>();
+
+    List<int> arrayDay = new List<int>();
+    List<int> arrayMonth = new List<int>();
+    List<int> arrayYear = new List<int>();
+}
+
+<script>
+    var preid = 0;
+    function show(id) {
+        document.getElementById(preid).classList.remove("show");
+        document.getElementById(id).classList.add("show");
+        preid = id;
+    }
+</script>
+<section>
+    <div class="container">
+        <div class="border p-3 main-section bg-white">
+            <div class="row m-0">
+                <div class="col-lg-4 left-side-product-box pb-3">
+                    <img src="@a.poster_link" style="width:430px" class="border p-3">
+                </div>
+                <div class="col-lg-8">
+                    <div class="right-side-pro-detail border p-3 m-0">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <h2>@a.ten</h2>
+
+                            </div>
+                            <div class="col-lg-12 pt-2">
+                                <h5>Tóm tắt</h5>
+                                <span>
+                                    @a.tom_tat
+                                </span>
+                                <hr class="m-0 pt-2 mt-2">
+                            </div>
+                            <div class="col-lg-12 pt-2">
+                                <h5>Đạo diễn</h5>
+                                <span>
+                                    @a.dao_dien
+                                </span>
+                                <hr class="m-0 pt-2 mt-2">
+                            </div>
+                            <div class="col-lg-12 pt-2">
+                                <h5>Diễn viên</h5>
+                                <span>
+                                    @a.dien_vien
+                                </span>
+                                <hr class="m-0 pt-2 mt-2">
+                            </div>
+                            <div class="col-lg-12 pt-2">
+                                <h5>Khởi chiếu</h5>
+                                <span>
+                                    @DateTime.Parse(a.ngay_cong_chieu.ToString()).ToString("dd-MM-yyyy")
+                                </span>
+                                <hr class="m-0 pt-2 mt-2">
+                            </div>
+
+                            <div class="col-lg-12 pt-2">
+                                <h5>Thời lượng</h5>
+                                <span>
+                                    @a.thoi_luong
+                                </span>
+                                <hr class="m-0 pt-2 mt-2">
+                            </div>
+
+                            <div class="col-lg-12 pt-2">
+                                <h5>Phụ đề</h5>
+                                <span>
+                                    @a.ngon_ngu
+                                </span>
+                                <hr class="m-0 pt-2 mt-2">
+                            </div>
+
+
+
+                            <div class="col-lg-12">
+                                <p class="tag-section"><strong>Tag : </strong><a href="">Woman</a><a href="">,Man</a></p>
+                            </div>
+                            <div class="d-flex gap-5">
+                                <a href="#chonve"><button type="button" class="btn btn-danger">Mua vé ngay</button></a>
+
+                                <a href="@a.trailer" class="glightbox play-btn"><button type="button" class="btn btn-danger">Xem trailer</button></a>
+                            </div>
+                           
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<section id="menu" class="menu">
+    <div id="chonve" class="container" data-aos="fade-up">
+
+        <div class="section-header">
+            <h2>Movies Selection</h2>
+            <p>Xem phim <span>theo sở thích của bạn</span></p>
+        </div>
+
+        <ul class="nav nav-tabs d-flex justify-content-center" data-aos="fade-up" data-aos-delay="200">
+
+            @{
+                string classname = "";
+                int day = a.ngay_cong_chieu.Value.Day;
+                int month = a.ngay_cong_chieu.Value.Month;
+                int year = a.ngay_cong_chieu.Value.Year;
+                for (int i = 0; i < 10; i++)
+                {
+                    if (i == 0) { classname += "nav-link show active"; }
+                    else { classname = "nav-link show"; }
+                    <li class="nav-item">
+                        <a class="@classname" data-bs-toggle="tab" data-bs-target="#@i" onclick="show(@i)">
+                            <h4>Ngày @day tháng @month năm @year</h4>
+                        </a>
+                    </li>
+
+                    arrayDay.Add(day);
+                    arrayMonth.Add(month);
+                    arrayYear.Add(year);
+                    switch (month)
+                    {
+                        case 1:
+                        case 3:
+                        case 5:
+                        case 7:
+                        case 8:
+                        case 10:
+                        case 12:
+                            if (day == 31)
+                            {
+                                month++;
+                                day = 1;
+                            }
+                            else { day++; }
+                            break;
+
+                        case 4:
+                        case 6:
+                        case 9:
+                        case 11:
+                            if (day == 30)
+                            {
+                                month++;
+                                day = 1;
+                            }
+                            else { day++; }
+                            break;
+                        case 2:
+                            if (checkYear(year))
+                            {
+                                if (day == 29)
+                                {
+                                    month++;
+                                    day = 1;
+                                }
+                                else { day++; }
+                            }
+                            else
+                            {
+                                if (day == 28)
+                                {
+                                    month++;
+                                    day = 1;
+                                }
+                                else { day++; }
+                            }
+                            break;
+                    }
+
+                }
+            }
+        </ul>
+
+        @for (int i = 0; i < 10; i++)
+        {
+            int DayS = arrayDay[i];
+            int MonthS = arrayMonth[i];
+            int YearS = arrayYear[i];
+            
+            suatchieu = db.SuatChieu.Where(x => x.PhimID == a.ID && x.GioBatDau.Value.Day == DayS && x.GioBatDau.Value.Month == MonthS && x.GioBatDau.Value.Year == YearS).ToList();
+            
+            <div class="tab-content" data-aos="fade-up" data-aos-delay="300">
+
+                <div class="tab-pane fade active" id="@i">
+
+                    <div class="tab-header text-center">
+                    </div>
+                    <div class="row gy-5">
+
+                        @foreach (SuatChieu s in suatchieu)
+                        {
+                            <a href="~/App/ChonVe/@s.ID"><button style="width:200px" type="button" class="btn btn-danger">@s.GioBatDau</button></a>
+                        }
+
+                    </div>
+                </div><!-- End Starter Menu Content -->
+
+
+
+            </div>
+        }
+</section>
+

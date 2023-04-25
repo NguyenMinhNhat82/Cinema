@@ -34,9 +34,9 @@ namespace WebRapPhim.Models
         public virtual DbSet<NhanVien> NhanVien { get; set; }
         public virtual DbSet<Phong> Phong { get; set; }
         public virtual DbSet<SuatChieu> SuatChieu { get; set; }
-        public virtual DbSet<SuKien> SuKien{ get; set; }
-        public virtual DbSet<sysdiagram> sysdiagram { get; set; }
+        public virtual DbSet<SuKien> SuKien { get; set; }
         public virtual DbSet<TheLoai> TheLoai { get; set; }
+        public virtual DbSet<TheLoai_Phim> TheLoai_Phim { get; set; }
         public virtual DbSet<Ve> Ve { get; set; }
     }
 }

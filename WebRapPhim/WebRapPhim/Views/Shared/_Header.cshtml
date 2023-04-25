@@ -12,15 +12,7 @@
         <nav id="navbar" class="navbar">
             <ul>
                 <li><a href="/">Home</a></li>
-                <li class="dropdown">
-                    <a href="#"><span>Rạp</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
-                    <ul>
-                        <li><a href="~/App/Now_Showing">Tất cả các rạp</a></li>
-
-                        <li><a href="~/App/Coming_soon">Rạp đặc biệt</a></li>
-
-                    </ul>
-                </li>
+               
                 <li class="dropdown">
                     <a href="#"><span>Phim</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
                     <ul>
@@ -34,15 +26,15 @@
                 <li class="dropdown">
                     <a href="#"><span>Thành viên</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
                     <ul>
-                        <li><a href="#">Xem ưu đãi của bạn</a></li>
+                        <li><a href="~/App/CustomerMemberShip">Xem ưu đãi của bạn</a></li>
 
-                        <li><a href="#">Ưu đãi thành viên</a></li>
+                        <li><a href="~/App/MemberShip">Ưu đãi thành viên</a></li>
 
                     </ul>
                 </li>
 
 
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="https://www.facebook.com/profile.php?id=100010880564719">Contact</a></li>
 
                 @if (Session["UserID"] == null)
                 {
@@ -63,8 +55,8 @@
                         <a href="#"><img style="width:25px" src="https://res.cloudinary.com/dexbjwfjg/image/upload/v1678682828/User_tahfkw.jpg" /> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
                         <ul>
                             <li><a href="#">Tên tài khoản: @Session["UserName"]</a></li>
-                            <li><a href="#">Xem thông tin tài khoản của bạn</a></li>
-                            <li><a href="#">Vé của tôi</a></li>
+                            <li><a href="~/App/CustomerDetail">Xem thông tin tài khoản của bạn</a></li>
+                            <li><a href="~/App/BookingHistory/@Session["UserID"]">Vé của tôi</a></li>
                             <li><hr /></li>
                             <li><a href="~/App/Logout">Đăng xuất</a></li>
 

@@ -17,13 +17,13 @@ namespace WebRapPhim.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public TheLoai()
         {
-            this.Film = new HashSet<Film>();
+            this.TheLoai_Phim = new HashSet<TheLoai_Phim>();
         }
     
         public int id { get; set; }
         public string ten_the_loai { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Film> Film { get; set; }
+        public virtual ICollection<TheLoai_Phim> TheLoai_Phim { get; set; }
     }
 }
