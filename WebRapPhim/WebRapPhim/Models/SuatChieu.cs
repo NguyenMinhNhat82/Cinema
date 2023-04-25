@@ -31,5 +31,11 @@ namespace WebRapPhim.Models
         public virtual Phong Phong { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Ve> Ves { get; set; }
+        public bool setTrangThai(String trangthai)
+        {
+            if (trangthai.Trim() == "1")
+                return true;
+            else return false;
+        }
     }
 }

@@ -1,0 +1,166 @@
+﻿@model WebRapPhim.Models.Film
+@using WebRapPhim.Models;
+@using System.Data.SqlClient;
+@{
+    AppXemPhimEntities1 db = new AppXemPhimEntities1();
+    ViewBag.Title = "CreatePhim";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+}
+
+<style>
+    .btl-left {
+        font-size: 18px;
+        margin-top: 20px;
+        margin-left: 5%;
+    }
+
+        .btl-left a {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #292424;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .btl-left > a:hover {
+            color: black;
+            background-color: white;
+        }
+</style>
+<div class="btl-left">
+    @Html.ActionLink("Trở về danh sách", "Phim")
+</div>
+<h3 class="text-danger text-center">@ViewBag.Message</h3>
+
+<div class="container">
+    <div class="row d-flex justify-content-center align-items-center">
+        <div class="col-lg-12 col-xl-11">
+            <div class="card text-black" style="border-radius: 25px;">
+                <div class="card-body p-md-5">
+                    <div class="row justify-content-center">
+                        <div class="">
+
+                            <p class="text-center h1" style="margin-top:-2%; margin-bottom:2%">Tạo Phim</p>
+
+                            <form class="mx-1 mx-md-4" action="/Admin/Home/CreatePhim" method="post">
+
+                                <div class="d-flex flex-row align-items-center mb-4">
+                                    <div class="form-outline flex-fill mb-0">
+                                        <label class="form-label" for="form3Example1c">Tên</label>
+                                        <input type="text" id="form3Example1c" name="Ten" class="form-control" required />
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-row align-items-center mb-4">
+                                    <div class="form-outline flex-fill mb-0">
+                                        <label class="form-label" for="form3Example1c">Thời Lượng</label>
+                                        <input type="text" id="form3Example1c" name="thoi_luong" class="form-control" required />
+                                    </div>
+                                </div>
+
+                                <div class="d-flex flex-row align-items-center mb-4">
+                                    <div class="form-outline flex-fill mb-0">
+                                        <label class="form-label" for="form3Example3c">Giới hạn tuổi</label>
+                                        <input type="text" id="form3Example3c" name="gioi_han_tuoi" class="form-control" required />
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-row align-items-center mb-4">
+                                    <div class="form-outline flex-fill mb-0">
+                                        <label class="form-label" for="form3Example3c">Ngày công chiéu</label>
+                                        <input type="date" id="form3Example3c" name="ngay_cong_chieu" class="form-control" required />
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-row align-items-center mb-4">
+                                    <div class="form-outline flex-fill mb-0">
+                                        <label class="form-label" for="form3Example3c">Ngôn ngữ</label>
+                                        <input type="text" id="form3Example3c" name="ngon_ngu" class="form-control" required />
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-row align-items-center mb-4">
+                                    <div class="form-outline flex-fill mb-0">
+                                        <label class="form-label" for="form3Example3c">Đạo diễn</label>
+                                        <input type="text" id="form3Example3c" name="dao_dien" class="form-control" required />
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-row align-items-center mb-4">
+                                    <div class="form-outline flex-fill mb-0">
+                                        <label class="form-label" for="form3Example3c">Diễn viên</label>
+                                        <input type="text" id="form3Example3c" name="dien_vien" class="form-control" required />
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-row align-items-center mb-4">
+                                    <div class="form-outline flex-fill mb-0">
+                                        <label class="form-label" for="form3Example3c">Quốc gia</label>
+                                        <input type="text" id="form3Example3c" name="quoc_gia" class="form-control" required />
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-row align-items-center mb-4">
+                                    <div class="form-outline flex-fill mb-0">
+                                        <label class="form-label" for="form3Example3c">Tóm tắt</label>
+                                        <input type="text" id="form3Example3c" name="tom_tat" class="form-control" required />
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-row align-items-center mb-4">
+                                    <div class="form-outline flex-fill mb-0">
+                                        <label class="form-label" for="form3Example3c">Trạng thái</label>
+                                        <select id="form3Example3c" name="trang_thai" class="form-select" required>
+                                            <option value="">Chọn trạng thái</option>
+                                            <option value="1">Đang chiếu</option>
+                                            <option value="2">Không chiếu</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-row align-items-center mb-4">
+                                    <div class="form-outline flex-fill mb-0">
+                                        <label class="form-label" for="form3Example3c">Thể loại</label>
+                                        @foreach (var theloai in db.TheLoai.ToList())
+                                        {
+                                            <label>
+                                                <input type="checkbox" name="the_loai" value="@theloai.id" /> @theloai.ten_the_loai
+                                            </label>
+                                        }
+                                    </div>
+                                </div>
+
+                                <div class="d-flex flex-row align-items-center mb-4">
+                                    <div class="form-outline flex-fill mb-0">
+                                        <label class="form-label" for="form3Example3c">Nhà cung cấp</label>
+                                        <select id="form3Example3c" name="nha_cung_cap" class="form-select" required>
+                                            <option value="">Chọn nhà cung cấp</option>
+                                            @foreach (var ncc in db.NhaCungCap)
+                                            {
+                                                <option value="@ncc.ID">@ncc.Ten</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-row align-items-center mb-4">
+                                    <div class="form-outline flex-fill mb-0">
+                                        <label class="form-label" for="form3Example3c">Poster Link</label>
+                                        <input type="text" id="form3Example3c" name="poster_link" class="form-control" required />
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-row align-items-center mb-4">
+                                    <div class="form-outline flex-fill mb-0">
+                                        <label class="form-label" for="form3Example3c">Trailer</label>
+                                        <input type="text" id="form3Example3c" name="trailer" class="form-control" required />
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                                    <button type="submit" class="btn btn-primary btn-lg">Thêm Phim</button>
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -25,5 +25,11 @@ namespace WebRapPhim.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TheLoai_Phim> TheLoai_Phim { get; set; }
+        public bool setTrangThai(String trangthai)
+        {
+            if (trangthai.Trim() == "1")
+                return true;
+            else return false;
+        }
     }
 }

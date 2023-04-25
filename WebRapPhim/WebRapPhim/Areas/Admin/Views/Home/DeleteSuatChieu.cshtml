@@ -1,0 +1,136 @@
+﻿@model WebRapPhim.Models.SuatChieu
+@using WebRapPhim.Models;
+@using System.Data.SqlClient;
+@{
+    ViewBag.Title = "DeleteSuatChieu";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    SqlDataReader reader;
+    string strConnect = "Data Source=VANGNGUYEN;Initial Catalog=AppXemPhim;Integrated Security=True;MultipleActiveResultSets=True;Application Name=EntityFramework";
+    SqlConnection cnn = new SqlConnection(strConnect);
+    SqlCommand cmd = new SqlCommand();
+    cmd.CommandType = System.Data.CommandType.Text;
+    cmd.Connection = cnn;
+    // Truy vấn Tên Phim
+    cmd.CommandText = "SELECT DISTINCT Film.ten AS FilmTen, SuatChieu.ID AS SuatChieuID, SuatChieu.PhimID AS SuatChieuFID " +
+                "FROM AppXemPhim.dbo.Film " +
+                "JOIN AppXemPhim.dbo.SuatChieu ON AppXemPhim.dbo.Film.ID = AppXemPhim.dbo.SuatChieu.PhimID " +
+                "WHERE AppXemPhim.dbo.Film.ID = AppXemPhim.dbo.SuatChieu.PhimID";
+    cmd.Connection = cnn;
+    if (cnn.State == System.Data.ConnectionState.Closed)
+    {
+        cnn.Open();
+    }
+
+    reader = cmd.ExecuteReader();
+    var table = new System.Data.DataTable();
+    table.Columns.Add("FilmTen");
+    table.Columns.Add("SuatChieuID");
+    table.Columns.Add("SuatChieuFID");
+    while (reader.Read())
+    {
+        table.Rows.Add(reader["FilmTen"], reader["SuatChieuID"], reader["SuatChieuFID"]);
+    }
+    reader.Close();
+    cnn.Close();
+}
+<style>
+    .btl-left {
+        font-size: 18px;
+        margin-bottom: 20px;
+        margin-left: 2%;
+    }
+
+        .btl-left a {
+            display: inline-block;
+            padding: 7px 10px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight:;
+            transition: background-color 0.3s ease;
+        }
+
+        .btl-left > a:hover {
+            color: black;
+            background-color: white;
+        }
+</style>
+<h2 style="text-align: center; margin-top: 2%;">Xoá Suất Chiếu</h2>
+
+<h3 class="text-danger" style="margin-left:5%">Bạn có chắc chắn muốn xoá suất chiếu này?</h3>
+<div>
+    <hr />
+    <div class="container">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="col-lg-12 col-xl-11">
+                <div class="card text-black" style="border-radius: 25px;">
+                    <div class="card-body p-md-5">
+                        <div class="row justify-content-center">
+                            <dl class="dl-horizontal"
+                                <dd>
+                                    <dt>
+                                        <p>Giờ bắt đầu</p>
+                                    </dt>
+
+                                    <dd>
+                                        @Html.DisplayFor(model => model.GioBatDau)
+                                    </dd>
+
+                                    <dt>
+                                        <p>Phòng</p>
+                                    </dt>
+
+                                    <dd>
+                                        @Html.DisplayFor(model => model.PhongID)
+                                    </dd>
+
+                                    <dt>
+                                        <p>Phim</p>
+                                    </dt>
+
+                                    @foreach (System.Data.DataRow row in table.Rows)
+                                        {
+                                            if (Model.PhimID == Convert.ToInt32(row["SuatChieuFID"]) && Model.ID == Convert.ToInt32(row["SuatChieuID"]))
+                                            {
+                                                <dd>
+                                                    <p>@row["FilmTen"]</p>
+                                                </dd>
+                                            }
+                                        }
+
+                                    <dt>
+                                        <p>Giá</p>
+                                    </dt>
+
+                                    <dd>
+                                        @Html.DisplayFor(model => model.Gia)
+                                    </dd>
+
+                                    <dt>
+                                        <p>Trạng Thái</p>
+                                    </dt>
+
+                                    <dd>
+                                        @Html.DisplayFor(model => model.TrangThai)
+                                    </dd>
+
+                                </dl>
+
+                            @using (Html.BeginForm())
+                            {
+                                @Html.AntiForgeryToken()
+
+                                <div class="form-actions no-color btl-left">
+                                    <input type="submit" value="Delete" class="btn btn-danger" />
+                                    @Html.ActionLink("Trở về danh sách", "SuatChieu")
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

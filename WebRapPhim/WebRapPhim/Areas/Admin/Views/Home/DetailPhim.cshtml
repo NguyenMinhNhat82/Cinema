@@ -4,31 +4,34 @@
 @{
     ViewBag.Title = "DetailPhim";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
-    int dem = 0;
     SqlDataReader reader;
     SqlDataReader reader1;
-    SqlDataReader reader2;
     string strConnect = "Data Source=VANGNGUYEN;Initial Catalog=AppXemPhim;Integrated Security=True;MultipleActiveResultSets=True;Application Name=EntityFramework";
     SqlConnection cnn = new SqlConnection(strConnect);
     SqlCommand cmd = new SqlCommand();
     cmd.CommandType = System.Data.CommandType.Text;
     cmd.Connection = cnn;
+    // Truy vấn Tên NHACUNGCAP
+    cmd.CommandText = "SELECT DISTINCT NhaCungCap.Ten AS NhaCungCapTen, Film.Ten AS FilmTen, NhaCungCap.ID AS NhaCungCapID, Film.ID AS FilmID " +
+                "FROM AppXemPhim.dbo.NhaCungCap " +
+                "JOIN AppXemPhim.dbo.Film ON AppXemPhim.dbo.NhaCungCap.ID = AppXemPhim.dbo.Film.nha_cung_cap " +
+                "WHERE AppXemPhim.dbo.NhaCungCap.ID = @nhaCungCapID";
+    cmd.Parameters.AddWithValue("@nhaCungCapID", Model.nha_cung_cap);
+    cmd.Connection = cnn;
+
     if (cnn.State == System.Data.ConnectionState.Closed)
     {
         cnn.Open();
     }
-    // Truy vấn Tên NHACUNGCAP
-    cmd.CommandText = "SELECT NhaCungCap.Ten AS NhaCungCapTen, Film.Ten AS FilmTen, NhaCungCap.ID AS NhaCungCapID, Film.ID AS FilmID " +
-                "FROM AppXemPhim.dbo.NhaCungCap " +
-                "JOIN AppXemPhim.dbo.Film ON AppXemPhim.dbo.NhaCungCap.ID = AppXemPhim.dbo.Film.nha_cung_cap";
-    cmd.Connection = cnn;
+
     reader = cmd.ExecuteReader();
     var table = new System.Data.DataTable();
     table.Columns.Add("NhaCungCapTen");
     table.Columns.Add("NhaCungCapID");
+    table.Columns.Add("FilmID");
     while (reader.Read())
     {
-        table.Rows.Add(reader["NhaCungCapTen"], reader["NhaCungCapID"]);
+        table.Rows.Add(reader["NhaCungCapTen"], reader["NhaCungCapID"], reader["FilmID"]);
     }
     reader.Close();
     cnn.Close();
@@ -36,9 +39,9 @@
     cmd.CommandType = System.Data.CommandType.Text;
     cmd.CommandText = "SELECT TheLoai.ten_the_loai AS TheLoaiTen " +
                       "FROM AppXemPhim.dbo.TheLoai " +
-                      "INNER JOIN AppXemPhim.dbo.TheLoaiPhim_Phim " +
-                      "ON AppXemPhim.dbo.TheLoai.id = AppXemPhim.dbo.TheLoaiPhim_Phim.LoaiPhimID " +
-                      "WHERE AppXemPhim.dbo.TheLoaiPhim_Phim.PhimID = @PhimID";
+                      "INNER JOIN AppXemPhim.dbo.TheLoai_Phim " +
+                      "ON AppXemPhim.dbo.TheLoai.id = AppXemPhim.dbo.TheLoai_Phim.LoaiPhimID " +
+                      "WHERE AppXemPhim.dbo.TheLoai_Phim.PhimID = @PhimID";
     cmd.Parameters.AddWithValue("@PhimID", Model.ID);
     cmd.Connection = cnn;
 
@@ -178,20 +181,25 @@
                             <dt>
                                 <p>Loại phim</p>
                             </dt>
-
-                            @foreach (System.Data.DataRow row in table1.Rows)
+                            @if (table1.Rows.Count != 0)
                             {
-                                <dd>
-                                    <span>@row["TheLoaiTen"] </span>
-                                </dd>
+                                foreach (System.Data.DataRow row in table1.Rows)
+                                {
+                                    <dd>
+                                        <span>- @row["TheLoaiTen"] </span>
+                                    </dd>
+                                }
                             }
-
+                            else
+                            {
+                                <p>Danh sách thể loại trống.</p>
+                            }
                             <dt>
                                 <p>Nhà cung cấp</p>
                             </dt>
                             @foreach (System.Data.DataRow row in table.Rows)
                             {
-                                if (Convert.ToInt32(row["NhaCungCapID"]) == Model.nha_cung_cap)
+                                if (Model.nha_cung_cap == Convert.ToInt32(row["NhaCungCapID"]) && Model.ID == Convert.ToInt32(row["FilmID"]))
                                 {
                                     <dd>
                                         <p>@row["NhaCungCapTen"]</p>

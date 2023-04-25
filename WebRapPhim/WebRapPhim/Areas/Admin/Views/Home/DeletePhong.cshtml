@@ -1,0 +1,72 @@
+﻿@model WebRapPhim.Models.Phong
+
+@{
+    ViewBag.Title = "DeletePhong";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .btl-left {
+        font-size: 18px;
+        margin-bottom: 20px;
+        margin-left: 2%;
+    }
+
+        .btl-left a {
+            display: inline-block;
+            padding: 7px 10px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight:;
+            transition: background-color 0.3s ease;
+        }
+
+        .btl-left > a:hover {
+            color: black;
+            background-color: white;
+        }
+</style>
+<h2 style="text-align: center; margin-top: 2%;">Xoá Phòng</h2>
+
+<h3 class="text-danger" style="margin-left:2%">Bạn có chắc chắn muốn xoá phòng này?</h3>
+<div>
+    <hr />
+    <table class="table">
+        <tr>
+            <th>
+                <p>Tên Phòng</p>
+            </th>
+
+            <th></th>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(model => model.ID)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <p>Số lượng ghế</p>
+            </th>
+
+            <th></th>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(model => model.SoLuongGhe)
+            </td>
+        </tr>
+    </table>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color btl-left">
+            <input type="submit" value="Delete" class="btn btn-danger" />
+            @Html.ActionLink("Trở về danh sách", "Phong")
+        </div>
+    }
+</div>

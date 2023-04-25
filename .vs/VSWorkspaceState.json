@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\WebRapPhim",
+    "\\WebRapPhim\\WebRapPhim",
+    "\\WebRapPhim\\WebRapPhim\\Areas",
+    "\\WebRapPhim\\WebRapPhim\\Areas\\Admin",
+    "\\WebRapPhim\\WebRapPhim\\Areas\\Admin\\Controllers",
+    "\\WebRapPhim\\WebRapPhim\\Areas\\Admin\\Views",
+    "\\WebRapPhim\\WebRapPhim\\Areas\\Admin\\Views\\Home",
+    "\\WebRapPhim\\WebRapPhim\\Areas\\Admin\\Views\\Shared",
+    "\\WebRapPhim\\WebRapPhim\\Views\\App"
+  ],
+  "SelectedNode": "\\WebRapPhim\\WebRapPhim.sln",
+  "PreviewInSolutionExplorer": false
+}

@@ -1,0 +1,71 @@
+﻿@model WebRapPhim.Models.Phong
+
+@{
+    ViewBag.Title = "CreatePhong";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .btl-left {
+        font-size: 18px;
+        margin-top: 20px;
+        margin-left: 5%;
+    }
+
+        .btl-left a {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #292424;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .btl-left > a:hover {
+            color: black;
+            background-color: white;
+        }
+</style>
+<div class="btl-left">
+    @Html.ActionLink("Trở về danh sách", "Phong")
+</div>
+<h3 class="text-danger text-center">@ViewBag.Message</h3>
+
+<div class="container">
+    <div class="row d-flex justify-content-center align-items-center">
+        <div class="col-lg-12 col-xl-11">
+            <div class="card text-black" style="border-radius: 25px;">
+                <div class="card-body p-md-5">
+                    <div class="row justify-content-center">
+                        <div class="">
+
+                            <p class="text-center h1" style="margin-top:-2%; margin-bottom:2%">Thêm Phòng</p>
+
+                            <form class="mx-1 mx-md-4" action="/Admin/Home/CreatePhong" method="post">
+
+                                <div class="d-flex flex-row align-items-center mb-4">
+                                    <div class="form-outline flex-fill mb-0">
+                                        <label class="form-label" for="form3Example1c">Phòng</label>
+                                        <input type="number" id="form3Example1c" name="ID" class="form-control" required />                                  
+                                    </div>
+                                </div>
+
+                                <div class="d-flex flex-row align-items-center mb-4">
+                                    <div class="form-outline flex-fill mb-0">
+                                        <label class="form-label" for="form3Example1c">Số lượng Ghế</label>
+                                        <input type="number" id="form3Example1c" name="SoLuongGhe" class="form-control" required />
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                                    <button type="submit" class="btn btn-primary btn-lg">Thêm Phòng</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
