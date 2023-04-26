@@ -29,14 +29,14 @@ namespace WebRapPhim.Models
         public Nullable<System.DateTime> NgaySinh { get; set; }
         public Nullable<System.DateTime> NgayVaoLam { get; set; }
         public Nullable<bool> GioiTinh { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Ve> Ves { get; set; }
         public bool setGioiTinh(String gioitinh)
         {
             if (gioitinh.Trim() == "Nam")
                 return true;
-            else return false;
+            else
+                return false;
         }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Ve> Ves { get; set; }
     }
 }

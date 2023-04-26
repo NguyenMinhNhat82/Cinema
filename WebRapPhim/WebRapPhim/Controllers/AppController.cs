@@ -29,6 +29,7 @@ using System.Drawing.Imaging;
 using System.Data.SqlClient;
 using System.Data;
 using System.Net.NetworkInformation;
+using System.Collections.Specialized;
 
 namespace WebRapPhim.Controllers
 {
@@ -471,6 +472,26 @@ namespace WebRapPhim.Controllers
                 return View();
             }
             else return RedirectToAction("Login", "App");
+        }
+
+
+        //báo cáo
+
+        public List<report_year_Result> getReport(int year) {
+            var list = db.report_year(year).ToList();
+            return list;
+              
+        }
+
+        public ActionResult loadBaocao(int year) {
+            var list = getReport(year);
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult TestBaoCao()
+        {
+            
+            return View();
         }
 
     }

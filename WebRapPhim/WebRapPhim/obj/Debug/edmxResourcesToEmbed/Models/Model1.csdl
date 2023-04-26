@@ -393,5 +393,29 @@
       <End Role="TheLoai" EntitySet="TheLoais" />
       <End Role="TheLoai_Phim" EntitySet="TheLoai_Phim" />
     </AssociationSet>
+    <FunctionImport Name="ThongKeTheoNam" ReturnType="Collection(AppXemPhimModel.ThongKeTheoNam_Result)">
+      <Parameter Name="Year" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="ThongKeTheoNamAndMonth" ReturnType="Collection(AppXemPhimModel.ThongKeTheoNamAndMonth_Result)">
+      <Parameter Name="Year" Mode="In" Type="Int32" />
+      <Parameter Name="month" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="report_year" ReturnType="Collection(AppXemPhimModel.report_year_Result)">
+      <Parameter Name="year" Mode="In" Type="Int32" />
+    </FunctionImport>
   </EntityContainer>
+  <ComplexType Name="ThongKeTheoNam_Result">
+    <Property Type="Int32" Name="year" Nullable="true" />
+    <Property Type="Int32" Name="month" Nullable="true" />
+    <Property Type="Double" Name="tong" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="ThongKeTheoNamAndMonth_Result">
+    <Property Type="Int32" Name="year" Nullable="true" />
+    <Property Type="Int32" Name="month" Nullable="true" />
+    <Property Type="Double" Name="tong" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="report_year_Result">
+    <Property Type="Int32" Name="month" Nullable="false" />
+    <Property Type="Double" Name="total" Nullable="true" />
+  </ComplexType>
 </Schema>

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="AppXemPhimModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="AppXemPhimModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Customer">
           <Key>
             <PropertyRef Name="ID" />
@@ -306,6 +306,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="report_year" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="year" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ThongKeTheoNam" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Year" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ThongKeTheoNamAndMonth" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Year" Type="int" Mode="In" />
+          <Parameter Name="month" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="AppXemPhimModelStoreContainer">
           <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Film" EntityType="Self.Film" Schema="dbo" store:Type="Tables" />
@@ -373,8 +383,7 @@
             <End Role="Ve" EntitySet="Ve" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="AppXemPhimModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -771,7 +780,31 @@
             <End Role="TheLoai" EntitySet="TheLoais" />
             <End Role="TheLoai_Phim" EntitySet="TheLoai_Phim" />
           </AssociationSet>
+          <FunctionImport Name="ThongKeTheoNam" ReturnType="Collection(AppXemPhimModel.ThongKeTheoNam_Result)">
+          <Parameter Name="Year" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ThongKeTheoNamAndMonth" ReturnType="Collection(AppXemPhimModel.ThongKeTheoNamAndMonth_Result)">
+            <Parameter Name="Year" Mode="In" Type="Int32" />
+            <Parameter Name="month" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="report_year" ReturnType="Collection(AppXemPhimModel.report_year_Result)">
+            <Parameter Name="year" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
+        <ComplexType Name="ThongKeTheoNam_Result">
+          <Property Type="Int32" Name="year" Nullable="true" />
+          <Property Type="Int32" Name="month" Nullable="true" />
+          <Property Type="Double" Name="tong" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="ThongKeTheoNamAndMonth_Result">
+          <Property Type="Int32" Name="year" Nullable="true" />
+          <Property Type="Int32" Name="month" Nullable="true" />
+          <Property Type="Double" Name="tong" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="report_year_Result">
+          <Property Type="Int32" Name="month" Nullable="false" />
+          <Property Type="Double" Name="total" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -936,6 +969,32 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="ThongKeTheoNam" FunctionName="AppXemPhimModel.Store.ThongKeTheoNam">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AppXemPhimModel.ThongKeTheoNam_Result">
+                <ScalarProperty Name="year" ColumnName="year" />
+                <ScalarProperty Name="month" ColumnName="month" />
+                <ScalarProperty Name="tong" ColumnName="tong" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ThongKeTheoNamAndMonth" FunctionName="AppXemPhimModel.Store.ThongKeTheoNamAndMonth">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AppXemPhimModel.ThongKeTheoNamAndMonth_Result">
+                <ScalarProperty Name="year" ColumnName="year" />
+                <ScalarProperty Name="month" ColumnName="month" />
+                <ScalarProperty Name="tong" ColumnName="tong" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="report_year" FunctionName="AppXemPhimModel.Store.report_year">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AppXemPhimModel.report_year_Result">
+                <ScalarProperty Name="month" ColumnName="month" />
+                <ScalarProperty Name="total" ColumnName="total" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

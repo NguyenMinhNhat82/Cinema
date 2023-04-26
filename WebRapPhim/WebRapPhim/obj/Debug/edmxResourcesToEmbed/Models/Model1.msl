@@ -159,5 +159,31 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="ThongKeTheoNam" FunctionName="AppXemPhimModel.Store.ThongKeTheoNam">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AppXemPhimModel.ThongKeTheoNam_Result">
+          <ScalarProperty Name="year" ColumnName="year" />
+          <ScalarProperty Name="month" ColumnName="month" />
+          <ScalarProperty Name="tong" ColumnName="tong" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="ThongKeTheoNamAndMonth" FunctionName="AppXemPhimModel.Store.ThongKeTheoNamAndMonth">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AppXemPhimModel.ThongKeTheoNamAndMonth_Result">
+          <ScalarProperty Name="year" ColumnName="year" />
+          <ScalarProperty Name="month" ColumnName="month" />
+          <ScalarProperty Name="tong" ColumnName="tong" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="report_year" FunctionName="AppXemPhimModel.Store.report_year">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AppXemPhimModel.report_year_Result">
+          <ScalarProperty Name="month" ColumnName="month" />
+          <ScalarProperty Name="total" ColumnName="total" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping>

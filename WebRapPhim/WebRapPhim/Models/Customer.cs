@@ -25,7 +25,7 @@ namespace WebRapPhim.Models
         public string Phone { get; set; }
         public string Password { get; set; }
 
-        [Compare("Password",ErrorMessage ="Mậu khẩu không khớp")]
+        [Compare("Password", ErrorMessage = "Mậu khẩu không khớp")]
         public string Confirm { get; set; }
         public string Email { get; set; }
         public string Ho { get; set; }
@@ -35,7 +35,6 @@ namespace WebRapPhim.Models
         public bool GioiTinh { get; set; }
         public Nullable<int> DiemThuong { get; set; }
         public Nullable<int> LoaiThanhVien { get; set; }
-
         public bool setGioiTinh(String gioitinh)
         {
             if (gioitinh.Trim() == "Nam")

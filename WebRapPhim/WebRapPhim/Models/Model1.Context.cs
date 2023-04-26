@@ -12,6 +12,8 @@ namespace WebRapPhim.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class AppXemPhimEntities1 : DbContext
     {
@@ -38,5 +40,36 @@ namespace WebRapPhim.Models
         public virtual DbSet<TheLoai> TheLoai { get; set; }
         public virtual DbSet<TheLoai_Phim> TheLoai_Phim { get; set; }
         public virtual DbSet<Ve> Ve { get; set; }
+    
+        public virtual ObjectResult<ThongKeTheoNam_Result> ThongKeTheoNam(Nullable<int> year)
+        {
+            var yearParameter = year.HasValue ?
+                new ObjectParameter("Year", year) :
+                new ObjectParameter("Year", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ThongKeTheoNam_Result>("ThongKeTheoNam", yearParameter);
+        }
+    
+        public virtual ObjectResult<ThongKeTheoNamAndMonth_Result> ThongKeTheoNamAndMonth(Nullable<int> year, Nullable<int> month)
+        {
+            var yearParameter = year.HasValue ?
+                new ObjectParameter("Year", year) :
+                new ObjectParameter("Year", typeof(int));
+    
+            var monthParameter = month.HasValue ?
+                new ObjectParameter("month", month) :
+                new ObjectParameter("month", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ThongKeTheoNamAndMonth_Result>("ThongKeTheoNamAndMonth", yearParameter, monthParameter);
+        }
+    
+        public virtual ObjectResult<report_year_Result> report_year(Nullable<int> year)
+        {
+            var yearParameter = year.HasValue ?
+                new ObjectParameter("year", year) :
+                new ObjectParameter("year", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<report_year_Result>("report_year", yearParameter);
+        }
     }
 }

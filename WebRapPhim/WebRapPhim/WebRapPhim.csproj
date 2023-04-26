@@ -226,6 +226,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\QuickPayRequest.cs" />
+    <Compile Include="Models\report_year_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SuatChieu.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -236,6 +239,12 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TheLoai_Phim.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ThongKeTheoNamAndMonth_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ThongKeTheoNam_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Ve.cs">
@@ -443,6 +452,7 @@
     <Content Include="Views\App\MemberShip.cshtml" />
     <Content Include="Views\App\CustomerMemberShip.cshtml" />
     <Content Include="Views\App\BookingHistory.cshtml" />
+    <Content Include="Views\App\TestBaoCao.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
