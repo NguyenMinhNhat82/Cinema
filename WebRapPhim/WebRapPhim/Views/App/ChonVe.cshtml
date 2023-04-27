@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<WebRapPhim.Models.SuatChieu>
 @using WebRapPhim.Models
+@using System.Globalization;
 @{
     ViewBag.Title = "ChonVe";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -14,7 +15,7 @@
         Ghe ghei = db.Ghe.First(x => x.ID == i.Ghe);
         ghedadat.Add(ghei.ID);
     }
-    
+
     List<Ghe> gheTrong = new List<Ghe>();
     foreach (Ghe i in db.Ghe.Where(x => x.PhongID == s.PhongID))
     {
@@ -23,13 +24,24 @@
             gheTrong.Add(i);
         }
     }
-    
+
+    CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");
+
 }
 <script>
+
+    function formatMoney(number) {
+        return number.toLocaleString('en-US', { style: 'currency', currency: 'VND' });
+    }
+    var pricecount =[]
+    @foreach (LoaiVe i in loaives) {
+        @:pricecount.push(0)
+         }
     function SetQuantity(id) {
+
         var quantity = document.getElementById(id).value;
         var price = parseFloat(document.getElementById("price" + id).innerText);
-        document.getElementById("total" + id).innerText = quantity * price + " VNĐ";
+        document.getElementById("total" + id).innerText = formatMoney(quantity * price) ;
         var cartquantity = document.getElementById("cart-quantity-" + id)
         var cartprice = document.getElementById("cart-price-" + id)
         var content = document.getElementById("content" +id)
@@ -38,21 +50,25 @@
             cartquantity.hidden = true;
             cartprice.hidden = true
             document.getElementById("sl" + id).value = quantity;
+            pricecount[id - 1] = 0
         }
         else {
             content.hidden = false;
             cartquantity.hidden = false;
             cartprice.hidden = false;
             document.getElementById("cart-quantity-" + id).innerText = quantity;
-            document.getElementById("cart-price-" + id).innerText = quantity * price + " VNĐ";
-            document.getElementById("sl"+id).value = quantity;
+            document.getElementById("cart-price-" + id).innerText = formatMoney(quantity * price);
+            document.getElementById("sl" + id).value = quantity;
+            pricecount[id - 1] = quantity * price
+
         }
         var tong = 0;
-        for (var i = 1; i <= @loaives.Count; i++)
-            tong += parseFloat(document.getElementById("cart-price-" + i).innerText)
-        document.getElementById("total").innerText = tong +" VNĐ"
+        for (var i = 0; i < @loaives.Count; i++)
+            tong += pricecount[i]
+
+        document.getElementById("total").innerText = formatMoney(tong)
     }
-    
+
     function confirm() {
         var count = 0;
         var check = false
@@ -149,7 +165,7 @@
                 {
                     <tr>
                         <th scope="row">Vé @l.Ten</th>
-                        <td id="@string.Concat("price",l.ID)">@(s.Gia+s.Gia*(l.PhanTramCongThem/100))</td>
+                        <td id="@string.Concat("price",l.ID)">@(double.Parse((s.Gia+s.Gia*(l.PhanTramCongThem/100)).ToString()))</td>
                         <td><input id="@l.ID" type="number" min="0" value="0" onchange="SetQuantity(@l.ID)" /></td>
                         <td id="@string.Concat("total",l.ID)">0</td>
                     </tr>

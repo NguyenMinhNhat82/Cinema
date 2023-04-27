@@ -458,6 +458,8 @@
     <Content Include="Views\App\CustomerMemberShip.cshtml" />
     <Content Include="Views\App\BookingHistory.cshtml" />
     <Content Include="Views\App\TestBaoCao.cshtml" />
+    <Content Include="Views\App\ForgotPW.cshtml" />
+    <Content Include="Views\App\Phone.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

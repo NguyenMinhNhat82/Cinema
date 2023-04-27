@@ -1,8 +1,9 @@
 ﻿@model IEnumerable<WebRapPhim.Models.SuatChieu>
 @using WebRapPhim.Models
+@using System.Globalization;
 @{
-    ViewBag.Title = "ChonSoLuong";
-    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "ChonVe";
+    Layout = "~/Views/Shared/_Layout.cshtml";
     AppXemPhimEntities1 db = new AppXemPhimEntities1();
     SuatChieu s = Model.ToList().FirstOrDefault();
     Film f = db.Film.First(x => x.ID == s.PhimID);
@@ -23,14 +24,24 @@
             gheTrong.Add(i);
         }
     }
-}
 
-<h2>CHỌN VÉ</h2>
+    CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");
+
+}
 <script>
+
+    function formatMoney(number) {
+        return number.toLocaleString('en-US', { style: 'currency', currency: 'VND' });
+    }
+    var pricecount =[]
+    @foreach (LoaiVe i in loaives) {
+        @:pricecount.push(0)
+         }
     function SetQuantity(id) {
+
         var quantity = document.getElementById(id).value;
         var price = parseFloat(document.getElementById("price" + id).innerText);
-        document.getElementById("total" + id).innerText = quantity * price + " VNĐ";
+        document.getElementById("total" + id).innerText = formatMoney(quantity * price) ;
         var cartquantity = document.getElementById("cart-quantity-" + id)
         var cartprice = document.getElementById("cart-price-" + id)
         var content = document.getElementById("content" +id)
@@ -39,19 +50,23 @@
             cartquantity.hidden = true;
             cartprice.hidden = true
             document.getElementById("sl" + id).value = quantity;
+            pricecount[id - 1] = 0
         }
         else {
             content.hidden = false;
             cartquantity.hidden = false;
             cartprice.hidden = false;
             document.getElementById("cart-quantity-" + id).innerText = quantity;
-            document.getElementById("cart-price-" + id).innerText = quantity * price + " VNĐ";
-            document.getElementById("sl"+id).value = quantity;
+            document.getElementById("cart-price-" + id).innerText = formatMoney(quantity * price);
+            document.getElementById("sl" + id).value = quantity;
+            pricecount[id - 1] = quantity * price
+
         }
         var tong = 0;
-        for (var i = 1; i <= @loaives.Count; i++)
-            tong += parseFloat(document.getElementById("cart-price-" + i).innerText)
-        document.getElementById("total").innerText = tong +" VNĐ"
+        for (var i = 0; i < @loaives.Count; i++)
+            tong += pricecount[i]
+
+        document.getElementById("total").innerText = formatMoney(tong)
     }
 
     function confirm() {
@@ -90,18 +105,21 @@
                     <h5>Now showing @s.GioBatDau</h5>
                     <h5>Sceen @s.PhimID</h5>
 
-                    
+                    <br /><br /><br />
+                    <h2 class="text-danger">*Lưu ý</h2>
+                    <h5>- Hãy chọn kỹ loại vé và số lượng bạn muốn mua</h5>
+                    <h5>- Vui lòng chọn kỹ loại vé và số lượng quý khách muốn mua</h5>
                 </div>
             </div>
         </div>
 
         <div style="background-color:grey">
             <div style="padding:30px">
-                <h3>THANH TOÁN</h3>
+                <h3>Giỏ hàng của bạn</h3>
                 <hr />
                 <div class="d-flex gap-3">
                     <div class="d-flex gap-1">
-                        <a href="#">
+                        <a href="~/App/Home">
                             <button style="width:30px" class="btn btn-danger">X</button>
                         </a>
                         <span sstyle="width: 30px; overflow: hidden; text-overflow: ellipsis; word-wrap: normal ">@f.ten</span>
@@ -147,7 +165,7 @@
                 {
                     <tr>
                         <th scope="row">Vé @l.Ten</th>
-                        <td id="@string.Concat("price",l.ID)">@(s.Gia+s.Gia*(l.PhanTramCongThem/100))</td>
+                        <td id="@string.Concat("price",l.ID)">@(double.Parse((s.Gia+s.Gia*(l.PhanTramCongThem/100)).ToString()))</td>
                         <td><input id="@l.ID" type="number" min="0" value="0" onchange="SetQuantity(@l.ID)" /></td>
                         <td id="@string.Concat("total",l.ID)">0</td>
                     </tr>

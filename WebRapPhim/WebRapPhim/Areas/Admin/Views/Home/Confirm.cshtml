@@ -1,6 +1,7 @@
 ﻿@model WebRapPhim.Models.Cart
 @using WebRapPhim.Models;
 @using WebRapPhim.Service
+@using System.Globalization;
 @{
     AppXemPhimEntities1 db = new AppXemPhimEntities1();
     ViewBag.Title = "Confirm";
@@ -41,6 +42,7 @@
     {
         percentDiscount += double.Parse(sk.First().PhanTramGiam.ToString());
     }
+    CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");
 }
 
 <h2 class="text-center">XÁC NHẬN</h2>
@@ -99,7 +101,7 @@
 
 <section id="menu" class="menu" style="margin:100px; background-color:darkgrey">
     <div style="padding-left:60px">
-        <h1>GIỎ HÀNG CỦA BẠN</h1>
+        <h1>XÁC NHẬN</h1>
         <hr />
         <div class="d-flex gap-5">
             <h5 class="title text-success">Phim</h5>
@@ -140,9 +142,9 @@
         {
             <div class="d-flex gap-5">
                 <h5 style="width:100px">@cart.getListLoaiVe()[i].Ten</h5>
-                <h5 style="width:100px">@double.Parse((suatChieu.Gia + suatChieu.Gia * cart.getListLoaiVe()[i].PhanTramCongThem / 100).ToString())</h5>
+                <h5 style="width:100px">@double.Parse((suatChieu.Gia + suatChieu.Gia * cart.getListLoaiVe()[i].PhanTramCongThem / 100).ToString()).ToString("#,###", cul.NumberFormat) VNĐ</h5>
                 <h5 style="width:100px">@cart.getSoLuongOfLoaiVe(cart.getListLoaiVe()[i])</h5>
-                <h5 style="width:120px">@cart.getGiaOfLoaiVe(cart.getListLoaiVe()[i])</h5>
+                <h5 style="width:120px">@cart.getGiaOfLoaiVe(cart.getListLoaiVe()[i]).ToString("#,###", cul.NumberFormat) VNĐ</h5>
 
             </div>
         }
@@ -151,7 +153,7 @@
             <h5 class="text-success" style="width:120px">Giảm giá</h5>
             <div class="d-flex gap-5">
                 <div>
-                    <h5 class="text-success" id="discount" style="width:120px">@(cart.getTongGia()- cart.discount(percentDiscount))</h5>
+                    <h5 class="text-success" id="discount" style="width:120px">@((cart.getTongGia()- cart.discount(percentDiscount)))</h5>
                 </div>
                 <div>VNĐ</div>
                 <button onclick="showpan()" type="button" id="myBtn" class="btn btn-warning">?</button>
@@ -160,7 +162,7 @@
 
         @{ if (Session["MaKhach"] == null)
             {
-                
+
             }
             else
             {
@@ -182,7 +184,7 @@
     <br /><br />
     <form action="~/Admin/Home/Pay" method="post">
         <label style="width:150px" for="name">Tên khách hàng:</label>
-        <input type="text" id="name" name="name" value="@customer.Ten"  required><br><br>
+        <input type="text" id="name" name="name" value="@customer.Ten" required><br><br>
         <label style="width:150px" for="email">Email:</label>
         <input type="email" id="email" name="email" value="@customer.Email" required><br><br>
         <label style="width:150px" for="sdt">Số điện thoại:</label>

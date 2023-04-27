@@ -1040,11 +1040,13 @@ namespace WebRapPhim.Areas.Admin.Controllers
             string kw = Request.QueryString["kw"];
             int day = DateTime.Now.Day;
             int month = DateTime.Now.Month;
-
             int year = DateTime.Now.Year;
             var suatchieu = new List<SuatChieu>();
             DateTime Today = new DateTime(year,month,day);
             DateTime Tomorrow = Today.AddDays(1);
+
+
+
             if (kw != null)
             {
                 var a  = db.SuatChieu.Where(x => x.GioBatDau > DateTime.Now && x.GioBatDau < Tomorrow && x.PhimID!=null && x.PhimID!=null).ToList();

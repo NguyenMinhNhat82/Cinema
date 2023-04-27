@@ -16,7 +16,7 @@ using System.Drawing;
 using CloudinaryDotNet.Actions;
 using System.Data.SqlClient;
 using System.Data;
-
+using System.Web.Management;
 
 namespace WebRapPhim.Controllers
 {
@@ -39,6 +39,120 @@ namespace WebRapPhim.Controllers
             return View();
         }
 
+
+        public ActionResult Phone() {
+            if (Session["UserId"] != null)
+            {
+                int iduser = int.Parse(Session["UserId"].ToString());
+                if (!db.Customer.Any(x => x.ID == iduser))
+                {
+                    Session.Clear();
+                    return RedirectToAction("Index","App");
+                }
+            }
+            return View();
+        }
+
+        public ActionResult Phone_post() {
+            String phone = Request.Form["phone"];
+            TempData["PhoneErro"] = null;
+
+            /*if (Session["repwID"] != null)
+            {
+                return RedirectToAction("ForgotPW", "App");
+            }
+            if(Session["repwID"] == null)
+                return RedirectToAction("Phone", "App");*/
+
+
+            List<Customer> c = db.Customer.Where(x => x.Phone == phone).ToList();
+            if (c.Count == 0)
+            {
+                TempData["PhoneErro"] = 0;
+                return RedirectToAction("Phone", "App");
+            }
+            else {
+                Customer cus = c.FirstOrDefault();
+
+                Session["repwID"] = cus.ID;
+                return RedirectToAction("ForgotPW", "App");
+            }
+           
+        }
+
+         public ActionResult ForgotPW()
+        {
+            if (Session["repwID"] != null)
+            {               
+                return View();
+            }
+            else
+                return RedirectToAction("Phone" ,"App");
+        }
+
+        [HttpPost]
+        public ActionResult ForgotPW_post()
+        {
+            using (MD5 md5Hash = MD5.Create())
+            {
+                TempData.Clear();
+                string oldpw = Request.Form["OldPassword"];
+                string newpw = Request.Form["Password"];
+                string confrim = Request.Form["ConfirmPassword"];
+                if (Session["repwID"] != null)
+                {
+                    int iduser = int.Parse(Session["repwID"].ToString());
+                    if (!db.Customer.Any(x => x.ID == iduser))
+                    {
+                        Session.Clear();
+                        return RedirectToAction("Phone", "App");
+                    }
+                    else
+                    {
+                        Customer cus = db.Customer.First(x => x.ID == iduser);
+                        if (Service.Service.GetMd5Hash(md5Hash, oldpw) == cus.Password.Trim())
+                        {
+                            if (newpw.Trim().Equals(confrim.Trim()))
+                            {
+                                string strConnect = "Data Source=D23159H2;Initial Catalog=AppXemPhim;Integrated Security=True;MultipleActiveResultSets=True;Application Name=EntityFramework";
+                                SqlConnection cnn = new SqlConnection(strConnect);
+                                SqlCommand cmd = new SqlCommand();
+                                cmd.CommandType = CommandType.Text;
+                                cmd.Connection = cnn;
+                                cmd.Parameters.Clear();
+                                cmd.CommandText = "Update dbo.Customer set Password = @pw where ID = @id";
+                                cmd.Parameters.Add("@pw", SqlDbType.Char).Value = Service.Service.GetMd5Hash(md5Hash, newpw.Trim());
+                                cmd.Parameters.Add("@id", SqlDbType.Int).Value = iduser;
+                                cmd.Connection = cnn;
+                                if (cnn.State == System.Data.ConnectionState.Closed)
+                                {
+                                    cnn.Open();
+                                }
+                                cmd.ExecuteNonQuery();
+
+                                TempData["Erro"] = 1;
+                                return RedirectToAction("ForgotPW", "App");
+                            }
+                            else
+                            {
+                                TempData["Erro"] = -1;
+                                return RedirectToAction("ForgotPW", "App");
+                            }
+                        }
+                        else {
+                            TempData["Erro"] = 0;
+                            return RedirectToAction("ForgotPW", "App");
+                        }
+                    }
+                }
+                else
+                {
+                    TempData.Clear();
+                    return RedirectToAction("Login", "App");
+                }
+               
+            }
+        }
         public ActionResult Login()
         {
 
