@@ -1,0 +1,191 @@
+﻿@model WebRapPhim.Models.Cart
+@using WebRapPhim.Models;
+@using WebRapPhim.Service
+@{
+    AppXemPhimEntities1 db = new AppXemPhimEntities1();
+    ViewBag.Title = "ChonGhe";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    int id = int.Parse(Model.Items.ToList()[0].ghe.PhongID.ToString());
+
+
+    Phong phong = db.Phong.First(x => x.ID == id);
+    List<String> ghedat = new List<String>();
+    foreach (var i in Model.Items)
+    {
+        ghedat.Add(i.ghe.ID.Trim());
+    }
+}
+
+<h2 class="text-center">CHỌN GHẾ</h2>
+
+<script>
+    var a = []
+    var color = ["green", "red", "blue", "yellow"]
+    var precol;
+    var prerow;
+    for (var i = 0; i < @Model.Items.Count(); i++) {
+        var b = [];
+        a.push(b);
+    }
+    @{
+        for (int i = 0; i < Model.Items.Count(); i++) {
+            int row = (Model.Items.ToList()[i].ghe.ID[1]);
+            @:a[@i][0] = @row-65;
+            @:a[@i][1] = @int.Parse(Model.Items.ToList()[i].ghe.ID.Substring(2, 2))-1;
+        }
+    }
+
+    function pickSeat(row, col) {
+        var index = parseInt(selectTicket) - 1
+
+        prerow = a[index][0]
+        precol = a[index][1]
+
+        document.getElementById(prerow+""+precol).style.backgroundColor ="black"
+        var seat = document.getElementById(row+""+col);
+        seat.style.backgroundColor = 'green'
+        var isdup = false;
+        for (var i = 0; i < @Model.Items.Count(); i++) {
+            if (a[i][0] == row && a[i][1] == col) {
+                a[i][0] = prerow;
+                a[i][1] = precol;
+                document.getElementById(a[i][0] + "" + a[i][1]).style.backgroundColor = "green"
+                console.log(i)
+                isdup = true;
+                break;
+            }
+        }
+        if (!isdup)
+            document.getElementById(prerow + "" + precol).style.backgroundColor = "black"
+        prerow = row
+        precol = col
+        a[parseInt(selectTicket) - 1][0] = row
+        a[parseInt(selectTicket) - 1][1] = col
+    }
+    var selectTicket;
+    function selectTicketValue(id) {
+        selectTicket = document.getElementById(id).value;
+
+    }
+    function confirm() {
+        for (var i = 0; i < @Model.Items.Count(); i++) {
+            document.getElementById("row" + i).value = a[i][0];
+            document.getElementById("col" + i).value = a[i][1];
+            console.log(document.getElementById("row" + i).value)
+            console.log(document.getElementById("col" + i).value)
+        }
+        document.getElementById("post-form").submit();
+    }
+</script>
+<form id="post-form" action="~/Admin/Home/ChonGhe_post_update" method="post">
+    @for (int i = 0; i < Model.Items.Count(); i++)
+    {
+        <input hidden id="@string.Concat("row",i)" name="@string.Concat("row",i)" value="0" />
+        <input hidden id="@string.Concat("col",i)" name="@string.Concat("col",i)" value="0" />
+    }
+
+</form>
+<section style="margin:70px">
+    <div class="d-flex gap-5">
+        <div>
+            Ghế đã chọn
+            <svg width="20" height="20">
+                <rect width="20" height="20" style="fill:grey;stroke-width:3;stroke:rgb(0,0,0)" />
+            </svg>
+        </div>
+        <div>
+            Ghế đang chọn
+            <svg width="20" height="20">
+                <rect width="20" height="20" style="fill:green;stroke-width:3;stroke:rgb(0,0,0)" />
+            </svg>
+        </div>
+
+    </div>
+
+    <div class="d-flex gap-5" style="margin-top:10px">
+
+        <div style="background-color:darkblue;width:600px;height:500px">
+            <div style="background-color: grey"><p class="text-center">Sceen</p></div>
+            <div style="margin:40px" class="d-flex">
+                <table class="table" style="width:30px;background-color:white;">
+
+                    @for (int i = 0; i < Service.getRowPhong(phong.ID); i++)
+                    {
+                        <tr>
+                            <th scope="col">@((char)(i + 65)) </th>
+                        </tr>
+                    }
+
+                </table>
+                <table class="table" style="background-color:black;color:white">
+                    @for (int i = 0; i < Service.getRowPhong(phong.ID); i++)
+                    {
+                        int dem = 1;
+                        <tr>
+
+                            @for (int j = 0; j < Service.getColPhong(phong.ID, i + 1); j++)
+                            {
+                                List<Ve> Listve = db.Ve.ToList();
+                                List<String> ghedadat = new List<String>();
+                                foreach (Ve ve in Listve)
+                                {
+                                    Ghe ghei = db.Ghe.First(x => x.ID == ve.Ghe);
+                                    ghedadat.Add(ghei.ID);
+                                }
+                                String dat = Service.getGhe(i + 1, j + 1, id);
+                                if (ghedat.Contains(dat.Trim()))
+                                {
+                                    <th class="text-center" scope="row" style="border-width:1px;width:70px; background-color:green" id="@string.Concat(i,j)" onclick="pickSeat(@i,@j)">@dem </th>
+                                }
+                                else
+                                {
+                                    Ghe ghe = db.Ghe.First(x => x.ID == dat);
+                                    if (!ghedadat.Contains(ghe.ID))
+                                    {
+                                        <th class="text-center" scope="row" style="border-width:1px;width:70px" id="@string.Concat(i, j)" onclick="pickSeat(@i,@j)">@dem  </th>
+                                    }
+                                    else
+                                    {
+                                        <th class="text-center" scope="row" style="border-width:1px;width:70px;background-color:grey">@dem  </th>
+                                    }
+                                }
+                                dem++;
+                            }
+
+                        </tr>
+
+                    }
+
+                </table>
+                <table class="table" style="width:30px;background-color:white;">
+
+                    @for (int i = 0; i < Service.getRowPhong(phong.ID); i++)
+                    {
+                        <tr>
+                            <th scope="col">@((char)(i + 65)) </th>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+        </div>
+        <div style="border:1px solid">
+            <div style="padding:30px">
+                <h3>Loại hạng vé</h3>
+                <hr />
+                @{ int demhangve = 0;
+                    foreach (var i in Model.Items)
+                    {
+                        demhangve++;
+                        <input type="radio" id="@string.Concat("ve",demhangve)" name="fav_language" value="@demhangve" onchange="selectTicketValue('@string.Concat("ve",demhangve)')">
+                        <label for="@string.Concat("ve",demhangve)">@demhangve . Vé @i.loaiVe.Ten</label><br>
+                    }
+                }
+            </div>
+
+        </div>
+        <button style="width:200px; height:50px" type="button" class="btn btn-danger" onclick="confirm()">Xác nhận</button>
+
+    </div>
+
+</section>

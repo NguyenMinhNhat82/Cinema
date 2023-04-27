@@ -1,35 +1,22 @@
-﻿using Newtonsoft.Json.Serialization;
-using Newtonsoft.Json;
-using QuickPay.model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using WebRapPhim.Models;
 using System.IO;
-using System.Runtime.InteropServices.ComTypes;
 using MoMo;
 using Newtonsoft.Json.Linq;
-using System.Diagnostics;
-using System.ComponentModel.DataAnnotations;
 using mvcDangNhap.common;
-using System.Security.Policy;
 using CloudinaryDotNet;
 using QRCoder;
-
 using System.Drawing;
 using CloudinaryDotNet.Actions;
-using System.Runtime.InteropServices;
-using System.Drawing.Imaging;
 using System.Data.SqlClient;
 using System.Data;
-using System.Net.NetworkInformation;
-using System.Collections.Specialized;
+
 
 namespace WebRapPhim.Controllers
 {
@@ -39,6 +26,14 @@ namespace WebRapPhim.Controllers
         // GET: App
         public ActionResult Home()
         {
+            if (Session["UserId"] != null)
+            {
+                int iduser = int.Parse(Session["UserId"].ToString());
+                if (!db.Customer.Any(x => x.ID == iduser))
+                {
+                    Session.Clear();
+                }
+            }
             Session["Cart"] = null;
             GetCart().Items.ToList().Clear();
             return View();
@@ -53,21 +48,26 @@ namespace WebRapPhim.Controllers
         [HttpPost]
         public ActionResult Login(Customer cus)
         {
-            var checkLogin = db.Customer.Where(x => x.Phone == cus.Phone && x.Password == cus.Password).ToList().FirstOrDefault();
-            if (checkLogin != null)
-            {
 
-                Session["UserId"] = checkLogin.ID;
-                Session["UserName"] = checkLogin.Ten;
-                if (Session["Cart"] == null)
-                    return RedirectToAction("Home", "App");
-                else
-                    return RedirectToAction("Confirm", "App");
-            }
-            else
+            using (MD5 md5Hash = MD5.Create())
             {
-                ViewBag.Message = "Số điện thoại hoặc mật khẩu sai";
-                return View();
+                string password = Service.Service.GetMd5Hash(md5Hash, cus.Password.Trim());
+                var checkLogin = db.Customer.Where(x => x.Phone.Trim() == cus.Phone.Trim() && x.Password.Trim() == password).ToList().FirstOrDefault();
+                if (checkLogin != null)
+                {
+
+                    Session["UserId"] = checkLogin.ID;
+                    Session["UserName"] = checkLogin.Ten;
+                    if (GetCart().Items.Count() == 0)
+                        return RedirectToAction("Home", "App");
+                    else
+                        return RedirectToAction("Confirm", "App");
+                }
+                else
+                {
+                    ViewBag.Message = "Số điện thoại hoặc mật khẩu sai";
+                    return View();
+                }
             }
 
         }
@@ -77,44 +77,51 @@ namespace WebRapPhim.Controllers
         [HttpPost]
         public ActionResult SignUp(Customer cus)
         {
-
-
-            if (cus.Password == cus.Confirm)
+            using (MD5 md5Hash = MD5.Create())
             {
 
-                var checkUser = db.Customer.Any(x => x.Phone == cus.Phone);
-                if (checkUser)
+
+                if (cus.Password == cus.Confirm)
                 {
-                    ViewBag.Message = "Số điện thoại đăng kí tài khoản đã tồn tại";
-                    return View();
+
+                    var checkUser = db.Customer.Any(x => x.Phone == cus.Phone);
+                    if (checkUser)
+                    {
+
+                        ViewBag.Message = "Số điện thoại đăng kí tài khoản đã tồn tại";
+                        return View();
+                    }
+                    else
+                    {
+                        string password = Service.Service.GetMd5Hash(md5Hash, cus.Password.Trim());
+                        cus.Password = password;
+                        cus.Confirm = password;
+                        var id = db.Customer.ToList().LastOrDefault().ID+1;
+                        cus.ID = id;
+                        cus.NgayDangKi = DateTime.Now;
+                        cus.DiemThuong = 0;
+                        cus.LoaiThanhVien = 4;
+                        var sex = Request.Form["sex"];
+                        cus.GioiTinh = cus.setGioiTinh(sex);
+                        db.Customer.Add(cus);
+                        db.SaveChanges();
+                        Session["UserId"] = cus.ID;
+                        Session["UserName"] = cus.Ten;
+
+                        if (GetCart().Items.Count() ==0)
+                            return RedirectToAction("Home", "App");
+                        else
+                            return RedirectToAction("Confirm", "App");
+                    }
                 }
                 else
                 {
-                    var id = db.Customer.Count() + 1;
-                    cus.ID = id;
-                    cus.NgayDangKi = DateTime.Now;
-                    cus.DiemThuong = 0;
-                    cus.LoaiThanhVien = 3;
-                    var sex = Request.Form["sex"];
-                    cus.GioiTinh = cus.setGioiTinh(sex);
-                    db.Customer.Add(cus);
-                    db.SaveChanges();
-                    Session["UserId"] = cus.ID;
-                    Session["UserName"] = cus.Ten;
-
-                    if (Session["Cart"] == null)
-                        return RedirectToAction("Home", "App");
-                    else
-                        return RedirectToAction("Confirm", "App");
+                    ViewBag.Message = "Mật khẩu không khớp";
+                    return View();
                 }
-            }
-            else
-            {
-                ViewBag.Message = "Mật khẩu không khớp";
-                return View();
-            }
 
 
+            }
         }
 
         public ActionResult SignUp()
@@ -124,7 +131,7 @@ namespace WebRapPhim.Controllers
 
         public ActionResult Logout()
         {
-            
+
             GetCart().Items.ToList().Clear();
             Session.Clear();
             return RedirectToAction("Login", "App");
@@ -132,6 +139,14 @@ namespace WebRapPhim.Controllers
 
         public ActionResult CustomerDetail()
         {
+            if (Session["UserId"] != null)
+            {
+                int iduser = int.Parse(Session["UserId"].ToString());
+                if (!db.Customer.Any(x => x.ID == iduser))
+                {
+                    Session.Clear();
+                }
+            }
             Session["Cart"] = null;
             GetCart().Items.ToList().Clear();
             if (Session["UserId"] != null)
@@ -143,6 +158,14 @@ namespace WebRapPhim.Controllers
 
         public ActionResult Now_Showing()
         {
+            if (Session["UserId"] != null)
+            {
+                int iduser = int.Parse(Session["UserId"].ToString());
+                if (!db.Customer.Any(x => x.ID == iduser))
+                {
+                    Session.Clear();
+                }
+            }
             Session["Cart"] = null;
             GetCart().Items.ToList().Clear();
             return View();
@@ -150,6 +173,14 @@ namespace WebRapPhim.Controllers
 
         public ActionResult Coming_soon()
         {
+            if (Session["UserId"] != null)
+            {
+                int iduser = int.Parse(Session["UserId"].ToString());
+                if (!db.Customer.Any(x => x.ID == iduser))
+                {
+                    Session.Clear();
+                }
+            }
             Session["Cart"] = null;
             GetCart().Items.ToList().Clear();
             return View();
@@ -157,16 +188,40 @@ namespace WebRapPhim.Controllers
 
         public ActionResult MovieDetail(int id)
         {
+            if (Session["UserId"] != null)
+            {
+                int iduser = int.Parse(Session["UserId"].ToString());
+                if (!db.Customer.Any(x => x.ID == iduser))
+                {
+                    Session.Clear();
+                }
+            }
             Session["Cart"] = null;
             GetCart().Items.ToList().Clear();
             return View(db.Film.Where(x => x.ID == id).ToList());
         }
         public ActionResult ChonVe(int id)
         {
-            return View(db.SuatChieu.Where(x => x.ID == id).ToList());
+            if (Session["UserId"] != null)
+            {
+                int iduser = int.Parse(Session["UserId"].ToString());
+                if (!db.Customer.Any(x => x.ID == iduser))
+                {
+                    Session.Clear();
+                }
+            }
+            return View(db.SuatChieu.Where(x => x.ID == id && x.PhimID != null && x.PhimID != null).ToList());
         }
 
         public ActionResult CustomerMemberShip() {
+            if (Session["UserId"] != null)
+            {
+                int iduser = int.Parse(Session["UserId"].ToString());
+                if (!db.Customer.Any(x => x.ID == iduser))
+                {
+                    Session.Clear();
+                }
+            }
             Session["Cart"] = null;
             GetCart().Items.ToList().Clear();
             if (Session["UserId"] != null)
@@ -197,7 +252,7 @@ namespace WebRapPhim.Controllers
                 SlLoaive.Add(sl);
             }
             int idsuatchieu = int.Parse(Request.Form["suatchieu"]);
-            SuatChieu suatChieu = db.SuatChieu.First(x => x.ID == idsuatchieu);
+            SuatChieu suatChieu = db.SuatChieu.First(x => x.ID == idsuatchieu && x.PhimID != null && x.PhimID != null);
             Film phim = db.Film.First(x => x.ID == suatChieu.PhimID);
             List<Ve> Listve = db.Ve.ToList();
             List<String> ghedadat = new List<String>();
@@ -249,6 +304,14 @@ namespace WebRapPhim.Controllers
         public ActionResult Confirm()
         {
 
+            if (Session["UserId"] != null)
+            {
+                int iduser = int.Parse(Session["UserId"].ToString());
+                if (!db.Customer.Any(x => x.ID == iduser))
+                {
+                    Session.Clear();
+                }
+            }
 
             if (Session["Cart"] == null)
                 return RedirectToAction("Home", "App");
@@ -262,7 +325,7 @@ namespace WebRapPhim.Controllers
             string partnerCode = "MOMO5RGX20191128";
             string accessKey = "M8brj9K6E22vXoDB";
             string serectkey = "nqQiVSgDMy809JoPF6OzP5OdBUB550Y4";
-            string orderInfo = "Thanh toán vé ngày " + DateTime.Now.ToString("yyyy-MM-dd-HH:mm:ss") ;
+            string orderInfo = "Thanh toán vé ngày " + DateTime.Now.ToString("yyyy-MM-dd-HH:mm:ss");
             string redirectUrl = "https://localhost:44369/App";
             string ipnUrl = "https://localhost:44369/App";
             string requestType = "captureWallet";
@@ -273,7 +336,7 @@ namespace WebRapPhim.Controllers
             string extraData = "";
 
             string rawHash = "accessKey=" + accessKey +
-                "&amount=" + amount +
+                "&amount=" + amount +   
                 "&extraData=" + extraData +
                 "&ipnUrl=" + ipnUrl +
                 "&orderId=" + orderId +
@@ -308,7 +371,7 @@ namespace WebRapPhim.Controllers
             JObject jmessage = JObject.Parse(responseFromMomo);
             int cusId = 0;
             if (Session["UserId"] != null)
-                cusId= int.Parse(Session["UserId"].ToString());
+                cusId = int.Parse(Session["UserId"].ToString());
 
             String email = Request.Form["email"];
             String KH = Request.Form["name"];
@@ -328,26 +391,26 @@ namespace WebRapPhim.Controllers
                 //Xử lý chuỗi sinh ra mã QR
                 getIDVeCuoi += 1;
                 if (i == 0) QRTitle += (getIDVeCuoi);
-                else QRTitle += "-"+(getIDVeCuoi);
+                else QRTitle += "-" + (getIDVeCuoi);
 
 
                 //Lưu hóa đơn
-                
+
                 string k = "";
-                if (cusId == 0) k ="NULL";
-                else k =cusId.ToString();
+                if (cusId == 0) k = "NULL";
+                else k = cusId.ToString();
                 cmd.Parameters.Clear();
-                cmd.CommandText = "Insert into dbo.Ve values(@id,@date,@gheid,NULL,"+k+",@name,@sdt,@email,@gia,NULL,@suatchieuid,@loaive) ";
+                cmd.CommandText = "Insert into dbo.Ve values(@id,@date,@gheid,NULL," + k + ",@name,@sdt,@email,@gia,NULL,@suatchieuid,@loaive) ";
                 cmd.Parameters.Add("@id", SqlDbType.Int).Value = (getIDVeCuoi);
                 cmd.Parameters.Add("@date", SqlDbType.DateTime2).Value = DateTime.Now;
                 cmd.Parameters.Add("@gheid", SqlDbType.NChar).Value = GetCart().Items.ToList()[i].ghe.ID;
-                
-                
+
+
                 cmd.Parameters.Add("@name", SqlDbType.NChar).Value = KH;
                 cmd.Parameters.Add("@sdt", SqlDbType.NChar).Value = sdt;
                 cmd.Parameters.Add("@email", SqlDbType.NChar).Value = email;
                 cmd.Parameters.Add("@gia", SqlDbType.Float).Value = GetCart().Items.ToList()[i].getGia();
-                
+
                 cmd.Parameters.Add("@suatchieuid", SqlDbType.Int).Value = GetCart().Items.ToList()[i].SuatChieu.ID;
                 cmd.Parameters.Add("@loaive", SqlDbType.Int).Value = GetCart().Items.ToList()[i].loaiVe.ID;
                 cmd.ExecuteNonQuery();
@@ -360,12 +423,12 @@ namespace WebRapPhim.Controllers
             using (Bitmap bmb = (Bitmap)img.Clone()) {
                 bmb.Save("C:\\Users\\DELL.000\\Desktop\\LTCSDL\\WebRapPhim\\WebRapPhim\\MyQR.jpg");
             }
-           
+
 
             String cloudname = "dexbjwfjg";
             String apiKey = "575344324738563";
             String apisecret = "ibnB7XPQZBtyfTNsvr5KYTVwKzY";
-            Account acc = new Account(cloudname,apiKey,apisecret);
+            Account acc = new Account(cloudname, apiKey, apisecret);
             Cloudinary cloudinary = new Cloudinary(acc);
             var UpLoadParameter = new ImageUploadParams() {
                 File = new FileDescription("C:\\Users\\DELL.000\\Desktop\\LTCSDL\\WebRapPhim\\WebRapPhim\\MyQR.jpg")
@@ -373,7 +436,7 @@ namespace WebRapPhim.Controllers
             var res = cloudinary.Upload(UpLoadParameter);
             string link = res.Uri.ToString();
 
-            
+
 
 
             string body = string.Empty;
@@ -381,13 +444,13 @@ namespace WebRapPhim.Controllers
             {
                 body = reader.ReadToEnd();
             }
-            body = body.Replace("{UserName}",email );
-            body = body.Replace("{Title}", "Vé đặt ngày "+DateTime.Now.ToString("dd-MM-yyyy"));
+            body = body.Replace("{UserName}", email);
+            body = body.Replace("{Title}", "Vé đặt ngày " + DateTime.Now.ToString("dd-MM-yyyy"));
             body = body.Replace("{Url}", link);
             body = body.Replace("{Description}", "Đến quầy bán vé để nhân viên xác thực");
-            
 
-            new MailHelper().SendMail(email,"LetHimCook Cinema",body);
+
+            new MailHelper().SendMail(email, "LetHimCook Cinema", body);
 
             var filePath = Server.MapPath("~/Images/" + "MyQR");
             if (System.IO.File.Exists("C:\\Users\\DELL.000\\Desktop\\LTCSDL\\WebRapPhim\\WebRapPhim\\MyQR.jpg"))
@@ -396,15 +459,15 @@ namespace WebRapPhim.Controllers
             }
 
             //Xử lý điểm thưởng
-            
+
             if (cusId != 0) {
                 Customer cus = db.Customer.First(x => x.ID == cusId);
                 LoaiThanhVien loaithanhvien = db.LoaiThanhVien.First(x => x.ID == cus.LoaiThanhVien);
                 double tongtien = double.Parse(Request.Form["tongtien"]);
 
-                
+
                 var diemcong = (int)(cus.DiemThuong + (tongtien * loaithanhvien.PhanTramDoiDiem / 100000));
-                
+
                 double SoTienDaMua = 0;
                 List<Ve> ves = db.Ve.Where(x => x.CusId == cus.ID).ToList();
                 foreach (Ve i in ves) {
@@ -432,10 +495,10 @@ namespace WebRapPhim.Controllers
             Session["Cart"] = null;
             GetCart().Items.ToList().Clear();
             return Redirect(jmessage.GetValue("payUrl").ToString());
-            
+
         }
 
-      
+
 
         private static String getSignature(String text, String key)
         {
@@ -480,7 +543,7 @@ namespace WebRapPhim.Controllers
         public List<report_year_Result> getReport(int year) {
             var list = db.report_year(year).ToList();
             return list;
-              
+
         }
 
         public ActionResult loadBaocao(int year) {
@@ -490,11 +553,10 @@ namespace WebRapPhim.Controllers
 
         public ActionResult TestBaoCao()
         {
-            
+
             return View();
         }
 
     }
-
 
 }

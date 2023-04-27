@@ -2,7 +2,7 @@
 @using WebRapPhim.Models;
 @using System.Data.SqlClient;
 @{
-    ViewBag.Title = "SuatChieu";
+    ViewBag.Title = "BanVe";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     SqlDataReader reader;
     string strConnect = "Data Source=D23159H2;Initial Catalog=AppXemPhim;Integrated Security=True;MultipleActiveResultSets=True;Application Name=EntityFramework";
@@ -33,55 +33,32 @@
     reader.Close();
     cnn.Close();
 }
-<style>
-    .btl-left {
-        font-size: 18px;
-        margin-top: 20px;
-        margin-left: 85%;
-    }
 
-        .btl-left a {
-            display: inline-block;
-            padding: 8px 15px;
-            background-color: #292424;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-
-        .btl-left > a:hover {
-            color: black;
-            background-color: white;
-        }
-</style>
-<div class="btl-left">
-    <a href="/Admin/Home/CreateSuatChieu">
-        + Thêm mới
-    </a>
-</div>
-<h2 style="text-align:center;">Suất Chiếu</h2>
-<table class="table">
+<h2 class="text-center">BanVe</h2>
+<form style="margin-left:50px">
+    <input type="text" name="kw"  placeholder="Nhập từ khóa tìm kiếm"/>
+    <button type="submit">Tìm kiếm</button>
+</form>
+<br /><br />
+<table class="table" style="margin-left:20px">
     <tr>
         <th>
-            <p>Suất</p>
+            @Html.DisplayNameFor(model => model.ID)
         </th>
         <th>
-            <p>Giờ bắt đầu</p>
+            @Html.DisplayNameFor(model => model.GioBatDau)
         </th>
         <th>
-            <p>Phòng</p>
+            @Html.DisplayNameFor(model => model.PhongID)
         </th>
         <th>
-            <p>Phim</p>
+            @Html.DisplayNameFor(model => model.PhimID)
         </th>
         <th>
-            <p>Giá</p>
+            @Html.DisplayNameFor(model => model.Gia)
         </th>
         <th>
-            <p>Trạng thái</p>
+            @Html.DisplayNameFor(model => model.TrangThai)
         </th>
         <th></th>
     </tr>
@@ -114,7 +91,7 @@
                 @Html.DisplayFor(modelItem => item.TrangThai)
             </td>
             <td>
-                @Html.ActionLink("Delete", "DeleteSuatChieu", new { id = item.ID }, new { @class = "btn btn-danger", style = "font-size: 15px; font-weight: bold; padding: 5px 7px; border-radius: 5px; color: #fff; border: none;" })
+                <a href="~/Admin/Home/ChonKhach/@item.ID"><button type="button" class="btn btn-danger">Chọn</button></a>
             </td>
         </tr>
     }

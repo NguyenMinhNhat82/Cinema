@@ -200,9 +200,9 @@
             int DayS = arrayDay[i];
             int MonthS = arrayMonth[i];
             int YearS = arrayYear[i];
-            
-            suatchieu = db.SuatChieu.Where(x => x.PhimID == a.ID && x.GioBatDau.Value.Day == DayS && x.GioBatDau.Value.Month == MonthS && x.GioBatDau.Value.Year == YearS).ToList();
-            
+
+            suatchieu = db.SuatChieu.Where(x => x.PhimID == a.ID && x.GioBatDau.Value.Day == DayS && x.GioBatDau.Value.Month == MonthS && x.GioBatDau.Value.Year == YearS && x.PhimID != null && x.PhimID != null).ToList();
+
             <div class="tab-content" data-aos="fade-up" data-aos-delay="300">
 
                 <div class="tab-pane fade active" id="@i">

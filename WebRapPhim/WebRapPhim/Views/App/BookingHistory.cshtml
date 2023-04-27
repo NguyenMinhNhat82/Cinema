@@ -12,7 +12,7 @@
     List<Ve> VeHetHan = new List<Ve>();
     List<Ve> listve = db.Ve.Where(x => x.CusId == cus.ID).ToList();
     foreach (Ve i in listve) {
-        SuatChieu suat = db.SuatChieu.First(x => x.ID == i.SuatChieu.ID);
+        SuatChieu suat = db.SuatChieu.First(x => x.ID == i.SuatChieu.ID && x.PhimID != null && x.PhimID != null);
         if (DateTime.Now < suat.GioBatDau)
         {
             VeConHan.Add(i);
@@ -43,7 +43,7 @@
         <tbody>
             @foreach (Ve i in VeConHan)
             {
-                SuatChieu s = db.SuatChieu.First(x => x.ID == i.SuatChieuID);
+                SuatChieu s = db.SuatChieu.First(x => x.ID == i.SuatChieuID && x.PhimID != null && x.PhimID != null);
                 Film f = db.Film.First(x => x.ID == s.PhimID);
                 LoaiVe loai = db.LoaiVe.First(x => x.ID == i.LoaVe);
                 <tr>
@@ -77,7 +77,7 @@
         <tbody>
             @foreach (Ve i in VeHetHan)
             {
-                SuatChieu s = db.SuatChieu.First(x => x.ID == i.SuatChieuID);
+                SuatChieu s = db.SuatChieu.First(x => x.ID == i.SuatChieuID && x.PhimID != null && x.PhimID != null);
                 Film f = db.Film.First(x => x.ID == s.PhimID);
                 LoaiVe loai = db.LoaiVe.First(x => x.ID == i.LoaVe);
                 <tr>

@@ -4,19 +4,19 @@
 @{
     AppXemPhimEntities1 db = new AppXemPhimEntities1();
     ViewBag.Title = "Confirm";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     Cart cart = Session["Cart"] as Cart;
 
     int iDPhim = Model.Items.ToList()[0].Phim.ID;
     int iDSuatChieu = Model.Items.ToList()[0].SuatChieu.ID;
     Film f = db.Film.First(x => x.ID == iDPhim);
-    SuatChieu suatChieu = db.SuatChieu.First(x => x.ID == iDSuatChieu && x.PhimID != null && x.PhimID != null);
+    SuatChieu suatChieu = db.SuatChieu.First(x => x.ID == iDSuatChieu);
     int iduser, day, month;
     bool isbirthday = false;
-    Customer customer;
-    if (Session["UserID"] != null)
+    Customer customer = new Customer();
+    if (Session["MaKhach"] != null)
     {
-        iduser = int.Parse(Session["UserID"].ToString());
+        iduser = int.Parse(Session["MaKhach"].ToString());
         customer = db.Customer.First(x => x.ID == iduser);
         day = customer.NgaySinh.Day;
         month = customer.NgaySinh.Month;
@@ -41,16 +41,16 @@
     {
         percentDiscount += double.Parse(sk.First().PhanTramGiam.ToString());
     }
-
 }
 
+<h2 class="text-center">XÁC NHẬN</h2>
 <style>
     .title {
         width: 120px;
     }
 </style>
 <script>
-   
+
     var tienDiemthuong = 0;
     var percentDiscount = 0;
      @if (isbirthday)
@@ -158,13 +158,13 @@
             </div>
         </div>
 
-        @{ if (Session["UserID"] == null)
+        @{ if (Session["MaKhach"] == null)
             {
-                <span>Đăng nhập để nhận thêm ưu đãi từ LetHimCook</span><a href="~/App/Login">Đăng nhập</a>
+                
             }
             else
             {
-                int id = int.Parse(Session["UserID"].ToString());
+                int id = int.Parse(Session["MaKhach"].ToString());
                 int diemthuong = int.Parse(Service.GetCurrentCus(id).DiemThuong.ToString());
                 <label style="width:350px" for="diemthuong">Hãy chọn số điểm thưởng để giám giá:</label>
                 <input type="number" id="diemthuong" name="diemthuong" max="@diemthuong" min="0" onchange="point()">
@@ -176,21 +176,23 @@
     </div>
 </section>
 <section style="margin-left:100px;">
+
+
     <h2>Điền thông tin chi tiết</h2>
     <br /><br />
-          <form action="~/App/Pay" method="post">
-              <label style="width:150px" for="name">Tên khách hàng:</label>
-              <input type="text" id="name" name="name" required><br><br>
-              <label style="width:150px" for="email">Email:</label>
-              <input type="email" id="email" name="email" required><br><br>
-              <label style="width:150px" for="sdt">Số điện thoại:</label>
-              <input type="text" id="sdt" name="sdt" required><br><br>
-              <input type="text" id="price" name="tongtien" value="@cart.getTongGia()" hidden><br><br>
-              <input type="text" id="diemthuongsudung" name="diemthuongsudung" value="0" hidden><br><br>
-              <div class="d-flex gap-5">
-                  <button type="submit" class="btn btn-success">Thanh toán</button>
-                  <a href="~/App/Home"><button type="button" class="btn btn-danger">Hủy vé</button></a>
-              </div>
-          </form>
+    <form action="~/Admin/Home/Pay" method="post">
+        <label style="width:150px" for="name">Tên khách hàng:</label>
+        <input type="text" id="name" name="name" value="@customer.Ten"  required><br><br>
+        <label style="width:150px" for="email">Email:</label>
+        <input type="email" id="email" name="email" value="@customer.Email" required><br><br>
+        <label style="width:150px" for="sdt">Số điện thoại:</label>
+        <input type="text" id="sdt" name="sdt" value="@customer.Phone" required><br><br>
+        <input type="text" id="price" name="tongtien" value="@cart.getTongGia()" hidden><br><br>
+        <input type="text" id="diemthuongsudung" name="diemthuongsudung" value="0" hidden><br><br>
+        <div class="d-flex gap-5">
+            <button type="submit" class="btn btn-success">In Vé</button>
+            <a href="~/App/Home"><button type="button" class="btn btn-danger">Hủy vé</button></a>
+        </div>
+    </form>
 
 </section>

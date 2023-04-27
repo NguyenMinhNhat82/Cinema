@@ -19,7 +19,7 @@ namespace mvcDangNhap.common
             //Vào địa chỉ https://myaccount.google.com/security  Ở menu trái chọn mục Bảo mật, sau đó tại mục Quyền truy cập 
             //của ứng dụng kém an toàn phải ở chế độ bật
             //  Đồng thời tài khoản Gmail cũng cần bật IMAP
-            //Truy cập địa chỉ https://mail.google.com/ mail/#settings/fwdandpop
+            //Truy cập địa chỉ https://mail.google.com/mail/#settings/fwdandpop
 
             var fromEmailAddress = ConfigurationManager.AppSettings["FromEmailAddress"].ToString();
             var fromEmailDisplayName = ConfigurationManager.AppSettings["FromEmailDisplayName"].ToString();

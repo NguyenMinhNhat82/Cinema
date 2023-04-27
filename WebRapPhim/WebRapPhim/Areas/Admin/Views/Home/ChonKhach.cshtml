@@ -1,0 +1,145 @@
+﻿@model IEnumerable<WebRapPhim.Models.Customer>
+@{
+    ViewBag.Title = "ChonKhach";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+<script>
+    function select(id) {
+        /*var val = document.getElementById(id).value
+        var postval = document.getElementById(user)
+        postval.value = val
+        alert(postval.value)*/
+        console.log(id)
+    }
+    function test(id) {
+        var val = document.getElementById(id).value
+        var postval = document.getElementById('user')
+        postval.value = val
+       
+        console.log(postval.value)
+    }
+    function deleteRadio() {
+        var ele = document.getElementsByName("userid");
+        for (var i = 0; i < ele.length; i++)
+            ele[i].checked = false;
+
+        document.getElementById('user').value =''
+
+    }
+    function confirm() {
+        document.getElementById("post-form").submit();
+    }
+</script>
+
+<h2 class="text-center">CHỌN KHÁCH</h2>
+
+<form style="margin-left:50px">
+    <input type="text" name="sdt" placeholder="Nhập số điện thoại" />
+    <input type="text" name="ten" placeholder="Nhập tên khách hàng" />
+    <button type="submit">Tìm kiếm</button>
+</form>
+<style>
+    .btl-left {
+        font-size: 18px;
+        margin-top: 20px;
+        margin-left: 85%;
+    }
+
+        .btl-left a {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #292424;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .btl-left > a:hover {
+            color: black;
+            background-color: white;
+        }
+</style>
+<div style="margin-left:60px">
+    <div class="btl-left">
+        <a href="/Admin/Home/CreateClientAccount">
+            + Create New User
+        </a>
+    </div>
+    <h2 style="text-align:center;">Client Account</h2>
+    <table class="table">
+        <tr>
+            <th>
+                <p>Số điện thoại</p>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                <p>Họ</p>
+            </th>
+            <th>
+                <p>Tên</p>
+            </th>
+            <th>
+                <p>Ngày đăng ký</p>
+            </th>
+            <th>
+                <p>Điểm thưởng</p>
+            </th>
+            <th>
+                <p>Loại thành viên</p>
+            </th>
+            <th>
+                
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Phone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ho)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ten)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NgayDangKi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DiemThuong)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LoaiThanhVien)
+                </td>
+                <td>
+                    <input type="radio" id="@string.Concat("pick",item.ID)" value="@item.ID" name="userid" onchange="test('@string.Concat("pick",item.ID)')">
+                </td>
+
+
+            </tr>
+        }
+
+    </table>
+    <div class="d-flex gap-5">
+        <button type="button" class="btn btn-danger" onclick="deleteRadio()">Xóa</button>
+        <button type="button" class="btn btn-success" onclick="confirm()" >Xác nhận</button>
+    </div>
+    <form id="post-form" action="~/Admin/Home/ChonKhach_post" method="post">
+        <input type="text" id="user" name="userpick" value="" hidden />
+    </form>
+</div>
+
+

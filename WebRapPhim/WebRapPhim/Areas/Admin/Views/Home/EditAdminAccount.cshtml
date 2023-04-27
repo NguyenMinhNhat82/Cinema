@@ -1,8 +1,10 @@
 ﻿@model WebRapPhim.Models.NhanVien
-
+@using WebRapPhim.Service;
 @{
     ViewBag.Title = "EditAdminAccount";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    string pass = Service.decrypt(Model.Password);
+    
 }
 
 <style>
@@ -29,6 +31,14 @@
             background-color: white;
         }
 </style>
+<script>
+    function StateChange() {
+        var pw = document.getElementById('pw').value;
+        var updatepw = document.getElementById('post')
+        updatepw.value = pw;
+        console.log(updatepw.value)
+    }
+</script>
 <h2 style="text-align: center; margin-top: 2%;">Edit Admin Account</h2>
 <h3 class="text-danger text-center">@ViewBag.Message</h3>
 <div class="btl-left">
@@ -57,9 +67,11 @@
                                 </div>
 
                                 <div class="form-group">
-                                    @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2"})
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+
+
+                                        @Html.EditorFor(model => pass, new { htmlAttributes = new { @class = "form-control" , @onChange = "StateChange()", @id = "pw" } })
                                         @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
@@ -111,14 +123,19 @@
                                         @Html.ValidationMessageFor(model => model.GioiTinh, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
-
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10">
+                                        <input type="text" value="@Service.decrypt(Model.Password)" style="margin-top:2%" id="post" name="post" hidden />
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <div class="col-md-offset-2 col-md-10">
                                         <input type="submit" value="Save" class="btn btn-primary" style="margin-top:2%" />
                                     </div>
                                 </div>
+
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>

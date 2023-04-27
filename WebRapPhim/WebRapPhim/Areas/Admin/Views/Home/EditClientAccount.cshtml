@@ -1,8 +1,10 @@
 ﻿@model WebRapPhim.Models.Customer
-
+@using WebRapPhim.Service
 @{
     ViewBag.Title = "EditClientAccount";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    string pw = Model.Password;
+    string pass = Service.decrypt(Model.Password);
 }
 <style>
     .btl-left {
@@ -28,6 +30,15 @@
             background-color: white;
         }
 </style>
+
+<script>
+    function StateChange() {
+        var pw = document.getElementById('pw').value;
+        var updatepw = document.getElementById('post')
+        updatepw.value = pw;
+        console.log(updatepw.value)
+    }
+</script>
 <h2 style="text-align: center; margin-top: 2%;">Edit Client Account</h2>
 <h3 class="text-danger text-center">@ViewBag.Message</h3>
 <div class="btl-left">
@@ -62,7 +73,7 @@
                                 <div class="form-group">
                                     <span>Password</span>
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.EditorFor(model => pass, new { htmlAttributes = new { @class = "form-control", @onChange = "StateChange()", @id = "pw" } })
                                         @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
@@ -132,7 +143,11 @@
                                         @Html.ValidationMessageFor(model => model.LoaiThanhVien, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
-
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10">
+                                        <input type="text" value="@Service.decrypt(Model.Password)" style="margin-top:2%" id="post" name="post" hidden />
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <div class="col-md-offset-2 col-md-10">
                                         <input type="submit" value="Xác nhận" class="btn btn-primary" style="margin-top:2%" />
