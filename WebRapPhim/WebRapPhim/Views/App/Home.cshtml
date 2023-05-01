@@ -129,9 +129,7 @@
                     </div>
 
                     <div class="row gy-5">
-
-                        @{
-                            if (Upcoming.Count != 0)
+                        @{ if (nowShowing.Count != 0)
                             {
                                 foreach (Film i in Upcoming)
                                 {
@@ -145,19 +143,20 @@
                                         <p class="price">
                                             @String.Format("{0:dd/MM/yyyy}", i.ngay_cong_chieu)
                                         </p>
-                                        <a href="~/App/MovieDetail/@i.ID"><button type="button" class="btn btn-danger">Đặt vé ngay</button>
-                                    </div><!-- Menu Item -->
+                                        <a href="~/App/MovieDetail/@i.ID"><button type="button" class="btn btn-danger">Đặt vé ngay</button></a>
+                                    </div>
                                 }
                             }
                             else
                             {
                                 <h3 class="text-center">Rất tiếc! Không có phim nào</h3>
                             }
+
+
                         }
 
-
-
                     </div>
+                </div>
                 </div>
 
             </div>

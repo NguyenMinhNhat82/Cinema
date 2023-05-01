@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<WebRapPhim.Models.Film>
 @using WebRapPhim.Models
+@using System.Data.SqlClient;
 @{
     ViewBag.Title = "MovieDetail";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -24,6 +25,51 @@
     List<int> arrayDay = new List<int>();
     List<int> arrayMonth = new List<int>();
     List<int> arrayYear = new List<int>();
+
+    SqlDataReader reader1;
+    string strConnect = "Data Source=D23159H2;Initial Catalog=AppXemPhim;Integrated Security=True;MultipleActiveResultSets=True;Application Name=EntityFramework";
+    SqlConnection cnn = new SqlConnection(strConnect);
+    SqlCommand cmd = new SqlCommand();
+    cmd.CommandType = System.Data.CommandType.Text;
+    cmd.Connection = cnn;
+    cmd.CommandType = System.Data.CommandType.Text;
+    cmd.CommandText = "SELECT TheLoai.ten_the_loai AS TheLoaiTen " +
+                      "FROM AppXemPhim.dbo.TheLoai " +
+                      "INNER JOIN AppXemPhim.dbo.TheLoai_Phim " +
+                      "ON AppXemPhim.dbo.TheLoai.id = AppXemPhim.dbo.TheLoai_Phim.LoaiPhimID " +
+                      "WHERE AppXemPhim.dbo.TheLoai_Phim.PhimID = @PhimID";
+    cmd.Parameters.AddWithValue("@PhimID", Model.ToList()[0].ID);
+    cmd.Connection = cnn;
+
+    if (cnn.State == System.Data.ConnectionState.Closed)
+    {
+        cnn.Open();
+    }
+
+    reader1 = cmd.ExecuteReader();
+    var table1 = new System.Data.DataTable();
+    table1.Columns.Add("TheLoaiTen");
+
+    while (reader1.Read())
+    {
+        table1.Rows.Add(reader1["TheLoaiTen"]);
+    }
+
+    int dem = 0;
+    string tl = "";
+    if (table1.Rows.Count != 0)
+    {
+        foreach (System.Data.DataRow row in table1.Rows)
+        {
+            if (dem == 0)
+            {
+                tl += row["TheLoaiTen"];
+            }
+            else { tl += ", " + row["TheLoaiTen"]; }
+            dem++;
+
+        }
+    }
 }
 
 <script>
@@ -80,7 +126,7 @@
                             <div class="col-lg-12 pt-2">
                                 <h5>Thời lượng</h5>
                                 <span>
-                                    @a.thoi_luong
+                                    @a.thoi_luong p
                                 </span>
                                 <hr class="m-0 pt-2 mt-2">
                             </div>
@@ -96,15 +142,15 @@
 
 
                             <div class="col-lg-12">
-                                <p class="tag-section"><strong>Tag : </strong><a href="">Woman</a><a href="">,Man</a></p>
+                                <p class="tag-section"><strong>Tag : </strong>@tl</p>
                             </div>
                             <div class="d-flex gap-5">
                                 <a href="#chonve"><button type="button" class="btn btn-danger">Mua vé ngay</button></a>
 
                                 <a href="@a.trailer" class="glightbox play-btn"><button type="button" class="btn btn-danger">Xem trailer</button></a>
                             </div>
-                           
-                            
+
+
                         </div>
                     </div>
                 </div>

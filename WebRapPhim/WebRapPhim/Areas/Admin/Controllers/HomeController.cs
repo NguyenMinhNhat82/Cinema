@@ -1056,7 +1056,8 @@ namespace WebRapPhim.Areas.Admin.Controllers
                     idphim.Add(f.ID);
                 }
                 foreach (SuatChieu s in a) {
-                    if (idphim.Contains(s.ID))
+                    int p = int.Parse(s.PhimID.ToString());
+                    if (idphim.Contains(p))
                         suatchieu.Add(s);
                 }
                
