@@ -81,7 +81,7 @@ namespace WebRapPhim.Areas.Admin.Controllers
                 int iduser = int.Parse(Session["UserId"].ToString());
                 if (!db.NhanVien.Any(x => x.ID == iduser))
                 {
-                    Session.Clear();
+                    Session["UserId"] = null;
                     return RedirectToAction("Login", "Home");
                 }
             }
@@ -113,6 +113,8 @@ namespace WebRapPhim.Areas.Admin.Controllers
             }
             return View(db.NhanVien.Where(x => x.ID == id).FirstOrDefault());
         }
+
+
         public ActionResult CreateAdminAccount()
         {
             if (Session["UserId"] != null)
@@ -148,8 +150,10 @@ namespace WebRapPhim.Areas.Admin.Controllers
                     
                     var sex = Request.Form["sex"];
                     nv.GioiTinh = nv.setGioiTinh(sex);
+
                     db.NhanVien.Add(nv);
                     db.SaveChanges();
+
                     return RedirectToAction("AdminAccount", "Home");
 
                 }

@@ -27,6 +27,9 @@ namespace WebRapPhim.Models
 
         [Compare("Password", ErrorMessage = "Mậu khẩu không khớp")]
         public string Confirm { get; set; }
+
+
+
         public string Email { get; set; }
         public string Ho { get; set; }
         public string Ten { get; set; }

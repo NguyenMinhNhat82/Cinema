@@ -153,6 +153,8 @@ namespace WebRapPhim.Controllers
                
             }
         }
+
+        [HttpGet]
         public ActionResult Login()
         {
 
@@ -210,8 +212,13 @@ namespace WebRapPhim.Controllers
                         string password = Service.Service.GetMd5Hash(md5Hash, cus.Password.Trim());
                         cus.Password = password;
                         cus.Confirm = password;
-                        var id = db.Customer.ToList().LastOrDefault().ID+1;
+
+                        var lastacc = db.Customer.OrderByDescending(a => a.ID).FirstOrDefault();
+                        var id = lastacc != null ? lastacc.ID + 1 : 1;
                         cus.ID = id;
+
+                        
+                        
                         cus.NgayDangKi = DateTime.Now;
                         cus.DiemThuong = 0;
                         cus.LoaiThanhVien = 4;
@@ -219,6 +226,10 @@ namespace WebRapPhim.Controllers
                         cus.GioiTinh = cus.setGioiTinh(sex);
                         db.Customer.Add(cus);
                         db.SaveChanges();
+
+
+
+
                         Session["UserId"] = cus.ID;
                         Session["UserName"] = cus.Ten;
 
@@ -237,6 +248,9 @@ namespace WebRapPhim.Controllers
 
             }
         }
+
+
+
 
         public ActionResult SignUp()
         {
@@ -499,7 +513,12 @@ namespace WebRapPhim.Controllers
             {
                 cnn.Open();
             }
-            int getIDVeCuoi = db.Ve.ToList().LastOrDefault().ID;
+
+            var lastacc = db.Ve.OrderByDescending(a => a.ID).FirstOrDefault();
+            int getIDVeCuoi = lastacc != null ? lastacc.ID : 0;
+            
+
+            
             string QRTitle = "";
             for (int i = 0; i < GetCart().Items.Count(); i++) {
                 //Xử lý chuỗi sinh ra mã QR

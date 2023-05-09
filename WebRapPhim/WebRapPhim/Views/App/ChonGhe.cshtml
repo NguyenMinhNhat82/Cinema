@@ -6,11 +6,12 @@
     ViewBag.Title = "ChonGhe";
     Layout = "~/Views/Shared/_Layout.cshtml";
     int id = int.Parse(Model.Items.ToList()[0].ghe.PhongID.ToString());
- 
+
 
     Phong phong = db.Phong.First(x => x.ID == id);
     List<String> ghedat = new List<String>();
-    foreach (var i in Model.Items) {
+    foreach (var i in Model.Items)
+    {
         ghedat.Add(i.ghe.ID.Trim());
     }
 }
@@ -31,15 +32,49 @@
         }
     }
 
+
+    function intToChar(int) {
+        const code = 'A'.charCodeAt(0);
+        console.log(code); // 👉️ 65
+
+        return String.fromCharCode(code + int);
+    }
+
+    function formatcol(cola) {
+        var c = cola+'';
+        console.log(cola.length)
+        if (c.length == 1)
+            c = '0'+cola;
+        else
+            c = cola
+        console.log(c);
+        return c.trim();
+    }
+
+
     function pickSeat(row, col) {
         var index = parseInt(selectTicket) - 1
+
+
+        var s = document.getElementById("ghe"+selectTicket)
+     
 
         prerow = a[index][0]
         precol = a[index][1]
 
         document.getElementById(prerow+""+precol).style.backgroundColor ="black"
-        var seat = document.getElementById(row+""+col);
+        var seat = document.getElementById(row + "" + col);
+        var phong = @phong.ID;
+        
         seat.style.backgroundColor = 'green'
+
+
+        s.innerText = phong + intToChar(parseInt(row)) + formatcol((parseInt(col) + 1))
+        console.log(s.innerText)
+
+
+
+
         var isdup = false;
         for (var i = 0; i < @Model.Items.Count(); i++) {
             if (a[i][0] == row && a[i][1] == col) {
@@ -57,6 +92,9 @@
         precol = col
         a[parseInt(selectTicket) - 1][0] = row
         a[parseInt(selectTicket) - 1][1] = col
+
+
+        
     }
     var selectTicket;
     function selectTicketValue(id) {
@@ -97,7 +135,7 @@
         </div>
 
     </div>
-    
+
     <div class="d-flex gap-5" style="margin-top:10px">
 
         <div style="background-color:darkblue;width:600px;height:500px">
@@ -167,14 +205,22 @@
         </div>
         <div style="border:1px solid">
             <div style="padding:30px">
-                <h3>Loại hạng vé</h3>
+                <h3>Vé của bạn</h3>
                 <hr />
                 @{ int demhangve = 0;
                     foreach (var i in Model.Items)
                     {
                         demhangve++;
-                        <input type="radio" id="@string.Concat("ve",demhangve)" name="fav_language" value="@demhangve" onchange="selectTicketValue('@string.Concat("ve",demhangve)')">
-                        <label for="@string.Concat("ve",demhangve)">@demhangve . Vé @i.loaiVe.Ten</label><br>
+                        <div class="d-flex gap-4">
+                            <div>
+                                <input type="radio" id="@string.Concat("ve",demhangve)" name="fav_language" value="@demhangve" onchange="selectTicketValue('@string.Concat("ve",demhangve)')">
+                                <label for="@string.Concat("ve",demhangve)">@demhangve . Vé @i.loaiVe.Ten</label><br>
+                            </div>
+                            <h6 id="@string.Concat("ghe",demhangve)">
+                                @i.ghe.ID
+                            </h6>
+                        </div>
+
                     }
                 }
             </div>

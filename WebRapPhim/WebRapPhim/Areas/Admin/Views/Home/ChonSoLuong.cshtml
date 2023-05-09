@@ -3,7 +3,7 @@
 @using System.Globalization;
 @{
     ViewBag.Title = "ChonVe";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     AppXemPhimEntities1 db = new AppXemPhimEntities1();
     SuatChieu s = Model.ToList().FirstOrDefault();
     Film f = db.Film.First(x => x.ID == s.PhimID);
